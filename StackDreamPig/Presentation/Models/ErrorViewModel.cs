@@ -1,6 +1,6 @@
 using System;
 
-namespace StackDreamPig.Models
+namespace Presentation.Models
 {
     public class ErrorViewModel
     {
