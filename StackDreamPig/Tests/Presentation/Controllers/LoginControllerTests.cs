@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Tests.Presentation.Controllers
 {
-    class LoginControllerTests
+    internal class LoginControllerTests
     {
         private LoginController _LoginController;
         private AutoMoqer _mocker;
