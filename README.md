@@ -2,11 +2,18 @@
 
 # stackDreamPig(家計簿アプリ) 機能一覧
 
-### 環境
+### 開発
 ・.NET Core 3.0  
 ・C# 7.2  
 ・Postgres 11.5  
 ・Visiaul Studio 2019  
+
+### 環境
+・Docker (とりあえずローカルで開発環境構築まで)
+・AWS EC2
+
+### ※AWSにDockerコンテナのデプロイやCIの導入などはスキルに合わせて検討
+
 
 ### 開発手法
 ドメイン駆動開発  DDD
