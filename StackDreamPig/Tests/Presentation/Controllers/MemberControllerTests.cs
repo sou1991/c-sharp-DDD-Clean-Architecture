@@ -1,8 +1,8 @@
 ﻿using AutoMoq;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
 using NUnit.Framework;
 using Presentation.Controllers;
+using Application.Member.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,21 +10,23 @@ using System.Text;
 namespace Tests.Presentation.Controllers
 {
     [TestFixture]
-    internal class LoginControllerTests
+    internal class MemberControllerTests
     {
-        private LoginController _LoginController;
+        private MemberController _memberController;
         private AutoMoqer _mocker;
+        private MemberModel _meberModel;
 
         [SetUp]
         public void SetUp()
         {
             _mocker = new AutoMoqer();
-            _LoginController = new LoginController();
+            _memberController = _mocker.Create<MemberController>();
+            _meberModel = new MemberModel();
         }
         [Test]
         public void TestGetViewType()
         {
-            var result = _LoginController.Login();
+            var result = _memberController.Entry(_meberModel);
             Assert.That(result, Is.TypeOf<ViewResult>());
         }
     }

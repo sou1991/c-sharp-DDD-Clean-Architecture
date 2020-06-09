@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Entry";
+}
+
+<div class="container-fluid" style="padding-top: 100px;">
+    <h2>Entry</h2>
+    <p style="color:red">
+        @{
+            if (!ViewData.ModelState.IsValid)
+            {
+                foreach (var key in ViewData.ModelState.Keys)
+                {
+                    foreach (var e in ViewData.ModelState[key].Errors)
+                    {
+                        <span>@e.ErrorMessage</span><br />
+
+                    }
+                }
+
+            }
+            if (Model.isError)
+            {
+                <span>@Model.errorMessege</span><br />
+            }
+        }
+    </p>
+    <form class="form-horizontal" name="entry_form" action="/Member/EntryConfirm/" method="post">
+        <div class="form-group">
+            <label for="email" class="col-sm-2 control-label">userName</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" name="userName" placeholder="userName" value="@Model.userName">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Password" class="col-sm-2 control-label">Password</label>
+            <div class="col-sm-3">
+                <input type="password" class="form-control" name="password" placeholder="Password" value="@Model.password">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="月収" class="col-sm-2 control-label">月収</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" name="monthlyIncome" placeholder="300000" value="@Model.monthlyIncome">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="目標貯金額(月)" class="col-sm-2 control-label">目標貯金額(月)</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" name="savings" placeholder="50000" value="@Model.savings">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="固定費" class="col-sm-2 control-label">固定費</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" name="fixedCost" placeholder="50000" value="@Model.fixedCost">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-10">
+                <button type="submit" class="btn btn-success" name="submitBtn" value="1">登録内容を確認する</button>
+            </div>
+        </div>
+    </form>
+</div>

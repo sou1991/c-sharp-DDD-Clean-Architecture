@@ -2,12 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Member.Commands;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Presentation.Controllers;
+using Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace Presentation
 {
@@ -23,7 +27,18 @@ namespace Presentation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
+            services.AddTransient<ICreateMemberCommand, CreateMemberCommand>();
+            services.AddTransient<IDataBaseService, DataBaseService>();
+ 
             services.AddControllersWithViews();
+
+
+            services.AddDbContext<DataBaseService>(options =>
+            {
+                options.UseNpgsql(Configuration.GetValue<string>("ConnString"));
+                //assembly => assembly.MigrationsAssembly(typeof(DataBaseService).Assembly.FullName));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
