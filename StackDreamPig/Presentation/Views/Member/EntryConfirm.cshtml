@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewData["Title"] = "EntryConfirm";
+}
+
+    <div class="container-fluid" style="padding-top: 100px;">
+        <h2>EntryConfirm</h2>
+        <p style="color:red">
+            @{
+                if (!ViewData.ModelState.IsValid)
+                {
+                    foreach (var key in ViewData.ModelState.Keys)
+                    {
+                        foreach (var e in ViewData.ModelState[key].Errors)
+                        {
+                            <span>@e.ErrorMessage</span><br />
+
+                        }
+                    }
+
+                }
+            }
+        </p>
+        <form class="form-horizontal" name="entry_form1" method="post">
+            <div class="form-group">
+                <label for="NickName" class="col-sm-2 control-label">email</label>
+                <div class="col-sm-3">
+                    @Model.userName
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Password" class="col-sm-2 control-label">Password</label>
+                <div class="col-sm-3">
+                    ************
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="月収" class="col-sm-2 control-label">月収</label>
+                <div class="col-sm-3">
+                    @Model.monthlyIncome
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="目標貯金額(月)" class="col-sm-2 control-label">目標貯金額(月)</label>
+                <div class="col-sm-3">
+                    @Model.savings
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="固定費" class="col-sm-2 control-label">固定費</label>
+                <div class="col-sm-3">
+                    @Model.fixedCost
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-10">
+                    <button type="submit" class="btn btn-success" formaction="/Member/Entry/">戻る</button>
+                    <button type="submit" class="btn btn-success" formaction="/Member/EntryComplete/">登録する</button>
+                </div>
+            </div>
+            <input type hidden name="userName" value="@Model.userName">
+            <input type hidden name="password" value="@Model.password">
+            <input type hidden name="monthlyIncome" value="@Model.monthlyIncome">
+            <input type hidden name="savings" value="@Model.savings">
+            <input type hidden name="fixedCost" value="@Model.fixedCost">
+        </form>
+    </div>

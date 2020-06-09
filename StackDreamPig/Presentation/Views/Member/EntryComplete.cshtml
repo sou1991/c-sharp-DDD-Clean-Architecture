@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewData["Title"] = "EntryComplete";
+}
+
+<div class="container-fluid" style="padding-top: 100px;">
+    <h2>EntryComplete</h2>
+    <form class="form-horizontal" name="entry_form2" method="post">
+
+        @{
+            if (Model.isError)
+            {
+                <p style="color:red">
+                    <span>@Model.errorMessege</span><br />
+                </p>
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-10">
+                        <button type="submit" formaction="/Login/" class="btn btn-success">トップ画面に戻る</button>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    登録完了しました。
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-10">
+                        <button type="submit" formaction="/Home/Index/" class="btn btn-success">機能一覧へ</button>
+                    </div>
+                </div>
+            }
+
+        }
+    </form>
+</div>
