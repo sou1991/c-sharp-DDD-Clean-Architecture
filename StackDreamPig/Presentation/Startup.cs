@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Presentation.Controllers;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Application.Member.Query;
 
 namespace Presentation
 {
@@ -29,6 +30,7 @@ namespace Presentation
         {
             
             services.AddTransient<ICreateMemberCommand, CreateMemberCommand>();
+            services.AddTransient<ISearchMemberQuary, SearchMemberQuary>();
             services.AddTransient<IDataBaseService, DataBaseService>();
  
             services.AddControllersWithViews();
@@ -38,6 +40,12 @@ namespace Presentation
             {
                 options.UseNpgsql(Configuration.GetValue<string>("ConnString"));
                 //assembly => assembly.MigrationsAssembly(typeof(DataBaseService).Assembly.FullName));
+            });
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(20);
+                options.Cookie.HttpOnly = true;
             });
         }
 
@@ -60,12 +68,12 @@ namespace Presentation
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Login}/{action=Login}/{id?}");
+                    pattern: "{controller=Home}/{action=Login}/{id?}");
             });
         }
     }

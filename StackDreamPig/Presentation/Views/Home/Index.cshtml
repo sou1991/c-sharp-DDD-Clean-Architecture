@@ -1,4 +1,26 @@
-﻿<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+    <div class="container-fluid" style="padding-top: 100px;">
+        <h2>機能一覧</h2>
+        <div class="form-group">
+            <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-10" style="padding-bottom:10px;">
+                    <form class="form-horizontal" name="entry_form" action="/Book/Book" method="post">
+                        <button type="submit" class="btn btn-success">今日の帳簿をつける</button>
+                    </form>
+                </div>
+                <div class="col-sm-offset-4 col-sm-10" style="padding-bottom:10px;">
+                    <form class="form-horizontal" name="entry_form" action="/Book/BookList" method="post">
+                        <button type="submit" class="btn btn-success">帳簿一覧</button>
+                    </form>
+                </div>
+                <div class="col-sm-offset-4 col-sm-10" style="padding-bottom:10px;">
+                    <form class="form-horizontal" name="entry_form" action="/Member/MemberUpdate" method="post">
+                        <button type="submit" class="btn btn-success">会員情報変更</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
