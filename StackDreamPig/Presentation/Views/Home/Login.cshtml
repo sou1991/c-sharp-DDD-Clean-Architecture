@@ -1,27 +1,6 @@
 ﻿
 
     <div class="container-fluid" style="padding-top: 100px;">
-        <p style="color:red">
-            @{
-                if (!ViewData.ModelState.IsValid)
-                {
-                    foreach (var key in ViewData.ModelState.Keys)
-                    {
-                        foreach (var e in ViewData.ModelState[key].Errors)
-                        {
-                            <span>@e.ErrorMessage</span><br />
-
-                        }
-                    }
-
-                }
-                if (!string.IsNullOrEmpty(Model.errorMessege))
-                {
-                    <span>@Model.errorMessege</span><br />
-                }
-            }
-            </p>
-
             <form class="form-horizontal" name="login_form" action="/Home/Index" method="post">
                 <div class="form-group">
                     <label for="email" class="col-sm-2 control-label">ユーザー名</label>

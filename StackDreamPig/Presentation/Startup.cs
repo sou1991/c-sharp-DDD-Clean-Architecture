@@ -13,6 +13,7 @@ using Presentation.Controllers;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Application.Member.Query;
+using Application.Books.Commands;
 
 namespace Presentation
 {
@@ -32,7 +33,8 @@ namespace Presentation
             services.AddTransient<ICreateMemberCommand, CreateMemberCommand>();
             services.AddTransient<ISearchMemberQuary, SearchMemberQuary>();
             services.AddTransient<IDataBaseService, DataBaseService>();
- 
+            services.AddTransient<IBooksRegistCommand, BooksRegistCommand>();
+
             services.AddControllersWithViews();
 
 

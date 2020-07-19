@@ -1,9 +1,10 @@
 ﻿using Application.Member.Model;
 using AutoMoq;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using Presentation.Controllers;
+using stackDreamPig.Models.Book;
+using stackDreamPig.Models.Book.Query;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,10 +12,12 @@ using System.Text;
 namespace Tests.Presentation.Controllers
 {
     [TestFixture]
-    internal class HomeControllerTests
+    internal class BooksControllerTests
     {
-        private HomeController _homeController;
+
+        private BooksController _booksController;
         private AutoMoqer _mocker;
+        private BooksModel _booksModel;
         private LoginModel _loginModel;
         private int _m_no = 1;
 
@@ -22,23 +25,27 @@ namespace Tests.Presentation.Controllers
         public void SetUp()
         {
             _mocker = new AutoMoqer();
-            _homeController = _mocker.Create<HomeController>();
+            _booksController = _mocker.Create<BooksController>();
+            _booksModel = new BooksModel()
+            {
+                m_no = _m_no
+            };
+
             _loginModel = new LoginModel()
             {
                 m_no = _m_no
             };
         }
         [Test]
-        public void TestGetViewType()
+        public void TestGetViewTypeBooks()
         {
-            var result = _homeController.Index(_loginModel);
+            var result = _booksController.Books(_booksModel);
             Assert.That(result, Is.TypeOf<ViewResult>());
         }
-
         [Test]
-        public void TestGetViewTypeLogin()
+        public void TestGetViewTypeBooksRegisted()
         {
-            var result = _homeController.Login(_loginModel);
+            var result = _booksController.BooksRegisted(_booksModel);
             Assert.That(result, Is.TypeOf<ViewResult>());
         }
     }
