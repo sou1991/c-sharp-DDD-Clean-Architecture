@@ -7,6 +7,8 @@ namespace Application.Member.Query
 {
     public interface ISearchMemberQuary
     {
-        int? Execute(LoginModel loginModel);
+        LoginModel Execute(LoginModel loginModel);
+
+        int GetMembersBooks(int m_no);
     }
 }

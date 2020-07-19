@@ -13,6 +13,8 @@ namespace Infrastructure
 
         public virtual DbSet<MemberEntity> Member { get; set; }
 
+        public virtual DbSet<BooksEntity> Books { get; set; }
+
         public void Save()
         {
             this.SaveChanges();
@@ -39,6 +41,25 @@ namespace Infrastructure
                 .HasColumnName("fixedCost");
 
                 entity.OwnsOne(e => e.amountLimit, a => a.WithOwner());
+
+            });
+            modelBuilder.Entity<BooksEntity>(entity =>
+            {
+                entity.ToTable("books");
+
+                entity.Property(e => e.m_no)
+                .HasColumnName("m_no");
+
+                entity.Property(e => e.amountUsed)
+                .HasColumnName("amountUsed");
+
+                entity.Property(e => e.intime)
+                .HasColumnName("intime");
+
+                entity.Property(e => e.utime)
+                .HasColumnName("utime");
+
+                entity.OwnsOne(e => e.registDate, a => a.WithOwner());
 
             });
             base.OnModelCreating(modelBuilder);

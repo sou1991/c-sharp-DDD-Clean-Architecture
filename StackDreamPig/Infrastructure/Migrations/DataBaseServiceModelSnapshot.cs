@@ -19,6 +19,34 @@ namespace Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "3.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            modelBuilder.Entity("Entities.BooksEntity", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("amountUsed")
+                        .HasColumnName("amountUsed")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("intime")
+                        .HasColumnName("intime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("m_no")
+                        .HasColumnName("m_no")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("utime")
+                        .HasColumnName("utime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("id");
+
+                    b.ToTable("books");
+                });
+
             modelBuilder.Entity("Entities.MemberEntity", b =>
                 {
                     b.Property<int>("m_no")
@@ -54,6 +82,25 @@ namespace Infrastructure.Migrations
                     b.HasKey("m_no");
 
                     b.ToTable("member");
+                });
+
+            modelBuilder.Entity("Entities.BooksEntity", b =>
+                {
+                    b.OwnsOne("Valueobject.Books.RegistDateValueObject", "registDate", b1 =>
+                        {
+                            b1.Property<int>("BooksEntityid")
+                                .HasColumnType("integer");
+
+                            b1.Property<DateTime>("_registDate")
+                                .HasColumnType("timestamp without time zone");
+
+                            b1.HasKey("BooksEntityid");
+
+                            b1.ToTable("books");
+
+                            b1.WithOwner()
+                                .HasForeignKey("BooksEntityid");
+                        });
                 });
 
             modelBuilder.Entity("Entities.MemberEntity", b =>

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using stackDreamPig.Models.Book.Query;
 
 namespace Application.Member.Query
 {
@@ -16,7 +17,7 @@ namespace Application.Member.Query
             _dataBaseService = dataBaseService;
         }
 
-        public int? Execute(LoginModel loginModel)
+        public LoginModel Execute(LoginModel loginModel)
         {
 
             var member = _dataBaseService.Member
@@ -31,8 +32,21 @@ namespace Application.Member.Query
 
             var result = member == null ? null : member.m_no;
 
-            return result;
+            return member;
             
+        }
+
+        public int GetMembersBooks(int m_no)
+        {
+            var amountLimit = _dataBaseService.Member
+            .Where(p => p.m_no == m_no)
+            .Select(p => new BooksModel
+            {
+                amountLimit = p.amountLimit._amountLimit
+            })
+            .SingleOrDefault();
+
+            return amountLimit.amountLimit;
         }
     }
 }

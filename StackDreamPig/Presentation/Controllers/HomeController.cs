@@ -22,11 +22,11 @@ namespace Presentation.Controllers
         }
         public IActionResult Index(LoginModel loginModel)
         {
-            var loginSuccessM_no = _searchMemberQuary.Execute(loginModel);
-            if(loginSuccessM_no != null)
+            var member = _searchMemberQuary.Execute(loginModel);
+            if(member != null)
             {
                 //会員Noをセッション情報にセット
-                HttpContext.Session.SetString("m_no", loginSuccessM_no.ToString());
+                HttpContext.Session.SetString("m_no", member.m_no.ToString());
             }
             else
             {
@@ -36,10 +36,10 @@ namespace Presentation.Controllers
                 return Login(loginModel);
             }
             
-            return View();
+            return View(loginModel);
         }
 
-        public IActionResult Login(LoginModel loginModel)
+        public IActionResult Login(LoginModel loginModel, bool session = false)
         {
             return View("Login", loginModel);
         }
