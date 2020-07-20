@@ -1,63 +1,73 @@
 ﻿@{
     ViewData["Title"] = "Entry";
 }
+<script>
 
+     function ExecuteValidatetionAfterSubmit() {
+
+            var bookst_list = [
+              $('input[name="userName"]'),
+              $('input[name="password"]'),
+              $('input[name="monthlyIncome"]'),
+              $('input[name="savings"]'),
+              $('input[name="fixedCost"]')
+            ]
+            
+            var err_cnt = Validation(bookst_list, 0);
+           
+            if (err_cnt <= 0) {
+                document.entry_form.submit();
+            }
+     } 
+
+     function Validation(bookst_list, err_cnt) {
+            bookst_list.forEach(function (elem) {
+               if (elem.val() == "") {
+                 alert(elem.attr('id') + "は必須項目です。");
+                 err_cnt++;
+               }
+            });
+
+            return err_cnt;
+    }
+
+</script>
 <div class="container-fluid" style="padding-top: 100px;">
     <h2>Entry</h2>
-    <p style="color:red">
-        @{
-            if (!ViewData.ModelState.IsValid)
-            {
-                foreach (var key in ViewData.ModelState.Keys)
-                {
-                    foreach (var e in ViewData.ModelState[key].Errors)
-                    {
-                        <span>@e.ErrorMessage</span><br />
-
-                    }
-                }
-
-            }
-            if (Model.isError)
-            {
-                <span>@Model.errorMessege</span><br />
-            }
-        }
-    </p>
     <form class="form-horizontal" name="entry_form" action="/Member/EntryConfirm/" method="post">
         <div class="form-group">
             <label for="email" class="col-sm-2 control-label">userName</label>
             <div class="col-sm-3">
-                <input type="text" class="form-control" name="userName" placeholder="userName" value="@Model.userName">
+                <input type="text" class="form-control" id ="userName" name="userName" placeholder="userName" value="@Model.userName">
             </div>
         </div>
         <div class="form-group">
             <label for="Password" class="col-sm-2 control-label">Password</label>
             <div class="col-sm-3">
-                <input type="password" class="form-control" name="password" placeholder="Password" value="@Model.password">
+                <input type="password" class="form-control" id ="password" name="password" placeholder="Password" value="@Model.password">
             </div>
         </div>
         <div class="form-group">
             <label for="月収" class="col-sm-2 control-label">月収</label>
             <div class="col-sm-3">
-                <input type="text" class="form-control" name="monthlyIncome" placeholder="300000" value="@Model.monthlyIncome">
+                <input type="text" class="form-control" id ="月収" name="monthlyIncome" placeholder="300000" value="@Model.monthlyIncome">
             </div>
         </div>
         <div class="form-group">
             <label for="目標貯金額(月)" class="col-sm-2 control-label">目標貯金額(月)</label>
             <div class="col-sm-3">
-                <input type="text" class="form-control" name="savings" placeholder="50000" value="@Model.savings">
+                <input type="text" class="form-control" id="目標貯金額" name="savings" placeholder="50000" value="@Model.savings">
             </div>
         </div>
         <div class="form-group">
             <label for="固定費" class="col-sm-2 control-label">固定費</label>
             <div class="col-sm-3">
-                <input type="text" class="form-control" name="fixedCost" placeholder="50000" value="@Model.fixedCost">
+                <input type="text" class="form-control" id="固定費" name="fixedCost" placeholder="50000" value="@Model.fixedCost">
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-4 col-sm-10">
-                <button type="submit" class="btn btn-success" name="submitBtn" value="1">登録内容を確認する</button>
+                <button type="button" class="btn btn-success" onclick="ExecuteValidatetionAfterSubmit();">登録内容を確認する</button>
             </div>
         </div>
     </form>

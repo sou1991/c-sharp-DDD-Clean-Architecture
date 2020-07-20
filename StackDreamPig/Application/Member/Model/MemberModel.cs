@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Application.Member.Model
 {
-    public class MemberModel : ModelBase, IValidatableObject
+    public class MemberModel : ModelBase
     {
         public int m_no { get; set; }
 
@@ -37,30 +37,5 @@ namespace Application.Member.Model
         }
 
         public int dispAmountLimit { get; set; }
-
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            if (detectPressSubmitBtn)
-            {
-                if (string.IsNullOrEmpty(userName))
-                    yield return new ValidationResult("ユーザー名は必須入力です。");
-
-                if (string.IsNullOrEmpty(password))
-                    yield return new ValidationResult("passwordは必須入力です。");
-
-                if (monthlyIncome == null)
-                    yield return new ValidationResult("月収は必須入力です。");
-
-                if (savings == null)
-                    yield return new ValidationResult("目標貯金額(月)は必須入力です。");
-
-                if (fixedCost == null)
-                    yield return new ValidationResult("固定費は必須入力です。");
-
-                if (SdpCommon.castIntoInteger(monthlyIncome) < SdpCommon.castIntoInteger(savings) + SdpCommon.castIntoInteger(fixedCost))
-                    yield return new ValidationResult("目標貯金額と固定費合計が月収を上回ってます。");
-
-            }
-        }
     }
 }

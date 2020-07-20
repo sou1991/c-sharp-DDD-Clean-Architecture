@@ -1,22 +1,49 @@
 ﻿
+    <script>
 
+     function ExecuteValidatetionAfterSubmit() {
+
+            var bookst_list = [
+              $('input[name="userName"]'),
+              $('input[name="password"]')
+            ]
+
+            var err_cnt = Validation(bookst_list, 0);
+
+            if (err_cnt <= 0) {
+                document.login_form.submit();
+            }
+     }
+
+     function Validation(bookst_list, err_cnt) {
+            bookst_list.forEach(function (elem) {
+               if (elem.val() == "") {
+                 alert(elem.attr('id') + "は必須項目です。");
+                 err_cnt++;
+               }
+            });
+
+            return err_cnt;
+    }
+
+    </script>
     <div class="container-fluid" style="padding-top: 100px;">
             <form class="form-horizontal" name="login_form" action="/Home/Index" method="post">
                 <div class="form-group">
                     <label for="email" class="col-sm-2 control-label">ユーザー名</label>
                     <div class="col-sm-3">
-                        <input type="text" class="form-control" name="userName" placeholder="userName">
+                        <input type="text" class="form-control" id="ユーザー名" name="userName" placeholder="userName">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="Password" class="col-sm-2 control-label">パスワード</label>
                     <div class="col-sm-3">
-                        <input type="password" class="form-control" name="password" placeholder="Password">
+                        <input type="password" class="form-control" id ="パスワード" name="password" placeholder="Password">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-4 col-sm-10">
-                        <button type="submit" class="btn btn-success" name="submitBtn" value="1">Login</button>
+                        <button type="button" class="btn btn-success" onclick="ExecuteValidatetionAfterSubmit();">Login</button>
                     </div>
                 </div>
             </form>

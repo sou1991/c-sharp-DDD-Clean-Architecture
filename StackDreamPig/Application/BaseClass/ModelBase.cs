@@ -11,14 +11,5 @@ namespace stackDreamPig.SeedWork
 
         public bool isError { get; set; }
 
-        public int submitBtn { get; set; }
-
-        public bool detectPressSubmitBtn
-        {
-            get
-            {
-                return submitBtn == 1 ? true : false;
-            }
-        }
     }
 }
