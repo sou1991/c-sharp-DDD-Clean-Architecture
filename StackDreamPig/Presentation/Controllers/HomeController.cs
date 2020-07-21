@@ -8,6 +8,7 @@ using Application.Member.Query;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using stackDreamPig.SeedWork;
 //using Presentation.Models;
 
 namespace Presentation.Controllers
@@ -20,6 +21,7 @@ namespace Presentation.Controllers
         {
             _searchMemberQuary = searchMemberQuary;
         }
+
         public IActionResult Index(LoginModel loginModel)
         {
             var member = _searchMemberQuary.Execute(loginModel);
@@ -42,6 +44,25 @@ namespace Presentation.Controllers
         public IActionResult Login(LoginModel loginModel, bool session = false)
         {
             return View("Login", loginModel);
+        }
+
+        public IActionResult IndexOrLogin()
+        {
+            var model = new ModelBase();
+            try
+            {
+                var session_M_no = HttpContext.Session.GetString("m_no");
+                var view = session_M_no == null ? View("Login", model) : View("Index", model);
+
+                return view;
+
+            }
+            catch (Exception ex)
+            {
+                ErrorHandling.ErrorHandler(model, ex);
+
+                return View("_SessionErrorPage", model);
+            }
         }
 
     }
