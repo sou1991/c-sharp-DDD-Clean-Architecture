@@ -39,8 +39,7 @@ namespace Application.Books.Commands
             }
             else
             {
-                var books = _dataBaseService.Books
-                .Where(p => p.m_no == booksModel.m_no && p.registDate._registDate.ToString().Contains(DataTimeChangeToDataBaseFormat)).First();
+                var books = alredyRegistedBooks.First();
 
                 books.amountUsed = booksModel.amountUsed;
                 books.registDate = new RegistDateValueObject(booksModel.registDate);
