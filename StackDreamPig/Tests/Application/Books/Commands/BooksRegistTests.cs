@@ -1,4 +1,5 @@
 ﻿using Application.Books.Commands;
+using Common.Books;
 using Entities;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,7 @@ namespace Tests.Application.Books.Commands
         private IBooksRegistCommand _booksRegistCommand;
         private BooksModel _booksModel;
         private Mock<DbSet<BooksEntity>> _mockMyEntity;
+        private Mock<IDataBaseService> _mockContext;
 
         private readonly int _m_no = 1;
         private readonly int _amountUsed = 10000;
@@ -58,9 +60,10 @@ namespace Tests.Application.Books.Commands
             _mockMyEntity.As<IQueryable<Type>>().Setup(m => m.ElementType).Returns(booksEntity.ElementType);
             _mockMyEntity.As<IQueryable<BooksEntity>>().Setup(m => m.GetEnumerator()).Returns(booksEntity.GetEnumerator());
 
-            var mockContext = new Mock<IDataBaseService>();
-            mockContext.Setup(p => p.Books).Returns(_mockMyEntity.Object);
-            _booksRegistCommand = new BooksRegistCommand(mockContext.Object);
+            _mockContext = new Mock<IDataBaseService>();
+            _mockContext.Setup(p => p.Books).Returns(_mockMyEntity.Object);
+
+            _booksRegistCommand = new BooksRegistCommand(_mockContext.Object);
         }
 
         [Test]
@@ -72,13 +75,14 @@ namespace Tests.Application.Books.Commands
             _mockMyEntity
             .Verify(p => p.Add(It.IsAny<BooksEntity>()), Times.Once);
         }
+
         [Test]
-        public void TestShouldUpdateToBooksTheDatabase()
+        public void TestSuccessBooksRegist()
         {
             _booksRegistCommand.Execute(_booksModel);
 
-            _mockMyEntity
-            .Verify(p => p.Add(It.IsAny<BooksEntity>()), Times.Never);
+            _mockContext
+            .Verify(p => p.Save());
         }
     }
 }

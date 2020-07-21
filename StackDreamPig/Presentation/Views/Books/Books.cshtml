@@ -15,13 +15,13 @@
         function ExecuteValidatetionAfterSubmit() {
 
             var bookst_list = [
-              $('input[name="year"]').val(),
-              $('input[name="month"]').val(),
-              $('input[name="day"]').val(),
-              $('input[name="amountUsed"]').val(),
+              $('input[name="year"]'),
+              $('input[name="month"]'),
+              $('input[name="day"]'),
+              $('input[name="amountUsed"]')
             ]
             
-            var err_cnt = GettingValueAfterValidate(bookst_list, 0);
+            var err_cnt = Validation(bookst_list, 0);
            
 
             if (err_cnt <= 0) {
@@ -29,14 +29,14 @@
             }
         } 
 
-        function GettingValueAfterValidate(bookst_list, err_cnt) {
+        function Validation(bookst_list, err_cnt) {
             bookst_list.forEach(function (elem) {
-            if (elem == "") {
-               alert("空白の項目があります。");
+            if (elem.val() == "") {
+               alert(elem.attr('id') + "は必須項目です。");
                 err_cnt++;
             }
-            if (isNaN(elem)) {
-               alert("数値以外が入力されています");
+            else if (isNaN(elem.val())) {
+               alert(elem.attr('id') + "は数字で入力してください。");
                err_cnt++;
                 } 
             });
@@ -53,13 +53,13 @@
                 <div class="col-sm-offset-3 col-sm-10" style="padding-bottom:10px;">
                     <form class="form-horizontal" name="entry_form" action="/Books/BooksRegisted" method="post">
                         <div>
-                            <input type="text" class="form-control" name="year" value="" style="width:70px; display:inline">年
-                            <input type="text" class="form-control" name="month" value="" style="width:50px; display:inline">月
-                            <input type="text" class="form-control" name="day" value="" style="width:50px; display:inline;">日
+                            <input type="text" class="form-control" id ="年" name="year" value="" style="width:70px; display:inline">年
+                            <input type="text" class="form-control" id ="月" name="month" value="" style="width:50px; display:inline">月
+                            <input type="text" class="form-control" id ="日" name="day" value="" style="width:50px; display:inline;">日
                         </div>
                         <div class="col-sm-4" style="padding-top:30px;">
                             <b>あなたの1日の目安金額：@Model.amountLimit 円</b>                            
-                            <input type="text" class="form-control" name="amountUsed" placeholder="当日の支出額"><br />
+                            <input type="text" class="form-control" id ="支出額" name="amountUsed" placeholder="当日の支出額"><br />
                             <button type="button" class="btn btn-success" onclick="ExecuteValidatetionAfterSubmit();" name="submitBtn" value="1" style=display:inline>帳簿をつける</button>
                         </div>
                         <input type="hidden" name="amountLimit" value="@Model.amountLimit">

@@ -6,13 +6,13 @@ using System.Collections.Generic;
 using System.Text;
 using Valueobject.Books;
 using System.Linq;
+using Common.Books;
 
 namespace Application.Books.Commands
 {
     public class BooksRegistCommand : IBooksRegistCommand
     {
         private IDataBaseService _dataBaseService;
-        private readonly int deleteSecondIndexNumber = 10;
 
         public BooksRegistCommand(IDataBaseService dataBaseService)
         {
@@ -20,12 +20,12 @@ namespace Application.Books.Commands
         }
         public void Execute(BooksModel booksModel)
         {
-            var DataTimeChangeToDataBaseFormat = booksModel.registDate.ToString().Replace("/", "-").Remove(deleteSecondIndexNumber);
+            var DataTimeChangeToDataBaseFormat = booksModel.registDate.ToString().Replace("/", "-").Remove((int)EnumBooks.TIME_AREA_INDEX_NUMBER);
 
             var alredyRegistedBooks = _dataBaseService.Books
             .Where(p => p.m_no == booksModel.m_no && p.registDate._registDate.ToString().Contains(DataTimeChangeToDataBaseFormat));
 
-            if(alredyRegistedBooks.Count() == 0)
+            if(alredyRegistedBooks.Count() == (int)EnumBooks.NON_BOOKS)
             {
                 var booksEntity = new BooksEntity()
                 {
@@ -39,12 +39,11 @@ namespace Application.Books.Commands
             }
             else
             {
-                var hasBooks = _dataBaseService.Books
-                .Where(p => p.m_no == booksModel.m_no && p.registDate._registDate.ToString().Contains(DataTimeChangeToDataBaseFormat)).First();
+                var books = alredyRegistedBooks.First();
 
-                hasBooks.amountUsed = booksModel.amountUsed;
-                hasBooks.registDate = new RegistDateValueObject(booksModel.registDate);
-                hasBooks.utime = DateTime.Now;
+                books.amountUsed = booksModel.amountUsed;
+                books.registDate = new RegistDateValueObject(booksModel.registDate);
+                books.utime = DateTime.Now;
             }
 
             _dataBaseService.Save();
