@@ -4,6 +4,7 @@ using System.Linq;
 using Entities;
 using Valueobject.Member;
 using System;
+using Common.Member;
 
 namespace Application.Member.Commands
 {
@@ -50,9 +51,9 @@ namespace Application.Member.Commands
 
             var memberDataInTheDataBaseCnt = member.Count();
 
-            if (memberDataInTheDataBaseCnt == 0) return false;
+            if (memberDataInTheDataBaseCnt == (int) EnumMember.NON_MEMBER) return false;
             
-            if (member.Single().m_no != 0) return true; else return false;
+            if (member.Single().m_no != (int)EnumMember.NON_MEMBER) return true; else return false;
         }
 
     }
