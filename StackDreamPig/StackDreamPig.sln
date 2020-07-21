@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entiti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Valueobject", "Valueobject\Valueobject.csproj", "{B9006EF5-B6B1-4678-B4E1-F1035FFF9612}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpdCommon", "SpdCommon\SpdCommon.csproj", "{B9006EF5-B6B1-4678-B4E1-F1035FFF9612}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
