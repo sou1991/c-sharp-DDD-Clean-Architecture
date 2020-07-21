@@ -45,14 +45,14 @@ namespace Application.Member.Commands
 
         public bool HasRegistMember(MemberModel memberModel)
         {
-            var hasMember = _dataBaseService.Member
+            var member = _dataBaseService.Member
             .Where(p => p.userName == memberModel.userName && p.password == memberModel.password);
 
-            var memberDataInTheDataBaseCnt = hasMember.Count();
+            var memberDataInTheDataBaseCnt = member.Count();
 
             if (memberDataInTheDataBaseCnt == 0) return false;
             
-            if (hasMember.Single().m_no != 0) return true; else return false;
+            if (member.Single().m_no != 0) return true; else return false;
         }
 
     }

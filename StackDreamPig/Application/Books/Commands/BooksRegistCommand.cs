@@ -39,12 +39,12 @@ namespace Application.Books.Commands
             }
             else
             {
-                var hasBooks = _dataBaseService.Books
+                var books = _dataBaseService.Books
                 .Where(p => p.m_no == booksModel.m_no && p.registDate._registDate.ToString().Contains(DataTimeChangeToDataBaseFormat)).First();
 
-                hasBooks.amountUsed = booksModel.amountUsed;
-                hasBooks.registDate = new RegistDateValueObject(booksModel.registDate);
-                hasBooks.utime = DateTime.Now;
+                books.amountUsed = booksModel.amountUsed;
+                books.registDate = new RegistDateValueObject(booksModel.registDate);
+                books.utime = DateTime.Now;
             }
 
             _dataBaseService.Save();
