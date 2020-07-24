@@ -48,5 +48,12 @@ namespace Tests.Presentation.Controllers
             var result = _booksController.BooksRegisted(_booksModel);
             Assert.That(result, Is.TypeOf<ViewResult>());
         }
+
+        [Test]
+        public void TestGetViewTypeBooksList()
+        {
+            var result = _booksController.BooksList(_booksModel);
+            Assert.That(result, Is.TypeOf<ViewResult>());
+        }
     }
 }

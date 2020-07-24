@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Books.Commands;
+using Application.Books.Query;
 using Application.Member.Model;
 using Application.Member.Query;
 using Microsoft.AspNetCore.Http;
@@ -16,16 +17,19 @@ namespace Presentation.Controllers
     {
         private ISearchMemberQuary _searchMemberQuary;
         private IBooksRegistCommand _booksRegistCommand;
+        private ISearchBooksQuery _searchBooksQuery;
 
-        public BooksController(ISearchMemberQuary searchMemberQuary, IBooksRegistCommand booksRegistCommand)
+        public BooksController(ISearchMemberQuary searchMemberQuary, IBooksRegistCommand booksRegistCommand, ISearchBooksQuery searchBooksQuery)
         {
             _searchMemberQuary = searchMemberQuary;
             _booksRegistCommand = booksRegistCommand;
+            _searchBooksQuery = searchBooksQuery;
         }
+
         public IActionResult Books(BooksModel booksModel)
         {
             try
-            { 
+            {
                 var session_m_no = int.Parse(HttpContext.Session.GetString("m_no"));
                 booksModel.amountLimit = _searchMemberQuary.GetMembersBooks(session_m_no);
                 return View(booksModel);
@@ -33,8 +37,8 @@ namespace Presentation.Controllers
             catch (Exception ex)
             {
                 ErrorHandling.ErrorHandler(booksModel, ex);
-                
-                return View ("_SessionErrorPage", booksModel);
+
+                return View("_SessionErrorPage", booksModel);
             }
 
         }
@@ -43,7 +47,7 @@ namespace Presentation.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View("Books",booksModel);
+                return View("Books", booksModel);
             }
 
             try
@@ -58,7 +62,27 @@ namespace Presentation.Controllers
 
                 return View("_SessionErrorPage", booksModel);
             }
-           
+
+        }
+        public IActionResult BooksList(BooksModel booksModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(booksModel);
+            }
+
+            try
+            {
+                booksModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
+                booksModel.booksList = _searchBooksQuery.Execute(booksModel);
+                return View(booksModel);
+            }
+            catch (Exception ex)
+            {
+                ErrorHandling.ErrorHandler(booksModel, ex);
+
+                return View("_SessionErrorPage", booksModel);
+            }
         }
     }
 }

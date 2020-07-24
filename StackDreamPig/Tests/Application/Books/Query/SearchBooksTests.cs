@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Valueobject.Books;
 using Valueobject.Member;
 
 namespace Tests.Application.Books
@@ -19,41 +20,60 @@ namespace Tests.Application.Books
     [TestFixture]
     internal class SearchBooksTests
     {
-        private ISearchMemberQuary _searchMemberQuary;
+        private ISearchBooksQuery _searchBooksQuery;
+        private BooksModel _booksModel;
         private readonly int _m_no = 1;
-        private readonly int _amountLimit = 10000;
-    
+        private readonly int _amountUsed = 10000;
+        private readonly string _year = "2020";
+        private readonly string _month = "7";
+
 
         [SetUp]
         public void SetUp()
         {
-            var memberEntity = new List<MemberEntity>()
+            var registdate = _year + "-" + _month;
+
+            var booksEntity = new List<BooksEntity>()
             {
-                 new MemberEntity()
+                 new BooksEntity()
                 {
                     m_no = _m_no,
-                    amountLimit = new AmountLimitValueObject(_amountLimit)
+                    amountUsed = _amountUsed,
+                    registDate = new RegistDateValueObject(DateTime.Parse(registdate))
                 }
             }.AsQueryable();
 
-            var mockMyEntity = new Mock<DbSet<MemberEntity>>();
+            _booksModel = new BooksModel()
+            {
+                amountUsed = _amountUsed,
+                m_no = _m_no,
+                year = _year,
+                month = _month
+            };
+
+            var mockMyEntity = new Mock<DbSet<BooksEntity>>();
             // DbSetとテスト用データを紐付け
-            mockMyEntity.As<IQueryable<Type>>().Setup(m => m.Provider).Returns(memberEntity.Provider);
-            mockMyEntity.As<IQueryable<Type>>().Setup(m => m.Expression).Returns(memberEntity.Expression);
-            mockMyEntity.As<IQueryable<Type>>().Setup(m => m.ElementType).Returns(memberEntity.ElementType);
-            mockMyEntity.As<IQueryable<MemberEntity>>().Setup(m => m.GetEnumerator()).Returns(memberEntity.GetEnumerator());
+            mockMyEntity.As<IQueryable<Type>>().Setup(m => m.Provider).Returns(booksEntity.Provider);
+            mockMyEntity.As<IQueryable<Type>>().Setup(m => m.Expression).Returns(booksEntity.Expression);
+            mockMyEntity.As<IQueryable<Type>>().Setup(m => m.ElementType).Returns(booksEntity.ElementType);
+            mockMyEntity.As<IQueryable<BooksEntity>>().Setup(m => m.GetEnumerator()).Returns(booksEntity.GetEnumerator());
 
             var mockContext = new Mock<IDataBaseService>();
-            mockContext.Setup(m => m.Member).Returns(mockMyEntity.Object);
+            mockContext.Setup(m => m.Books).Returns(mockMyEntity.Object);
 
-            _searchMemberQuary = new SearchMemberQuary(mockContext.Object);
+            _searchBooksQuery = new SearchBooksQuery(mockContext.Object);
         }
 
         [Test]
-        public void TestShouldGetAmountLimitValue()
+        public void TestShouldGetBooksList()
         {
-            var result = _searchMemberQuary.GetMembersBooks(_m_no);
-            Assert.AreNotEqual(result, _amountLimit);
+            var results = _searchBooksQuery.Execute(_booksModel);
+
+            var result = results.First();
+            var registedDate = DateTime.Parse(_year + "/" + _month);
+
+            Assert.That(result.amountUsed, Is.EqualTo(_amountUsed));
+            Assert.That(result.DispRegistDate, Is.EqualTo(registedDate.Date));
         }
     }
 }
