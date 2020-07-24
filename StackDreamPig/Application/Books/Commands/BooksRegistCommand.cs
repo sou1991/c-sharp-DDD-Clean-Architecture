@@ -20,10 +20,10 @@ namespace Application.Books.Commands
         }
         public void Execute(BooksModel booksModel)
         {
-            var DataTimeChangeToDataBaseFormat = booksModel.registDate.ToString().Replace("/", "-").Remove((int)EnumBooks.TIME_AREA_INDEX_NUMBER);
+            var DataTimeChangeToDataBaseFormat = booksModel.registDate;
 
             var alredyRegistedBooks = _dataBaseService.Books
-            .Where(p => p.m_no == booksModel.m_no && p.registDate._registDate.ToString().Contains(DataTimeChangeToDataBaseFormat));
+            .Where(p => p.m_no == booksModel.m_no && p.registDate._registDate == DataTimeChangeToDataBaseFormat);
 
             if(alredyRegistedBooks.Count() == (int)EnumBooks.NON_BOOKS)
             {
