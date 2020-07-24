@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewData["Title"] = "BooKList";
+}
+<script>
+
+        $(document).ready(function () {
+            const form = document.entry_form;
+            const today = new Date();
+            const YEAR = $('input[name="year"]').val();
+            const MONTH = $('input[name="month"]').val();
+            if (YEAR == "" || MONTH == "" ) {
+                 form.year.value = today.getFullYear();
+                 form.month.value = today.getMonth() + 1;
+            }
+
+        });
+
+        function ExecuteValidatetionAfterSubmit() {
+
+            var bookst_list = [
+              $('input[name="year"]'),
+              $('input[name="month"]'),
+            ]
+
+            var err_cnt = Validation(bookst_list, 0);
+
+
+            if (err_cnt <= 0) {
+                document.entry_form.submit();
+            }
+        }
+
+        function Validation(bookst_list, err_cnt) {
+            bookst_list.forEach(function (elem) {
+            if (elem.val() == "") {
+               alert(elem.attr('id') + "は必須項目です。");
+               err_cnt++;
+            }
+            else if (isNaN(elem.val())) {
+               alert(elem.attr('id') + "は半角数字で入力してください。");
+               err_cnt++;
+                }
+            });
+
+            return err_cnt;
+        }
+
+</script>
+<div class="container-fluid" style="padding-top: 100px;">
+    <h2>帳簿一覧</h2>
+    <form class="form-horizontal" name="entry_form" action="/Books/BooksList" method="post">
+        <div style="display:inline">
+            <input type="text" name="year" id ="年" value="@Model.year" style="width:60px;">年
+            <input type="text" name="month" id ="月" value="@Model.month" style="width:30px;">月
+            <button type="button" class="btn btn-success" onclick="ExecuteValidatetionAfterSubmit();">検索</button>
+        </div>
+        <h3></h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>日付</th>
+                <th>支出額</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var book in Model.booksList)
+                {
+                    <tr>
+                        <td>@book.DispRegistDate.Year/@book.DispRegistDate.Month/@book.DispRegistDate.Day</td>
+                        <td>@string.Format("{0:c}", @book.amountUsed)</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</form>
+</div>

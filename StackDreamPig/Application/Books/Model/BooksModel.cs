@@ -25,14 +25,14 @@ namespace stackDreamPig.Models.Book.Query
         [Range(1, 31, ErrorMessage = "日付は1～31日の幅でお願いします")]
         [RegularExpression(@"[0-9]+", ErrorMessage = "日付は数字のみ入力できます")]
         public string day { get; set; }
-        public Dictionary<string,object> bookList { get; set; }
+        public List<BooksModel> booksList { get; set; }
 
 
         public DateTime registDate
         {
             get
             {
-                if (!String.IsNullOrEmpty(year) || !String.IsNullOrEmpty(month) || !String.IsNullOrEmpty(day))
+                if (!String.IsNullOrEmpty(day))
                 {
                     var registdate = year + "-" + month + "-" + day;
                     try
@@ -50,22 +50,28 @@ namespace stackDreamPig.Models.Book.Query
 
         }
 
-        //public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        //{
-        //    if (detectPressSubmitBtn)
-        //    {
-        //        if (string.IsNullOrEmpty(year))
-        //            yield return new ValidationResult("年は必須入力です。");
+        public DateTime registrationDateSearch
+        {
+            get
+            {
+                if (!String.IsNullOrEmpty(year) || !String.IsNullOrEmpty(month))
+                {
+                    var registdate = year + "/" + month;
+                    try
+                    {
+                        return DateTime.Parse(registdate);
+                    }
+                    catch
+                    {
+                        isError = true;
+                        errorMessege = "日付のフォーマットが正しくありません。";
+                    }
+                }
+                return DateTime.Now;
+            }
 
-        //        if (string.IsNullOrEmpty(month))
-        //            yield return new ValidationResult("月は必須入力です。");
+        }
 
-        //        if (string.IsNullOrEmpty(month))
-        //            yield return new ValidationResult("日は必須入力です。");
-
-        //        if (string.IsNullOrEmpty(amountUsed.ToString()))
-        //            yield return new ValidationResult("使用額は必須入力です。");
-        //    }
-        //}
+        public DateTime DispRegistDate { get; set; }
     }
 }
