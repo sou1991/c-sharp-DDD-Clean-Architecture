@@ -16,7 +16,7 @@ namespace Tests.Application.Member.Query
     [TestFixture]
     internal class SearchMemberQuaryTests
     {
-        private LoginModel _loginModel;
+        private MemberModel _memberModel;
 
         private SearchMemberQuary _searchMemberQuary;
 
@@ -49,7 +49,7 @@ namespace Tests.Application.Member.Query
             mockMyEntity.As<IQueryable<Type>>().Setup(m => m.ElementType).Returns(memberEntity.ElementType);
             mockMyEntity.As<IQueryable<MemberEntity>>().Setup(m => m.GetEnumerator()).Returns(memberEntity.GetEnumerator());
 
-            _loginModel = new LoginModel
+            _memberModel = new MemberModel
             {
                 userName = this.userName,
                 password = this.password,
@@ -65,14 +65,14 @@ namespace Tests.Application.Member.Query
        [Test]
        public void TestShouldLoginSuccess()
        {
-            var result = _searchMemberQuary.Execute(_loginModel);
+            var result = _searchMemberQuary.Execute(_memberModel);
             Assert.That(result.m_no, Is.EqualTo(1));
        }
 
        [Test]
        public void TestShouldLoginFailed()
        {
-           var result = _searchMemberQuary.Execute(_loginModel);
+           var result = _searchMemberQuary.Execute(_memberModel);
            Assert.AreNotEqual(result.m_no, 2);
        }
 

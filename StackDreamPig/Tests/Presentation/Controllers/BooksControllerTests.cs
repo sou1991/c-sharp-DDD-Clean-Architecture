@@ -18,7 +18,6 @@ namespace Tests.Presentation.Controllers
         private BooksController _booksController;
         private AutoMoqer _mocker;
         private BooksModel _booksModel;
-        private LoginModel _loginModel;
         private int _m_no = 1;
 
         [SetUp]
@@ -27,11 +26,6 @@ namespace Tests.Presentation.Controllers
             _mocker = new AutoMoqer();
             _booksController = _mocker.Create<BooksController>();
             _booksModel = new BooksModel()
-            {
-                m_no = _m_no
-            };
-
-            _loginModel = new LoginModel()
             {
                 m_no = _m_no
             };
