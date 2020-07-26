@@ -16,15 +16,19 @@ namespace Tests.Application.Member.Query
     [TestFixture]
     internal class SearchMemberQuaryTests
     {
-        private LoginModel _loginModel;
+        private MemberModel _memberModel;
 
         private SearchMemberQuary _searchMemberQuary;
 
         private readonly int _m_no = 1;
-        private readonly string userName = "testuser";
-        private readonly string password = "test";
+        private readonly string _userName = "testuser";
+        private readonly string _password = "test";
+        private readonly string _monthlyIncome = "300000"; 
+        private readonly string _savings = "50000";
+        private readonly string _fixedCost = "100000";
 
-        private readonly int _amountLimit = 10000;
+
+        private readonly int _amountLimit = 4838;
 
 
         [SetUp]
@@ -35,8 +39,11 @@ namespace Tests.Application.Member.Query
                 new MemberEntity
                 {
                     m_no = _m_no,
-                    userName = userName,
-                    password = password,
+                    userName = _userName,
+                    password = _password,
+                    monthlyIncome = _monthlyIncome,
+                    savings = _savings,
+                    fixedCost = _fixedCost,
                     amountLimit = new AmountLimitValueObject(_amountLimit)
 
                 }
@@ -49,10 +56,11 @@ namespace Tests.Application.Member.Query
             mockMyEntity.As<IQueryable<Type>>().Setup(m => m.ElementType).Returns(memberEntity.ElementType);
             mockMyEntity.As<IQueryable<MemberEntity>>().Setup(m => m.GetEnumerator()).Returns(memberEntity.GetEnumerator());
 
-            _loginModel = new LoginModel
+            _memberModel = new MemberModel
             {
-                userName = this.userName,
-                password = this.password,
+                m_no = _m_no,
+                userName = _userName,
+                password = _password,
 
             };
 
@@ -65,23 +73,33 @@ namespace Tests.Application.Member.Query
        [Test]
        public void TestShouldLoginSuccess()
        {
-            var result = _searchMemberQuary.Execute(_loginModel);
-            Assert.That(result.m_no, Is.EqualTo(1));
+            var result = _searchMemberQuary.Execute(_memberModel);
+            Assert.That(result.m_no, Is.EqualTo(_m_no));
        }
 
        [Test]
        public void TestShouldLoginFailed()
        {
-           var result = _searchMemberQuary.Execute(_loginModel);
+           var result = _searchMemberQuary.Execute(_memberModel);
            Assert.AreNotEqual(result.m_no, 2);
        }
-
+        [Test]
+        public void CheckLoginTests()
+        {
+            var result = _searchMemberQuary.CheckLogin(_memberModel);
+            Assert.That(result.m_no, Is.EqualTo(_m_no));
+        }
 
         [Test]
-        public void TestShouldGetAmountLimitValue()
+        public void GetOneMemberTests()
         {
-            var result = _searchMemberQuary.GetMembersBooks(_m_no);
-            Assert.AreNotEqual(result, _amountLimit);
+            var result = _searchMemberQuary.GetOneMember(_memberModel);
+            Assert.That(result.m_no, Is.EqualTo(_m_no));
+            Assert.That(result.userName, Is.EqualTo(_userName));
+            Assert.That(result.monthlyIncome, Is.EqualTo(_monthlyIncome));
+            Assert.That(result.savings, Is.EqualTo(_savings));
+            Assert.That(result.fixedCost, Is.EqualTo(_fixedCost));
+            Assert.That(result.amountLimit, Is.EqualTo(_amountLimit));
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Member.Model;
 using Application.Member.Query;
+using Common.Member;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -22,28 +23,28 @@ namespace Presentation.Controllers
             _searchMemberQuary = searchMemberQuary;
         }
 
-        public IActionResult Index(LoginModel loginModel)
+        public IActionResult Index(MemberModel memberModel)
         {
-            var member = _searchMemberQuary.Execute(loginModel);
-            if(member != null)
+            var member = _searchMemberQuary.Execute(memberModel);
+            if(member.m_no != (int)EnumMember.NON_MEMBER)
             {
                 //会員Noをセッション情報にセット
                 HttpContext.Session.SetString("m_no", member.m_no.ToString());
             }
             else
             {
-                loginModel.isError = true;
-                loginModel.errorMessege = "ログイン失敗しました。再度入力してください。";
+                memberModel.isError = true;
+                memberModel.errorMessege = "ログイン失敗しました。再度入力してください。";
 
-                return Login(loginModel);
+                return Login(memberModel);
             }
             
-            return View(loginModel);
+            return View(memberModel);
         }
 
-        public IActionResult Login(LoginModel loginModel, bool session = false)
+        public IActionResult Login(MemberModel memberModel)
         {
-            return View("Login", loginModel);
+            return View("Login", memberModel);
         }
 
         public IActionResult IndexOrLogin()

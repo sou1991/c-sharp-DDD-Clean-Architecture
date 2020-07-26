@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using stackDreamPig.Models.Book.Query;
+using Common.Member;
 
 namespace Application.Member.Query
 {
@@ -17,36 +18,48 @@ namespace Application.Member.Query
             _dataBaseService = dataBaseService;
         }
 
-        public LoginModel Execute(LoginModel loginModel)
+        public MemberModel Execute(MemberModel memberModel)
         {
-
-            var member = _dataBaseService.Member
-            .Where(p => p.password == loginModel.password && p.userName == loginModel.userName)
-            .Select(p => new LoginModel
+            
+            if (memberModel.m_no == (int)EnumMember.NON_MEMBER)
             {
-                m_no = p.m_no,
-                password = p.password,
-                userName = p.userName
-            })
-            .SingleOrDefault();
-
-            var result = member == null ? null : member.m_no;
-
-            return member;
+                return CheckLogin(memberModel);
+            }
+            else
+            {
+                return GetOneMember(memberModel);
+            }
             
         }
-
-        public int GetMembersBooks(int m_no)
+        public MemberModel CheckLogin(MemberModel memberModel)
         {
-            var amountLimit = _dataBaseService.Member
-            .Where(p => p.m_no == m_no)
-            .Select(p => new BooksModel
+            var results = _dataBaseService.Member.Where(p => p.password == memberModel.password && p.userName == memberModel.userName)
+            .Select(p => new MemberModel
             {
-                amountLimit = p.amountLimit._amountLimit
-            })
-            .SingleOrDefault();
+               m_no = p.m_no,
+               password = p.password,
+               userName = p.userName
+            });
+            var result = results.SingleOrDefault();
+            return result;
 
-            return amountLimit.amountLimit;
+        }
+
+        public MemberModel GetOneMember(MemberModel memberModel)
+        {
+            var results = _dataBaseService.Member.Where(p => p.m_no == memberModel.m_no)
+            .Select(p => new MemberModel
+            {
+                m_no = p.m_no,
+                userName = p.userName,
+                monthlyIncome = p.monthlyIncome,
+                savings = p.savings,
+                fixedCost = p.fixedCost,
+                dispAmountLimit = p.amountLimit._amountLimit
+            });
+            
+            var result = results.SingleOrDefault();
+            return result;
         }
     }
 }

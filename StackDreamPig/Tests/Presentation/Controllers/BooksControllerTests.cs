@@ -18,7 +18,7 @@ namespace Tests.Presentation.Controllers
         private BooksController _booksController;
         private AutoMoqer _mocker;
         private BooksModel _booksModel;
-        private LoginModel _loginModel;
+        private MemberModel _memberModel;
         private int _m_no = 1;
 
         [SetUp]
@@ -31,7 +31,7 @@ namespace Tests.Presentation.Controllers
                 m_no = _m_no
             };
 
-            _loginModel = new LoginModel()
+            _memberModel = new MemberModel()
             {
                 m_no = _m_no
             };
@@ -39,7 +39,7 @@ namespace Tests.Presentation.Controllers
         [Test]
         public void TestGetViewTypeBooks()
         {
-            var result = _booksController.Books(_booksModel);
+            var result = _booksController.Books(_memberModel);
             Assert.That(result, Is.TypeOf<ViewResult>());
         }
         [Test]
