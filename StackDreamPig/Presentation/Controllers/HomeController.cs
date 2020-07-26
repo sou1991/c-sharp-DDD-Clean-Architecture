@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Member.Model;
 using Application.Member.Query;
+using Common.Member;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -25,7 +26,7 @@ namespace Presentation.Controllers
         public IActionResult Index(MemberModel memberModel)
         {
             var member = _searchMemberQuary.Execute(memberModel);
-            if(member != null)
+            if(member.m_no != (int)EnumMember.NON_MEMBER)
             {
                 //会員Noをセッション情報にセット
                 HttpContext.Session.SetString("m_no", member.m_no.ToString());

@@ -20,31 +20,46 @@ namespace Application.Member.Query
 
         public MemberModel Execute(MemberModel memberModel)
         {
-            var member = _dataBaseService.Member
-            .Where(p => p.password == memberModel.password && p.userName == memberModel.userName)
+            
+            if (memberModel.m_no == (int)EnumMember.NON_MEMBER)
+            {
+                return CheckLogin(memberModel);
+            }
+            else
+            {
+                return GetOneMember(memberModel);
+            }
+            
+        }
+        public MemberModel CheckLogin(MemberModel memberModel)
+        {
+            var results = _dataBaseService.Member.Where(p => p.password == memberModel.password && p.userName == memberModel.userName)
+            .Select(p => new MemberModel
+            {
+               m_no = p.m_no,
+               password = p.password,
+               userName = p.userName
+            });
+            var result = results.SingleOrDefault();
+            return result;
+
+        }
+
+        public MemberModel GetOneMember(MemberModel memberModel)
+        {
+            var results = _dataBaseService.Member.Where(p => p.m_no == memberModel.m_no)
             .Select(p => new MemberModel
             {
                 m_no = p.m_no,
-                password = p.password,
-                userName = p.userName
-            })
-            .SingleOrDefault();
-
-            return member;
+                userName = p.userName,
+                monthlyIncome = p.monthlyIncome,
+                savings = p.savings,
+                fixedCost = p.fixedCost,
+                dispAmountLimit = p.amountLimit._amountLimit
+            });
             
-        }
-
-        public int GetMembersBooks(int m_no)
-        {
-            var amountLimit = _dataBaseService.Member
-            .Where(p => p.m_no == m_no)
-            .Select(p => new BooksModel
-            {
-                amountLimit = p.amountLimit._amountLimit
-            })
-            .SingleOrDefault();
-
-            return amountLimit.amountLimit;
+            var result = results.SingleOrDefault();
+            return result;
         }
     }
 }

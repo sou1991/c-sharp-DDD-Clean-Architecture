@@ -26,19 +26,19 @@ namespace Presentation.Controllers
             _searchBooksQuery = searchBooksQuery;
         }
 
-        public IActionResult Books(BooksModel booksModel)
+        public IActionResult Books(MemberModel memberModel)
         {
             try
             {
-                var session_m_no = int.Parse(HttpContext.Session.GetString("m_no"));
-                booksModel.amountLimit = _searchMemberQuary.GetMembersBooks(session_m_no);
-                return View(booksModel);
+                memberModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
+                var member = _searchMemberQuary.Execute(memberModel);
+                return View(member);
             }
             catch (Exception ex)
             {
-                ErrorHandling.ErrorHandler(booksModel, ex);
+                ErrorHandling.ErrorHandler(memberModel, ex);
 
-                return View("_SessionErrorPage", booksModel);
+                return View("_SessionErrorPage", memberModel);
             }
 
         }
