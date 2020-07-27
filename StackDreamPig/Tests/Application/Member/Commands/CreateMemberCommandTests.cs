@@ -25,7 +25,7 @@ namespace Tests.Application.Member
         private IQueryable<MemberEntity> _memberEntity;
         private Mock<DbSet<MemberEntity>> _mockMyEntity;
 
-        private readonly int m_no = 0;
+        private readonly int m_no = 1;
         private readonly string userName = "testuser";
         private readonly string password = "test";
         private readonly string monthlyIncome = "300000";
@@ -42,7 +42,7 @@ namespace Tests.Application.Member
                 new MemberEntity
                 {
                     m_no = this.m_no,
-                    userName = this.userName,
+                    userName = userName,
                     password = this.password,
                     monthlyIncome = this.monthlyIncome,
                     savings = this.savings,
@@ -63,8 +63,8 @@ namespace Tests.Application.Member
             _memberModel = new MemberModel
             {
                 m_no = this.m_no,
-                userName = this.userName,
-                password = this.password,
+                userName = "太郎",
+                password = "山田",
                 monthlyIncome = this.monthlyIncome,
                 savings = this.savings,
                 fixedCost = this.fixedCost
@@ -75,7 +75,12 @@ namespace Tests.Application.Member
 
             _command = new CreateMemberCommand(mockContext.Object);
         }
-
+        /***
+         * 
+         * INSERTの成功テストはm_no = 0にする
+         * UPDATEの成功テストはm_no = 1にする
+         * 
+         ***/
         [Test]
         public void TestShouldAddToMemberTheDatabase()
         {
@@ -91,6 +96,16 @@ namespace Tests.Application.Member
         {
             var result = _command.HasRegistMember(_memberModel);
             Assert.That(result, Is.TypeOf<bool>()); ;
+
+        }
+
+        [Test]
+        public void TestShouldMemberUpdate()
+        {
+            _command.Execute(_memberModel);
+
+            _mockMyEntity
+            .Verify(p => p.Add(It.IsAny<MemberEntity>()), Times.Never);
 
         }
 

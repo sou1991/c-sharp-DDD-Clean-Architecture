@@ -26,7 +26,7 @@ namespace Presentation.Controllers
         public IActionResult Index(MemberModel memberModel)
         {
             var member = _searchMemberQuary.Execute(memberModel);
-            if(member.m_no != (int)EnumMember.NON_MEMBER)
+            if(member != null && member.m_no != (int)EnumMember.NON_MEMBER)
             {
                 //会員Noをセッション情報にセット
                 HttpContext.Session.SetString("m_no", member.m_no.ToString());
