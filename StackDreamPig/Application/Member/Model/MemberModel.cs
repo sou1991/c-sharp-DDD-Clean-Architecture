@@ -37,5 +37,7 @@ namespace Application.Member.Model
         }
 
         public int dispAmountLimit { get; set; }
+
+        public bool UpdateFlg { get; set; }
     }
 }

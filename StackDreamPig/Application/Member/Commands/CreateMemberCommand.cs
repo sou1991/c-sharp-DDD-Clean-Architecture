@@ -37,11 +37,17 @@ namespace Application.Member.Commands
             }
             else 
             {
-                _dataBaseService.Member.Add(_memberEntity);
+                if(memberModel.m_no != (int)EnumMember.NON_MEMBER)
+                {
+                    UpdateMember(memberModel);
+                }
+                else
+                {
+                    _dataBaseService.Member.Add(_memberEntity);
+                }
+                
                 _dataBaseService.Save();
             }
-
-     
         }
 
         public bool HasRegistMember(MemberModel memberModel)
@@ -56,5 +62,19 @@ namespace Application.Member.Commands
             if (member.Single().m_no != (int)EnumMember.NON_MEMBER) return true; else return false;
         }
 
+        public void UpdateMember(MemberModel memberModel)
+        {
+            var member = _dataBaseService.Member
+            .Where(p => p.m_no == memberModel.m_no).First();
+
+            member.userName = memberModel.userName;
+            member.password = memberModel.password;
+            member.monthlyIncome = memberModel.monthlyIncome;
+            member.savings = memberModel.savings;
+            member.fixedCost = memberModel.fixedCost;
+            member.amountLimit = new AmountLimitValueObject(memberModel.amountLimit);
+            member.utime = DateTime.Now;
+
+        }
     }
 }

@@ -3,7 +3,7 @@
 }
 <script>
 
-     function ExecuteValidatetionAfterSubmit() {
+     function ExecuteValidatetionAfterSubmit(updateFlg) {
 
             var bookst_list = [
               $('input[name="userName"]'),
@@ -15,7 +15,13 @@
             
             var err_cnt = Validation(bookst_list, 0);
            
-            if (err_cnt <= 0) {
+         if (err_cnt <= 0) {
+             if (updateFlg) {
+                 $('form').attr('action', "/Member/MemberUpdateComplete/");
+             } else {
+                 $('form').attr('action', "/Member/EntryConfirm/");
+             }
+                
                 document.entry_form.submit();
             }
      } 
@@ -34,7 +40,7 @@
 </script>
 <div class="container-fluid" style="padding-top: 100px;">
     <h2>Entry</h2>
-    <form class="form-horizontal" name="entry_form" action="/Member/EntryConfirm/" method="post">
+    <form class="form-horizontal" name="entry_form" method="post">
         <div class="form-group">
             <label for="email" class="col-sm-2 control-label">userName</label>
             <div class="col-sm-3">
@@ -67,7 +73,17 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-4 col-sm-10">
-                <button type="button" class="btn btn-success" onclick="ExecuteValidatetionAfterSubmit();">登録内容を確認する</button>
+                @{
+                    if (@Model.UpdateFlg == true)
+                    {
+                        <button type="button" class="btn btn-success" onclick="ExecuteValidatetionAfterSubmit(true);">登録する</button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-success" onclick="ExecuteValidatetionAfterSubmit(false);">登録内容を確認する</button>
+                    }
+                }
+
             </div>
         </div>
     </form>
