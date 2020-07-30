@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Application.Member.Model
 {
-    public class MemberModel : ModelBase
+    public class MemberModel : ModelBase, IValidatableObject
     {
         public int m_no { get; set; }
 
@@ -39,5 +39,11 @@ namespace Application.Member.Model
         public int dispAmountLimit { get; set; }
 
         public bool UpdateFlg { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+          if (SdpCommon.castIntoInteger(monthlyIncome) < SdpCommon.castIntoInteger(savings) + SdpCommon.castIntoInteger(fixedCost))
+                yield return new ValidationResult("目標貯金額と固定費合計が月収を上回ってます。");
+        }
     }
 }
