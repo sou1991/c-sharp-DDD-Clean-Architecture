@@ -50,30 +50,30 @@
 <div class="container-fluid" style="padding-top: 100px;">
     <h2>帳簿一覧</h2>
     <form class="form-horizontal" name="entry_form" action="/Books/BooksList" method="post">
-        <div style="display:inline">
-            <input type="text" name="year" id ="年" value="@Model.year" style="width:60px;">年
-            <input type="text" name="month" id ="月" value="@Model.month" style="width:30px;">月
+            <input type="text"  class="form-control" name="year" id ="年" value="@Model.year" style="width:60px; display:inline">年
+            <input type="text"  class="form-control" name="month" id ="月" value="@Model.month" style="width:40px; display:inline">月
             <button type="button" class="btn btn-success" onclick="ExecuteValidatetionAfterSubmit();">検索</button>
-        </div>
-        <h3></h3>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>日付</th>
-                <th>支出額</th>
-            </tr>
-        </thead>
-        <tbody>
-            @{
-                foreach (var book in Model.booksList)
-                {
-                    <tr>
-                        <td>@book.DispRegistDate.Year/@book.DispRegistDate.Month/@book.DispRegistDate.Day</td>
-                        <td>@string.Format("{0:c}", @book.amountUsed)</td>
-                    </tr>
-                }
-            }
-        </tbody>
-    </table>
-</form>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>日付</th>
+                    <th>支出額</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (ViewData.ModelState.IsValid)
+                    {
+                        foreach (var book in Model.booksList)
+                        {
+                            <tr>
+                                <td>@book.DispRegistDate.Year/@book.DispRegistDate.Month/@book.DispRegistDate.Day</td>
+                                <td>@string.Format("{0:c}", @book.amountUsed)</td>
+                            </tr>
+                            }
+                        }
+                    }
+            </tbody>
+        </table>
+    </form>
 </div>
