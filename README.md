@@ -1,22 +1,24 @@
-# c-sharp-DDD-Clean-Architecture 製作中
-
-# stackDreamPig(家計簿アプリ) 機能一覧
+# stackDreamPig(家計簿アプリ) 機能一覧 ※デプロイ作業中
 
 ### 開発
 ・.NET Core 3.0  
 ・C# 7.2  
 ・Postgres 11.5  
 ・Visiaul Studio 2019  
+・javascript  
+・HTML  
+・CSS(bootstrap)  
+・JQuery  
 
 ### 環境
-・Docker (とりあえずローカルで開発環境構築まで)
-・AWS EC2
+・Docker ToolBox  
+・AWS EC2 
 
-### ※AWSにDockerコンテナのデプロイやCIの導入などはスキルに合わせて検討
+### ※CI導入とECSはスキルに合わせて導入
 
 
 ### 開発手法
-ドメイン駆動開発  DDD
+ドメイン駆動開発(DDD) テスト駆動開発(TDD)
 
 ### アーキテクチャ  
 クリーンアーキテクチャ Clean Architecture  
