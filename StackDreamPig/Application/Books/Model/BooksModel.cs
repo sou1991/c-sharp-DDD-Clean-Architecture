@@ -73,5 +73,7 @@ namespace stackDreamPig.Models.Book.Query
         }
 
         public DateTime DispRegistDate { get; set; }
+
+        public int? monthlyTotalAmountUsed  { get; set; } 
     }
 }

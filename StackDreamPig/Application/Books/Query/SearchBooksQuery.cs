@@ -23,11 +23,15 @@ namespace Application.Books.Query
 
         public List<BooksModel> Execute(BooksModel booksModel)
         {
-            var books = _dataBaseService.Books
+            var resultBooks = _dataBaseService.Books
                 .OrderBy(p => p.registDate._registDate)
-                .Where(p => p.m_no == booksModel.m_no 
-                && p.registDate._registDate.Year == booksModel.registrationDateSearch.Year 
-                && p.registDate._registDate.Month == booksModel.registrationDateSearch.Month)
+                .Where(p => p.m_no == booksModel.m_no
+                && p.registDate._registDate.Year == booksModel.registrationDateSearch.Year
+                && p.registDate._registDate.Month == booksModel.registrationDateSearch.Month);
+
+            booksModel.monthlyTotalAmountUsed = resultBooks.Sum(p => p.amountUsed);
+
+            var books = resultBooks
                 .Select(p => new BooksModel()
                 {
                     amountUsed = p.amountUsed,
