@@ -11,6 +11,7 @@ COPY Presentation/*.csproj ./Presentation/
 COPY SpdCommon/*.csproj ./SpdCommon/
 COPY Tests/*.csproj ./Tests/
 COPY Valueobject/*.csproj ./Valueobject/
+COPY Common/*.csproj ./Common/
 
 RUN dotnet restore
 
@@ -24,10 +25,13 @@ COPY Entities/. ../Entities/
 WORKDIR /StackDreamPig/Entities
 RUN dotnet publish -c release -o /app
 
+COPY Common/. ../Common/
+WORKDIR /StackDreamPig/Common
+RUN dotnet publish -c release -o /app
+
 COPY Infrastructure/. ../Infrastructure/
 WORKDIR /StackDreamPig/Infrastructure
 RUN dotnet publish -c release -o /app
-
 
 COPY Application/. ../Application/
 WORKDIR /StackDreamPig/Application
