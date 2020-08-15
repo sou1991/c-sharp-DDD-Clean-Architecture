@@ -8,7 +8,6 @@ COPY Application/*.csproj ./Application/
 COPY Entities/*.csproj ./Entities/
 COPY Infrastructure/*.csproj ./Infrastructure/
 COPY Presentation/*.csproj ./Presentation/
-COPY SpdCommon/*.csproj ./SpdCommon/
 COPY Tests/*.csproj ./Tests/
 COPY Valueobject/*.csproj ./Valueobject/
 COPY Common/*.csproj ./Common/
@@ -36,12 +35,6 @@ RUN dotnet publish -c release -o /app
 COPY Application/. ../Application/
 WORKDIR /StackDreamPig/Application
 RUN dotnet publish -c release -o /app
-
-
-COPY SpdCommon/. ../SpdCommon/
-WORKDIR /StackDreamPig/SpdCommon
-RUN dotnet publish -c release -o /app
-
 
 COPY Presentation/. ../Presentation/
 WORKDIR /StackDreamPig/Presentation
