@@ -72,6 +72,7 @@ namespace Presentation.Controllers
                 memberModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
                 var member = _searchMemberQuary.Execute(memberModel);
                 member.UpdateFlg = true;
+                member.hasSession = true;
                 return View("Entry", member);
             }
             catch (Exception ex)
@@ -91,6 +92,7 @@ namespace Presentation.Controllers
             {
                 memberModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
                 _createMemberCommand.Execute(memberModel);
+                memberModel.hasSession = true;
                 return View("EntryComplete", memberModel);
             }
             catch (Exception ex)

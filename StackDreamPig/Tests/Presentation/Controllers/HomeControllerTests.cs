@@ -48,5 +48,12 @@ namespace Tests.Presentation.Controllers
             var result = _homeController.IndexOrLogin();
             Assert.That(result, Is.TypeOf<ViewResult>());
         }
+
+        [Test]
+        public void TestGetViewTypeIndexLogout()
+        {
+            var result = _homeController.Logout();
+            Assert.That(result, Is.TypeOf<ViewResult>());
+        }
     }
 }

@@ -32,6 +32,7 @@ namespace Presentation.Controllers
             {
                 memberModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
                 var member = _searchMemberQuary.Execute(memberModel);
+                member.hasSession = true;
                 return View(member);
             }
             catch (Exception ex)
@@ -54,6 +55,7 @@ namespace Presentation.Controllers
             {
                 booksModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
                 _booksRegistCommand.Execute(booksModel);
+                booksModel.hasSession = true;
                 return View(booksModel);
             }
             catch (Exception ex)
@@ -75,6 +77,7 @@ namespace Presentation.Controllers
             {
                 booksModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
                 booksModel.booksList = _searchBooksQuery.Execute(booksModel);
+                booksModel.hasSession = true;
                 return View(booksModel);
             }
             catch (Exception ex)
