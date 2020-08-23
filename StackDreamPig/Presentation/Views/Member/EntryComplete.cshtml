@@ -10,12 +10,9 @@
         @{
             if (Model.isError)
             {
-                <p style="color:red">
-                    <span>@Model.errorMessege</span><br />
-                </p>
                 <div class="form-group">
                     <div class="col-sm-offset-4 col-sm-10">
-                        <button type="submit" formaction="/Login/" class="btn btn-success">トップ画面に戻る</button>
+                        <button type="submit" formaction="/Home/IndexOrLogin" class="btn btn-success">トップ画面に戻る</button>
                     </div>
                 </div>
             }

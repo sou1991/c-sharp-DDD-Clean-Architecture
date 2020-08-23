@@ -70,6 +70,7 @@ namespace Presentation.Controllers
         {
             if (!ModelState.IsValid)
             {
+                booksModel.monthlyTotalAmountUsed = 0;
                 return View(booksModel);
             }
 
