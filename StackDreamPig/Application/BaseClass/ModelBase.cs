@@ -11,5 +11,7 @@ namespace stackDreamPig.SeedWork
 
         public bool isError { get; set; }
 
+        public bool hasSession { get; set; }
+
     }
 }

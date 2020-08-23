@@ -26,10 +26,11 @@ namespace Presentation.Controllers
         public IActionResult Index(MemberModel memberModel)
         {
             var member = _searchMemberQuary.Execute(memberModel);
-            if(member != null && member.m_no != (int)EnumMember.NON_MEMBER)
+            if (member != null && member.m_no != (int)EnumMember.NON_MEMBER)
             {
                 //会員Noをセッション情報にセット
                 HttpContext.Session.SetString("m_no", member.m_no.ToString());
+                memberModel.hasSession = true;
             }
             else
             {
@@ -38,7 +39,7 @@ namespace Presentation.Controllers
 
                 return Login(memberModel);
             }
-            
+
             return View(memberModel);
         }
 
@@ -53,9 +54,16 @@ namespace Presentation.Controllers
             try
             {
                 var session_M_no = HttpContext.Session.GetString("m_no");
-                var view = session_M_no == null ? View("Login", model) : View("Index", model);
 
-                return view;
+                if(session_M_no == null)
+                {
+                    return View("Login", model);
+                }
+                else
+                {
+                    model.hasSession = true;
+                    return View("Index", model);
+                }
 
             }
             catch (Exception ex)
@@ -66,5 +74,25 @@ namespace Presentation.Controllers
             }
         }
 
+        public IActionResult Logout()
+        {
+            var model = new ModelBase();
+            try
+            {
+                HttpContext.Session.Remove("m_no");
+
+                model.hasSession = false;
+
+                return View("Login", model);
+
+            }
+            catch (Exception ex)
+            {
+                ErrorHandling.ErrorHandler(model, ex);
+
+                return View("_SessionErrorPage", model);
+            }
+
+        }
     }
 }
