@@ -57,6 +57,8 @@ namespace Presentation.Controllers
 
                 if(session_M_no == null)
                 {
+                    model.isError = true;
+                    model.errorMessege = "セッションが切れました。再度ログインして下さい。";
                     return View("Login", model);
                 }
                 else
