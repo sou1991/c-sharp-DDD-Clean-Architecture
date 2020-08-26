@@ -11,12 +11,13 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3" style="background-color: #55c500;">
-            <div class="container">
+            <div class="container" style="justify-content: start">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="IndexOrLogin"><span style="color:white;">StackDreamPig</span></a>
                 @{
                     if (Model.hasSession)
                     {
-                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Logout"><span style="color:white;font-size:small">ログアウト</span></a>
+                        <a  class="navbar-brand" asp-area="" asp-controller="Home" asp-action="IndexOrLogin"><span style="color:white;font-size:small">機能一覧</span></a>
+                        <a  class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Logout"><span style="color:white;font-size:small">ログアウト</span></a>
                     }
                 }
 
