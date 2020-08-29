@@ -55,11 +55,17 @@ namespace Application.Member.Commands
             var member = _dataBaseService.Member
             .Where(p => p.userName == memberModel.userName && p.password == memberModel.password);
 
-            var memberDataInTheDataBaseCnt = member.Count();
+            if (memberModel.UpdateFlg && member.Count() > 0)
+            {
+                if(member.First().m_no == memberModel.m_no)
+                {
+                    return false;
+                }
+            }
 
-            if (memberDataInTheDataBaseCnt == (int) EnumMember.NON_MEMBER) return false;
+            if (member.Count() == 0) return false;
             
-            if (member.Single().m_no != (int)EnumMember.NON_MEMBER) return true; else return false;
+            if (member.First().m_no != (int)EnumMember.NON_MEMBER) return true; else return false;
         }
 
         public void UpdateMember(MemberModel memberModel)

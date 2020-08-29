@@ -48,6 +48,12 @@ namespace Presentation.Controllers
             try
             {
                 _createMemberCommand.Execute(memberModel);
+
+                if(memberModel.isError) 
+                {
+                    return View("EntryComplete", memberModel);
+                } 
+
                 member = _searchMemberQuary.Execute(memberModel);
                 HttpContext.Session.SetString("m_no", member.m_no.ToString());
             }
@@ -84,6 +90,7 @@ namespace Presentation.Controllers
         }
         public IActionResult MemberUpdateComplete(MemberModel memberModel)
         {
+            memberModel.UpdateFlg = true;
             if (!ModelState.IsValid)
             {
                 return Entry(memberModel);
