@@ -78,7 +78,11 @@ namespace Presentation.Controllers
             {
                 booksModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
                 booksModel.booksList = _searchBooksQuery.Execute(booksModel);
+
+                var member = _searchMemberQuary.Execute(new MemberModel { m_no = booksModel.m_no});
+
                 booksModel.hasSession = true;
+                booksModel.amountLimit = member.amountLimit;
                 return View(booksModel);
             }
             catch (Exception ex)
