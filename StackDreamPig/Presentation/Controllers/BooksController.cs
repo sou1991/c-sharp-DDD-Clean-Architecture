@@ -39,7 +39,7 @@ namespace Presentation.Controllers
             {
                 ErrorHandling.ErrorHandler(memberModel, ex);
 
-                return View("_SessionErrorPage", memberModel);
+                return View("_ErrorPage", memberModel);
             }
 
         }
@@ -62,7 +62,7 @@ namespace Presentation.Controllers
             {
                 ErrorHandling.ErrorHandler(booksModel, ex);
 
-                return View("_SessionErrorPage", booksModel);
+                return View("_ErrorPage", booksModel);
             }
 
         }
@@ -85,7 +85,7 @@ namespace Presentation.Controllers
             {
                 ErrorHandling.ErrorHandler(booksModel, ex);
 
-                return View("_SessionErrorPage", booksModel);
+                return View("_ErrorPage", booksModel);
             }
         }
     }

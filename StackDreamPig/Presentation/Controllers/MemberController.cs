@@ -48,6 +48,12 @@ namespace Presentation.Controllers
             try
             {
                 _createMemberCommand.Execute(memberModel);
+
+                if(memberModel.isError) 
+                {
+                    return View("_ErrorPage", memberModel);
+                } 
+
                 member = _searchMemberQuary.Execute(memberModel);
                 HttpContext.Session.SetString("m_no", member.m_no.ToString());
             }
@@ -55,7 +61,7 @@ namespace Presentation.Controllers
             {
                 ErrorHandling.ErrorHandler(memberModel, ex);
 
-                return View("_SessionErrorPage", memberModel);
+                return View("_ErrorPage", memberModel);
             }
             
             return View("EntryComplete", member);
@@ -79,11 +85,12 @@ namespace Presentation.Controllers
             {
                 ErrorHandling.ErrorHandler(memberModel, ex);
 
-                return View("_SessionErrorPage", memberModel);
+                return View("_ErrorPage", memberModel);
             }
         }
         public IActionResult MemberUpdateComplete(MemberModel memberModel)
         {
+            memberModel.UpdateFlg = true;
             if (!ModelState.IsValid)
             {
                 return Entry(memberModel);
@@ -99,7 +106,7 @@ namespace Presentation.Controllers
             {
                 ErrorHandling.ErrorHandler(memberModel, ex);
 
-                return View("_SessionErrorPage", memberModel);
+                return View("_ErrorPage", memberModel);
             }
 
         }
