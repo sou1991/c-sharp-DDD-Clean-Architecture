@@ -51,7 +51,7 @@ namespace Presentation.Controllers
 
                 if(memberModel.isError) 
                 {
-                    return View("EntryComplete", memberModel);
+                    return View("_ErrorPage", memberModel);
                 } 
 
                 member = _searchMemberQuary.Execute(memberModel);
@@ -61,7 +61,7 @@ namespace Presentation.Controllers
             {
                 ErrorHandling.ErrorHandler(memberModel, ex);
 
-                return View("_SessionErrorPage", memberModel);
+                return View("_ErrorPage", memberModel);
             }
             
             return View("EntryComplete", member);
@@ -85,7 +85,7 @@ namespace Presentation.Controllers
             {
                 ErrorHandling.ErrorHandler(memberModel, ex);
 
-                return View("_SessionErrorPage", memberModel);
+                return View("_ErrorPage", memberModel);
             }
         }
         public IActionResult MemberUpdateComplete(MemberModel memberModel)
@@ -106,7 +106,7 @@ namespace Presentation.Controllers
             {
                 ErrorHandling.ErrorHandler(memberModel, ex);
 
-                return View("_SessionErrorPage", memberModel);
+                return View("_ErrorPage", memberModel);
             }
 
         }
