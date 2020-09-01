@@ -51,6 +51,7 @@ namespace Application.Member.Query
             .Select(p => new MemberModel
             {
                 m_no = p.m_no,
+                password =p.password,
                 userName = p.userName,
                 monthlyIncome = p.monthlyIncome,
                 savings = p.savings,
