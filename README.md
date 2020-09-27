@@ -1,5 +1,10 @@
 # stackDreamPig(家計簿アプリ) 機能一覧
 
+URL 
+http://stackdreampig.net
+
+※個人を識別できる情報は入力しないようにお願いいたします。
+
 ### 開発
 ・.NET Core 3.0  
 ・C# 7.2  
