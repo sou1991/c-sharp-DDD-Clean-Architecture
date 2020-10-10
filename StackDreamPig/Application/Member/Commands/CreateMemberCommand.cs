@@ -55,7 +55,7 @@ namespace Application.Member.Commands
             var member = _dataBaseService.Member
             .Where(p => p.userName == memberModel.userName && p.password == memberModel.password);
 
-            if (memberModel.UpdateFlg && member.Count() > 0)
+            if (memberModel.UpdateFlg && member.Any())
             {
                 if(member.First().m_no == memberModel.m_no)
                 {
@@ -63,7 +63,7 @@ namespace Application.Member.Commands
                 }
             }
 
-            if (member.Count() == 0) return false;
+            if (!member.Any()) return false;
             
             if (member.First().m_no != (int)EnumMember.NON_MEMBER) return true; else return false;
         }
