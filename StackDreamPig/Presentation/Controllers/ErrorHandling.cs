@@ -11,7 +11,7 @@ namespace Presentation.Controllers
     {
         public static void ErrorHandler(ModelBase model,Exception ex)
         {
-            if (ex.GetType().Name == "ArgumentNullException")
+            if (!model.hasSession)
             {
                 model.errorMessege = "セッション情報が切れました。再度ログインしてください。";
             }
