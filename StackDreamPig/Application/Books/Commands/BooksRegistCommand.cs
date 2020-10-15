@@ -32,7 +32,6 @@ namespace Application.Books.Commands
                     m_no = booksModel.m_no,
                     amountUsed = booksModel.amountUsed,
                     intime = DateTime.Now,
-                    utime = DateTime.Now,
                     registDate = new RegistDateValueObject(booksModel.registDate)
                 };
                 _dataBaseService.Books.Add(booksEntity);
