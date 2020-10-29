@@ -25,7 +25,7 @@ namespace Presentation.Controllers
             _booksRegistCommand = booksRegistCommand;
             _searchBooksQuery = searchBooksQuery;
         }
-
+        [HttpPost]
         public IActionResult Books(MemberModel memberModel)
         {
             try
@@ -43,7 +43,7 @@ namespace Presentation.Controllers
             }
 
         }
-
+        [HttpPost]
         public IActionResult BooksRegisted(BooksModel booksModel)
         {
             if (!ModelState.IsValid)
@@ -66,6 +66,7 @@ namespace Presentation.Controllers
             }
 
         }
+        [HttpPost]
         public IActionResult BooksList(BooksModel booksModel)
         {
             if (!ModelState.IsValid)

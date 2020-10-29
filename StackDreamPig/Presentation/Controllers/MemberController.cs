@@ -27,7 +27,7 @@ namespace Presentation.Controllers
         {
             return View("Entry", memberModel);
         }
-
+        [HttpPost]
         public IActionResult EntryConfirm(MemberModel memberModel)
         {
             if (!ModelState.IsValid)
@@ -37,7 +37,7 @@ namespace Presentation.Controllers
 
             return View("EntryConfirm", memberModel);
         }
-
+        [HttpPost]
         public IActionResult EntryComplete(MemberModel memberModel)
         {
             if (!ModelState.IsValid)
@@ -66,6 +66,7 @@ namespace Presentation.Controllers
             
             return View("EntryComplete", member);
         }
+        [HttpPost]
         public IActionResult memberUpdate(MemberModel memberModel)
         {
             if (!ModelState.IsValid)
@@ -88,6 +89,7 @@ namespace Presentation.Controllers
                 return View("_ErrorPage", memberModel);
             }
         }
+        [HttpPost]
         public IActionResult MemberUpdateComplete(MemberModel memberModel)
         {
             memberModel.UpdateFlg = true;

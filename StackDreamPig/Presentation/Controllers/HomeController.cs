@@ -22,7 +22,7 @@ namespace Presentation.Controllers
         {
             _searchMemberQuary = searchMemberQuary;
         }
-
+        [HttpPost]
         public IActionResult Index(MemberModel memberModel)
         {
             var member = _searchMemberQuary.Execute(memberModel);
