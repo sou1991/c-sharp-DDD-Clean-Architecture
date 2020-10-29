@@ -9,6 +9,7 @@ namespace Presentation.Controllers
 {
     public static class ErrorHandling
     {
+        [HttpPost]
         public static void ErrorHandler(ModelBase model,Exception ex)
         {
             if (!model.hasSession)
