@@ -15,7 +15,7 @@
                 </p>
                 <div class="form-group">
                     <div class="col-sm-offset-4 col-sm-10">
-                        <button type="submit" formaction="/Home/Login/" class="btn btn-success">トップ画面に戻る</button>
+                        <button type="submit" asp-controller="Home" asp-action="Login" class="btn btn-success">トップ画面に戻る</button>
                     </div>
                 </div>
             }
@@ -26,7 +26,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-4 col-sm-10">
-                        <button type="submit" formaction="/Books/BooksList/" class="btn btn-success">帳簿一覧へ</button>
+                        <button type="submit" asp-controller="Books" asp-action="BooksList" class="btn btn-success">帳簿一覧へ</button>
                     </div>
                 </div>
             }

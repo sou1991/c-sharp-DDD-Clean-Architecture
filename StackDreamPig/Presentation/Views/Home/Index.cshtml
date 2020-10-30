@@ -7,22 +7,22 @@
         <div class="form-group">
             <div class="form-group">
                 <div class="col-sm-offset-4 col-sm-10" style="padding-bottom:10px;">
-                    <form class="form-horizontal" name="entry_form" action="/Books/Books" method="post">
+                    <form class="form-horizontal" name="entry_form" asp-controller="Books" asp-action ="Books" method="post">
                         <button type="submit" class="btn btn-success">今日の帳簿をつける</button>
                     </form>
                 </div>
                 <div class="col-sm-offset-4 col-sm-10" style="padding-bottom:10px;">
-                    <form class="form-horizontal" name="entry_form" action="/Books/BooksList" method="post">
+                    <form class="form-horizontal" name="entry_form" asp-controller="Books" asp-action ="BooksList" method="post">
                         <button type="submit" class="btn btn-success">帳簿一覧</button>
                     </form>
                 </div>
                 <div class="col-sm-offset-4 col-sm-10" style="padding-bottom:10px;">
-                    <form class="form-horizontal" name="entry_form" action="/Member/memberUpdate" method="post">
+                    <form class="form-horizontal" name="entry_form" asp-controller="Member" asp-action ="memberUpdate" method="post">
                         <button type="submit" class="btn btn-success">会員情報変更</button>
                     </form>
                 </div>
                 <div class="col-sm-offset-4 col-sm-10" style="padding-top:20px;">
-                    <form class="form-horizontal" name="entry_form" action="/Home/Logout">
+                    <form class="form-horizontal" name="entry_form" asp-controller="Home" asp-action ="Logout">
                         <button type="submit" class="btn btn-success">ログアウト</button>
                     </form>
                 </div>

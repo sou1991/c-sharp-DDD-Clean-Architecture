@@ -49,7 +49,7 @@
 </script>
 <div class="container-fluid" style="padding-top: 100px;">
     <h2>帳簿一覧</h2>
-    <form class="form-horizontal" name="entry_form" action="/Books/BooksList" method="post">
+    <form class="form-horizontal" name="entry_form" asp-controller="Books" asp-action ="BooksList" method="post">
         <input type="text" class="form-control" name="year" id="年" value="@Model.year" style="width:60px; display:inline">年
         <input type="text" class="form-control" name="month" id="月" value="@Model.month" style="width:40px; display:inline">月
         <button type="button" class="btn btn-success" onclick="ExecuteValidatetionAfterSubmit();">検索</button>
@@ -77,7 +77,7 @@
             </tbody>
         </table>
     </form>
-    <form class="form-horizontal" action="/Home/IndexOrLogin" style="padding-top:50px;">
+    <form class="form-horizontal" asp-controller="Home" asp-action ="IndexOrLogin" style="padding-top:50px;">
         <button type="submit" class="btn btn-success">機能一覧へ</button>
     </form>
 </div>

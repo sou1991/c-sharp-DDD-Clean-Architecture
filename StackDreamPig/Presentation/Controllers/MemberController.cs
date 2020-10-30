@@ -11,7 +11,7 @@ using Common.Member;
 
 namespace Presentation.Controllers
 {
-
+    [AutoValidateAntiforgeryToken]
     public class MemberController : Controller {
 
         private ICreateMemberCommand _createMemberCommand;

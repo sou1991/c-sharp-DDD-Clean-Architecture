@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
 {
+    [AutoValidateAntiforgeryToken]
     public class LoginController : Controller
     {
         public IActionResult Login()
