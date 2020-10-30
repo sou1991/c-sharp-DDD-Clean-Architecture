@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Presentation.Controllers
 {
+    [AutoValidateAntiforgeryToken]
     public static class ErrorHandling
     {
         [HttpPost]

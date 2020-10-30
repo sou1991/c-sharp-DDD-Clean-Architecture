@@ -14,6 +14,8 @@ using stackDreamPig.SeedWork;
 
 namespace Presentation.Controllers
 {
+    [AutoValidateAntiforgeryToken]
+
     public class HomeController : Controller
     {
         private ISearchMemberQuary _searchMemberQuary;

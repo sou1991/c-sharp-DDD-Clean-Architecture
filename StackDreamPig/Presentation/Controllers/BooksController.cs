@@ -13,6 +13,7 @@ using stackDreamPig.Models.Book.Query;
 
 namespace Presentation.Controllers
 {
+    [AutoValidateAntiforgeryToken]
     public class BooksController : Controller
     {
         private ISearchMemberQuary _searchMemberQuary;
