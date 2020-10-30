@@ -13,15 +13,15 @@ namespace Application.Member.Model
         [MaxLength(100, ErrorMessage = "パスワードは100文字以内でお願いします")]
         public string password { get; set; }
 
-        [MaxLength(13, ErrorMessage = "月収は扱えない桁数です")]
+        [MaxLength(9, ErrorMessage = "月収は扱えない桁数です")]
         [RegularExpression(@"[0-9]+", ErrorMessage = "月収は数字のみ入力できます")]
         public string monthlyIncome { get; set; }
 
-        [MaxLength(13, ErrorMessage = "目標貯金額(月)は扱えない桁数です")]
+        [MaxLength(9, ErrorMessage = "目標貯金額(月)は扱えない桁数です")]
         [RegularExpression(@"[0-9]+", ErrorMessage = "目標貯金額(月)は数字のみ入力できます")]
         public string savings { get; set; }
 
-        [MaxLength(13, ErrorMessage = "固定費はは扱えない桁数です")]
+        [MaxLength(9, ErrorMessage = "固定費はは扱えない桁数です")]
         [RegularExpression(@"[0-9]+", ErrorMessage = "固定費は数字のみ入力できます")]
         public string fixedCost { get; set; }
 
