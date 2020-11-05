@@ -1,7 +1,5 @@
 # stackDreamPig(家計簿アプリ) 機能一覧(自己研鑽用)
 
-URL 
-http://stackdreampig.net
 
 ※個人を識別できる情報は入力しないようにお願いいたします。
 
