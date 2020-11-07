@@ -70,6 +70,9 @@ namespace Infrastructure.Migrations
                         .HasColumnName("password")
                         .HasColumnType("text");
 
+                    b.Property<string>("salt")
+                        .HasColumnType("text");
+
                     b.Property<string>("savings")
                         .HasColumnType("text");
 

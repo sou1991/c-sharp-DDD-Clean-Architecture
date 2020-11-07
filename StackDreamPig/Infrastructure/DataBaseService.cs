@@ -42,6 +42,9 @@ namespace Infrastructure
 
                 entity.OwnsOne(e => e.amountLimit, a => a.WithOwner());
 
+                entity.Property(e => e.fixedCost)
+                .HasColumnName("salt");
+
             });
             modelBuilder.Entity<BooksEntity>(entity =>
             {
