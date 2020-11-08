@@ -42,6 +42,9 @@ namespace Infrastructure
 
                 entity.OwnsOne(e => e.amountLimit, a => a.WithOwner());
 
+                entity.Property(e => e.saltPassword)
+                .HasColumnName("saltPassword");
+
             });
             modelBuilder.Entity<BooksEntity>(entity =>
             {

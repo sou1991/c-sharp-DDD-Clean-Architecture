@@ -30,5 +30,7 @@ namespace Entities
 
         public AmountLimitValueObject amountLimit { get; set; }
 
+        public string saltPassword { get; set; }
+
     }
 }
