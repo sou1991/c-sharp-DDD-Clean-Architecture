@@ -5,7 +5,7 @@ services:
     image: aspnetapp:Core
     container_name: sdp
     ports:
-      - 80:80
+      - 443:443
     environment:
       - ConnString
   postgres:
