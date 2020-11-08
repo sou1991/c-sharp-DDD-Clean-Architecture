@@ -86,7 +86,7 @@ namespace Tests.Application.Member.Query
         [Test]
         public void CheckLoginTests()
         {
-            var result = _searchMemberQuary.CheckLogin(_memberModel);
+            var result = _searchMemberQuary.AbleToLogin(_memberModel);
             Assert.That(result.m_no, Is.EqualTo(_m_no));
         }
 
