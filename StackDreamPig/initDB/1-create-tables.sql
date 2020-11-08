@@ -13,6 +13,7 @@ CREATE TABLE public.member
     intime timestamp without time zone NOT NULL,
     utime timestamp without time zone NOT NULL,
     "amountLimit__amountLimit" integer,
+    "saltPassword" text COLLATE pg_catalog."default",
     CONSTRAINT "PK_member" PRIMARY KEY (m_no)
 )
 WITH (
