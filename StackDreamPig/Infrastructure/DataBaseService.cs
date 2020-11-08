@@ -42,9 +42,6 @@ namespace Infrastructure
 
                 entity.OwnsOne(e => e.amountLimit, a => a.WithOwner());
 
-                entity.Property(e => e.saltUserName)
-                .HasColumnName("saltUserName");
-
                 entity.Property(e => e.saltPassword)
                 .HasColumnName("saltPassword");
 

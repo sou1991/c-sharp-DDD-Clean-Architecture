@@ -74,10 +74,6 @@ namespace Infrastructure.Migrations
                         .HasColumnName("saltPassword")
                         .HasColumnType("text");
 
-                    b.Property<string>("saltUserName")
-                        .HasColumnName("saltUserName")
-                        .HasColumnType("text");
-
                     b.Property<string>("savings")
                         .HasColumnType("text");
 
