@@ -1,29 +1,26 @@
 ﻿using Application.Member.Commands;
-
-using Entities;
-
-using NUnit.Framework;
 using Application.Member.Model;
-
+using Entities;
+using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
-using Infrastructure;
-using System.Security.Permissions;
-using AutoMoq;
+using System.Text;
 using Valueobject.Member;
 
-namespace Tests.Application.Member
+namespace Tests.Application.Member.Commands
 {
     [TestFixture]
-    internal class CreateMemberCommandTests
+    internal class UpdateMemberCommndTests
     {
         private MemberModel _memberModel;
-        private CreateMemberCommand _command;
+        private UpdateMemberCommnd _command;
         private IQueryable<MemberEntity> _memberEntity;
         private Mock<DbSet<MemberEntity>> _mockMyEntity;
+        private Mock<IDataBaseService> _mockContext;
 
         private readonly int m_no = 1;
         private readonly string userName = "testuser";
@@ -36,7 +33,6 @@ namespace Tests.Application.Member
         [SetUp]
         public void SetUp()
         {
-
             _memberEntity = new List<MemberEntity>
             {
                 new MemberEntity
@@ -59,39 +55,46 @@ namespace Tests.Application.Member
             _mockMyEntity.As<IQueryable<Type>>().Setup(m => m.ElementType).Returns(_memberEntity.ElementType);
             _mockMyEntity.As<IQueryable<MemberEntity>>().Setup(m => m.GetEnumerator()).Returns(_memberEntity.GetEnumerator());
 
+            _mockContext = new Mock<IDataBaseService>();
+            _mockContext.Setup(m => m.Member).Returns(_mockMyEntity.Object);
 
+            _command = new UpdateMemberCommnd(_mockContext.Object);
+        }
+
+        [Test]
+        public void TestShouldUpdateMemberTheDatabase()
+        {
             _memberModel = new MemberModel
             {
                 m_no = this.m_no,
                 userName = "太郎",
-                password = "山田",
                 monthlyIncome = this.monthlyIncome,
                 savings = this.savings,
                 fixedCost = this.fixedCost
             };
 
-            var mockContext = new Mock<IDataBaseService>();
-            mockContext.Setup(m => m.Member).Returns(_mockMyEntity.Object);
-
-            _command = new CreateMemberCommand(mockContext.Object);
-        }
-
-        [Test]
-        public void TestShouldAddToMemberTheDatabase()
-        {
             _command.Execute(_memberModel);
 
-            _mockMyEntity
-            .Verify(p => p.Add(It.IsAny<MemberEntity>()), Times.Once);
+            _mockContext.Verify(p => p.Save(), Times.Once);
             //.Verify(m => m.Add(It.Is<MemberEntity>(t => t.userName.Equals("testuser"))))
-
         }
+
         [Test]
-        public void TestMemberRegisted()
+        public void TestShouldCantUpdateMemberTheDatabase()
         {
-            var result = _command.HasRegistMember(_memberModel);
-            Assert.That(result, Is.TypeOf<bool>()); ;
+            _memberModel = new MemberModel
+            {
+                m_no = 2,
+                userName = userName,
+                monthlyIncome = this.monthlyIncome,
+                savings = this.savings,
+                fixedCost = this.fixedCost
+            };
+
+            _command.Execute(_memberModel);
+
+            _mockContext.Verify(p => p.Save(), Times.Never);
+            //.Verify(m => m.Add(It.Is<MemberEntity>(t => t.userName.Equals("testuser"))))
         }
     }
-
 }

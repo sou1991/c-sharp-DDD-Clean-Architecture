@@ -36,6 +36,7 @@ namespace Presentation
             services.AddTransient<IDataBaseService, DataBaseService>();
             services.AddTransient<IBooksRegistCommand, BooksRegistCommand>();
             services.AddTransient<ISearchBooksQuery, SearchBooksQuery>();
+            services.AddTransient<IUpdateMemberCommnd, UpdateMemberCommnd>();
 
             services.AddControllersWithViews();
 

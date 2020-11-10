@@ -41,16 +41,8 @@ namespace Application.Member.Commands
             }
             else 
             {
-                if(memberModel.m_no != (int)EnumMember.NON_MEMBER)
-                {
-                    UpdateMember(memberModel);
-                }
-                else
-                {
-                    _dataBaseService.Member.Add(_memberEntity);
-                }
-                
-                _dataBaseService.Save();
+               _dataBaseService.Member.Add(_memberEntity);
+               _dataBaseService.Save();
             }
         }
 
@@ -59,36 +51,14 @@ namespace Application.Member.Commands
             var member = _dataBaseService.Member
             .Where(p => p.userName == memberModel.userName);
 
-            if (memberModel.UpdateFlg && member.Any())
+            if (member.Any())
             {
-                if(member.First().m_no == memberModel.m_no)
-                {
-                    return false;
-                }
+                return true;   
             }
-
-            if (!member.Any()) return false;
-            
-            if (member.First().m_no != (int)EnumMember.NON_MEMBER) return true; else return false;
-        }
-
-        public void UpdateMember(MemberModel memberModel)
-        {
-            var member = _dataBaseService.Member
-            .Where(p => p.m_no == memberModel.m_no).First();
-
-            var (securePassword, passwordSalt) = HashToValue(memberModel.password);
-            var serializePasswordSalt = ToSerialize(passwordSalt);
-
-            member.userName = memberModel.userName;
-            member.password = securePassword;
-            member.monthlyIncome = memberModel.monthlyIncome;
-            member.savings = memberModel.savings;
-            member.fixedCost = memberModel.fixedCost;
-            member.amountLimit = new AmountLimitValueObject(memberModel.amountLimit);
-            member.saltPassword = serializePasswordSalt;
-            member.utime = DateTime.Now;
-
+            else
+            {
+                return false;
+            }
         }
     }
 }

@@ -16,11 +16,18 @@ namespace Presentation.Controllers
 
         private ICreateMemberCommand _createMemberCommand;
         private ISearchMemberQuary _searchMemberQuary;
+        IUpdateMemberCommnd _updateMemberCommnd;
 
-        public MemberController(ICreateMemberCommand createMemberCommand, ISearchMemberQuary searchMemberQuary)
+        public MemberController
+        (
+            ICreateMemberCommand createMemberCommand, 
+            ISearchMemberQuary searchMemberQuary,
+            IUpdateMemberCommnd updateMemberCommnd
+        )
         {
             _createMemberCommand = createMemberCommand;
             _searchMemberQuary = searchMemberQuary;
+            _updateMemberCommnd = updateMemberCommnd;
         }
 
         public IActionResult Entry(MemberModel memberModel)
@@ -51,7 +58,7 @@ namespace Presentation.Controllers
 
                 if(memberModel.isError) 
                 {
-                    return View("_ErrorPage", memberModel);
+                    return View("Entry", memberModel);
                 } 
 
                 member = _searchMemberQuary.Execute(memberModel);
@@ -71,16 +78,15 @@ namespace Presentation.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return Entry(memberModel);
+                return memberUpdate(memberModel);
             }
 
             try
             {
                 memberModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
                 var member = _searchMemberQuary.Execute(memberModel);
-                member.UpdateFlg = true;
                 member.hasSession = true;
-                return View("Entry", member);
+                return View("MemberUpdate", member);
             }
             catch (Exception ex)
             {
@@ -90,9 +96,18 @@ namespace Presentation.Controllers
             }
         }
         [HttpPost]
+        public IActionResult MemberUpdateConfirm(MemberModel memberModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return memberUpdate(memberModel);
+            }
+
+            return View("MemberUpdateConfirm", memberModel);
+        }
+        [HttpPost]
         public IActionResult MemberUpdateComplete(MemberModel memberModel)
         {
-            memberModel.UpdateFlg = true;
             if (!ModelState.IsValid)
             {
                 return Entry(memberModel);
@@ -100,9 +115,9 @@ namespace Presentation.Controllers
             try
             {
                 memberModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
-                _createMemberCommand.Execute(memberModel);
+                _updateMemberCommnd.Execute(memberModel);
                 memberModel.hasSession = true;
-                return View("EntryComplete", memberModel);
+                return View("MemberUpdateComplete", memberModel);
             }
             catch (Exception ex)
             {

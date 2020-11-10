@@ -41,8 +41,6 @@ namespace Application.Member.Model
 
         public int dispAmountLimit { get; set; }
 
-        public bool UpdateFlg { get; set; }
-
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
           if (SdpCommon.castIntoInteger(monthlyIncome) < SdpCommon.castIntoInteger(savings) + SdpCommon.castIntoInteger(fixedCost))

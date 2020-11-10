@@ -6,7 +6,6 @@
       function ExecuteValidatetionAfterSubmit() {
          const bookst_list = [
               $('input[name="userName"]'),
-              $('input[name="password"]'),
               $('input[name="monthlyIncome"]'),
               $('input[name="savings"]'),
               $('input[name="fixedCost"]')
@@ -19,7 +18,7 @@
           }
      } 
 
-     function Validation(bookst_list, isError) {
+    function Validation(bookst_list, isError) {
         bookst_list.some(function (elem) {
             if (elem.val() == "") {
                 alert(elem.attr('id') + "は必須項目です。");
@@ -30,22 +29,16 @@
         });
 
         return isError;
-     }
+    }
 
 </script>
 <div class="container-fluid" style="padding-top: 100px;">
-    <h2>Entry</h2>
-    <form class="form-horizontal" name="entry_form" asp-controller="Member" asp-action ="EntryConfirm" method="post">
+    <h2>MemberUpdate</h2>
+    <form class="form-horizontal" name="entry_form" asp-controller="Member" asp-action ="MemberUpdateConfirm" method="post">
         <div class="form-group">
             <label for="email" class="col-sm-2 control-label">userName</label>
             <div class="col-sm-3">
                 <input type="text" class="form-control" id ="userName" name="userName" placeholder="userName" value="@Model.userName">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="Password" class="col-sm-2 control-label">Password</label>
-            <div class="col-sm-3">
-                <input type="password" class="form-control" id ="password" name="password" placeholder="Password" value="">
             </div>
         </div>
         <div class="form-group">
