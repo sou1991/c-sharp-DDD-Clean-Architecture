@@ -24,9 +24,23 @@ namespace Tests.Presentation.Controllers
             _meberModel = new MemberModel();
         }
         [Test]
-        public void TestGetViewType()
+        public void TestGetViewTypeEntry()
         {
             var result = _memberController.Entry(_meberModel);
+            Assert.That(result, Is.TypeOf<ViewResult>());
+        }
+
+        [Test]
+        public void TestGetViewTypeEntryConfirm()
+        {
+            var result = _memberController.EntryConfirm(_meberModel);
+            Assert.That(result, Is.TypeOf<ViewResult>());
+        }
+
+        [Test]
+        public void TestGetViewTypeEntryComplete()
+        {
+            var result = _memberController.EntryComplete(_meberModel);
             Assert.That(result, Is.TypeOf<ViewResult>());
         }
     }

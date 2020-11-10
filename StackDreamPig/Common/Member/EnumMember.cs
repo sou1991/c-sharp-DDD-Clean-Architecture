@@ -6,7 +6,6 @@ namespace Common.Member
 {
     public enum EnumMember : int
     {
-        NON_MEMBER,
-        MEMBER
+        NON_MEMBER
     }
 }
