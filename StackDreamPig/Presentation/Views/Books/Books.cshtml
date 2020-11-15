@@ -62,6 +62,7 @@
                             <input type="text" class="form-control" id="支出額" name="amountUsed" placeholder="当日の支出額"><br>
                             <button type="button" class="btn btn-success" onclick="ExecuteValidatetionAfterSubmit();">帳簿をつける</button>
                         </div>
+                        <input type="hidden" name="currencyTypeAmountLimit" value="@Model.currencyTypeAmountLimit">
                     </form>
                     <form class="form-horizontal" asp-controller="Home" asp-action ="IndexOrLogin" style="padding-top:50px;">
                         <button type="submit" class="btn btn-success">機能一覧へ</button>

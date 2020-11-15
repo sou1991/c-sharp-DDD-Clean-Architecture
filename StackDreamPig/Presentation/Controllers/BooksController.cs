@@ -71,13 +71,6 @@ namespace Presentation.Controllers
         [HttpPost]
         public IActionResult BooksList(BooksModel booksModel)
         {
-            if (!ModelState.IsValid)
-            {
-                //エラーの場合、\0で表記する
-                booksModel.monthlyTotalAmountUsed = CurrencyType.CastIntegerToCurrencyType(0);
-                return View(booksModel);
-            }
-
             try
             {
                 booksModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
