@@ -39,7 +39,7 @@ namespace Application.Member.Model
             }
         }
 
-        public int dispAmountLimit { get; set; }
+        public string currencyTypeAmountLimit { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

@@ -6,6 +6,7 @@ using Application.Books.Commands;
 using Application.Books.Query;
 using Application.Member.Model;
 using Application.Member.Query;
+using Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using stackDreamPig.Models.Book;
@@ -72,7 +73,8 @@ namespace Presentation.Controllers
         {
             if (!ModelState.IsValid)
             {
-                booksModel.monthlyTotalAmountUsed = 0;
+                //エラーの場合、\0で表記する
+                booksModel.monthlyTotalAmountUsed = CurrencyType.CastIntegerToCurrencyType(0);
                 return View(booksModel);
             }
 
@@ -84,7 +86,7 @@ namespace Presentation.Controllers
                 var member = _searchMemberQuary.Execute(new MemberModel { m_no = booksModel.m_no});
 
                 booksModel.hasSession = true;
-                booksModel.amountLimit = member.amountLimit;
+                booksModel.currencyTypeAmountLimit = CurrencyType.CastIntegerToCurrencyType(member.amountLimit);
                 return View(booksModel);
             }
             catch (Exception ex)
