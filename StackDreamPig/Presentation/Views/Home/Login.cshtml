@@ -28,28 +28,35 @@
 
     </script>
     <div class="container-fluid" style="padding-top: 100px;">
-            <form class="form-horizontal" name="login_form" asp-controller="Home" asp-action ="Index" method="post">
-                <div class="form-group">
-                    <label for="email" class="col-sm-2 control-label">ユーザー名</label>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" id="ユーザー名" name="userName" placeholder="userName">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="Password" class="col-sm-2 control-label">パスワード</label>
-                    <div class="col-sm-3">
-                        <input type="password" class="form-control" id ="パスワード" name="password" placeholder="Password">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-4 col-sm-10">
-                        <button type="button" class="btn btn-success" onclick="ExecuteValidatetionAfterSubmit();">Login</button>
-                    </div>
-                </div>
-            </form>
-
-            <div class="col-sm-offset-4 col-sm-10">
-                <a asp-area="" asp-controller="Member" asp-action="Entry" />新規会員登録はコチラ</a>
+        <form class="form-horizontal" name="login_form" asp-controller="Home" asp-action="Index" method="post">
+            <div class="form-group">
+                <p style="color:blue">
+                    ※本アプリケーションは開発用のアプリです。セキュリティー対策が万全ではない可能性があるので個人情報は入力しないでください。<br />
+                    This Applibation is Application for development.
+                    Please do not enter personal information as security is not perfect
+                </p>
             </div>
+            <div class="form-group">
+                <label for="email" class="col-sm-2 control-label">ユーザー名</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" id="ユーザー名" name="userName" placeholder="userName">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Password" class="col-sm-2 control-label">パスワード</label>
+                <div class="col-sm-3">
+                    <input type="password" class="form-control" id ="パスワード" name="password" placeholder="Password">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-10">
+                    <button type="button" class="btn btn-success" onclick="ExecuteValidatetionAfterSubmit();">Login</button>
+                </div>
+            </div>
+        </form>
 
+        <div class="col-sm-offset-4 col-sm-10">
+            <a asp-area="" asp-controller="Member" asp-action="Entry" />新規会員登録はコチラ</a>
         </div>
+
+     </div>
