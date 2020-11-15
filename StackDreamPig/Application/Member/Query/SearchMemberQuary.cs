@@ -7,6 +7,7 @@ using System.Linq;
 using stackDreamPig.Models.Book.Query;
 using Common.Member;
 using System.Text.Json;
+using Common;
 
 namespace Application.Member.Query
 {
@@ -70,7 +71,7 @@ namespace Application.Member.Query
                 monthlyIncome = p.monthlyIncome,
                 savings = p.savings,
                 fixedCost = p.fixedCost,
-                dispAmountLimit = p.amountLimit._amountLimit
+                currencyTypeAmountLimit = CurrencyType.CastIntegerToCurrencyType(p.amountLimit._amountLimit)
             });
 
             var result = results.SingleOrDefault();

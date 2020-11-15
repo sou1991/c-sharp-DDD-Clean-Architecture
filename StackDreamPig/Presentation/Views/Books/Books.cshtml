@@ -58,11 +58,10 @@
                             <input type="text" class="form-control" id="日" name="day" value="" style="width:50px; display:inline;">日
                         </div>
                         <div class="col-sm-4" style="padding-top:30px;">
-                            <b>あなたの1日の目安金額：@Model.amountLimit 円</b>
+                            <b>あなたの1日の目安金額：@Model.currencyTypeAmountLimit 円</b>
                             <input type="text" class="form-control" id="支出額" name="amountUsed" placeholder="当日の支出額"><br>
                             <button type="button" class="btn btn-success" onclick="ExecuteValidatetionAfterSubmit();">帳簿をつける</button>
                         </div>
-                        <input type="hidden" name="amountLimit" value="@Model.amountLimit">
                     </form>
                     <form class="form-horizontal" asp-controller="Home" asp-action ="IndexOrLogin" style="padding-top:50px;">
                         <button type="submit" class="btn btn-success">機能一覧へ</button>

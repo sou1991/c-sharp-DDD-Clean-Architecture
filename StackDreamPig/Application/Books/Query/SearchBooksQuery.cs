@@ -1,4 +1,5 @@
-﻿using Common.Books;
+﻿using Common;
+using Common.Books;
 using Entities;
 using Infrastructure;
 using stackDreamPig.Models.Book;
@@ -29,12 +30,12 @@ namespace Application.Books.Query
                 && p.registDate._registDate.Year == booksModel.registrationDateSearch.Year
                 && p.registDate._registDate.Month == booksModel.registrationDateSearch.Month);
 
-            booksModel.monthlyTotalAmountUsed = resultBooks.Sum(p => p.amountUsed);
+            booksModel.monthlyTotalAmountUsed = CurrencyType.CastIntegerToCurrencyType(resultBooks.Sum(p => p.amountUsed));
 
             var books = resultBooks
                 .Select(p => new BooksModel()
                 {
-                    amountUsed = p.amountUsed,
+                    currencyTypeAmountUsed = CurrencyType.CastIntegerToCurrencyType(p.amountUsed),
                     DispRegistDate = p.registDate._registDate
                 });
 

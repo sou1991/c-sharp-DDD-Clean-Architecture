@@ -13,7 +13,7 @@ namespace stackDreamPig.Models.Book.Query
 
         public int amountUsed { get; set; }
 
-        public int amountLimit { get; set; }
+        public string currencyTypeAmountLimit { get; set; }
 
         [Range(0, 2999, ErrorMessage = "年は0～2999の幅でお願いします")]
         [RegularExpression(@"[0-9]+", ErrorMessage = "年は数字のみ入力できます")]
@@ -74,6 +74,8 @@ namespace stackDreamPig.Models.Book.Query
 
         public DateTime DispRegistDate { get; set; }
 
-        public int? monthlyTotalAmountUsed  { get; set; } 
+        public string monthlyTotalAmountUsed  { get; set; } 
+
+        public string currencyTypeAmountUsed { get; set; }
     }
 }
