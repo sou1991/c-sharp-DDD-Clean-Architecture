@@ -27,19 +27,28 @@ namespace Presentation.Controllers
         [HttpPost]
         public IActionResult Index(MemberModel memberModel)
         {
-            var member = _searchMemberQuary.Execute(memberModel);
-            if (member != null && member.m_no != (int)EnumMember.NON_MEMBER)
+            try
             {
-                //会員Noをセッション情報にセット
-                HttpContext.Session.SetString("m_no", member.m_no.ToString());
-                memberModel.hasSession = true;
-            }
-            else
-            {
-                memberModel.isError = true;
-                memberModel.errorMessege = "ログイン失敗しました。再度入力してください。";
+                var member = _searchMemberQuary.Execute(memberModel);
 
-                return Login(memberModel);
+                if (member != null && member.m_no != (int)EnumMember.NON_MEMBER)
+                {
+                    //会員Noをセッション情報にセット
+                    HttpContext.Session.SetString("m_no", member.m_no.ToString());
+                    memberModel.hasSession = true;
+                }
+                else
+                {
+                    memberModel.isError = true;
+                    memberModel.errorMessege = "ログイン失敗しました。再度入力してください。";
+
+                    return Login(memberModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorHandling.ErrorHandler(memberModel, ex);
+                return View("_ErrorPage", memberModel);
             }
 
             return View(memberModel);

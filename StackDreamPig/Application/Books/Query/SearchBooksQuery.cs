@@ -21,7 +21,6 @@ namespace Application.Books.Query
             _dataBaseService = dataBaseService;
         }
 
-
         public IEnumerable<BooksModel> Execute(BooksModel booksModel)
         {
             var resultBooks = _dataBaseService.Books
@@ -40,7 +39,6 @@ namespace Application.Books.Query
                 });
 
             return books;
-
         }
     }
 }
