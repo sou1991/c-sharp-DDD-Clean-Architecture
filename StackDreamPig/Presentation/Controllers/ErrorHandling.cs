@@ -13,9 +13,15 @@ namespace Presentation.Controllers
         [HttpPost]
         public static void ErrorHandler(ModelBase model,Exception ex)
         {
-            if (!model.hasSession)
+            var exType = ex.GetType().Name;
+
+            if (exType == "ArgumentNullException" && !model.hasSession)
             {
                 model.errorMessege = "セッション情報が切れました。再度ログインしてください。";
+            }
+            else if(exType == "NpgsqlException")
+            {
+                model.errorMessege = "データベースの接続に失敗しました。";
             }
             else
             {

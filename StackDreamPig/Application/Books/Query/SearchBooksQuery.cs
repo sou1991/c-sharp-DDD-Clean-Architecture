@@ -21,8 +21,7 @@ namespace Application.Books.Query
             _dataBaseService = dataBaseService;
         }
 
-
-        public List<BooksModel> Execute(BooksModel booksModel)
+        public IEnumerable<BooksModel> Execute(BooksModel booksModel)
         {
             var resultBooks = _dataBaseService.Books
                 .OrderBy(p => p.registDate._registDate)
@@ -39,8 +38,7 @@ namespace Application.Books.Query
                     DispRegistDate = p.registDate._registDate
                 });
 
-            return books.ToList();
-
+            return books;
         }
     }
 }

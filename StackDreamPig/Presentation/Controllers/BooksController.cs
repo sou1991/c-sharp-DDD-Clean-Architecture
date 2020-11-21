@@ -33,8 +33,9 @@ namespace Presentation.Controllers
             try
             {
                 memberModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
+                memberModel.hasSession = true;
                 var member = _searchMemberQuary.Execute(memberModel);
-                member.hasSession = true;
+                
                 return View(member);
             }
             catch (Exception ex)
@@ -56,8 +57,9 @@ namespace Presentation.Controllers
             try
             {
                 booksModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
-                _booksRegistCommand.Execute(booksModel);
                 booksModel.hasSession = true;
+                _booksRegistCommand.Execute(booksModel);
+                
                 return View(booksModel);
             }
             catch (Exception ex)
@@ -74,11 +76,11 @@ namespace Presentation.Controllers
             try
             {
                 booksModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
+                booksModel.hasSession = true;
                 booksModel.booksList = _searchBooksQuery.Execute(booksModel);
 
                 var member = _searchMemberQuary.Execute(new MemberModel { m_no = booksModel.m_no});
-
-                booksModel.hasSession = true;
+                
                 booksModel.currencyTypeAmountLimit = CurrencyType.CastIntegerToCurrencyType(member.amountLimit);
                 return View(booksModel);
             }
