@@ -25,7 +25,7 @@ namespace stackDreamPig.Models.Book.Query
         [Range(1, 31, ErrorMessage = "日付は1～31日の幅でお願いします")]
         [RegularExpression(@"[0-9]+", ErrorMessage = "日付は数字のみ入力できます")]
         public string day { get; set; }
-        public List<BooksModel> booksList { get; set; }
+        public IEnumerable<BooksModel> booksList { get; set; }
 
 
         public DateTime registDate

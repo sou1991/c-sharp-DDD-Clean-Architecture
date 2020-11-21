@@ -8,6 +8,6 @@ namespace Application.Books.Query
 {
     public interface ISearchBooksQuery
     {
-        List<BooksModel> Execute(BooksModel booksModel);
+        IEnumerable<BooksModel> Execute(BooksModel booksModel);
     }
 }
