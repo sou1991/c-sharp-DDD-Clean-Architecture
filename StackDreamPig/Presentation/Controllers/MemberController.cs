@@ -84,14 +84,21 @@ namespace Presentation.Controllers
             try
             {
                 memberModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
+                memberModel.hasSession = true;
+            }
+            catch (ArgumentNullException ae)
+            {
+                ErrorHandling.ErrorHandler(memberModel, ae);
+                return View("_ErrorPage", memberModel);
+            }
+            try
+            {
                 var member = _searchMemberQuary.Execute(memberModel);
-                
                 return View("MemberUpdate", member);
             }
             catch (Exception ex)
             {
                 ErrorHandling.ErrorHandler(memberModel, ex);
-
                 return View("_ErrorPage", memberModel);
             }
         }
@@ -116,9 +123,16 @@ namespace Presentation.Controllers
             {
                 memberModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
                 memberModel.hasSession = true;
-
+            }
+            catch (ArgumentNullException ae)
+            {
+                ErrorHandling.ErrorHandler(memberModel, ae);
+                return View("_ErrorPage", memberModel);
+            }
+            try
+            {
                 _updateMemberCommnd.Execute(memberModel);
-                
+
                 return View("MemberUpdateComplete", memberModel);
             }
             catch (Exception ex)

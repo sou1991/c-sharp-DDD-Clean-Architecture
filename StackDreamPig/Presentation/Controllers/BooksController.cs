@@ -34,8 +34,15 @@ namespace Presentation.Controllers
             {
                 memberModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
                 memberModel.hasSession = true;
+            }
+            catch (ArgumentNullException ae)
+            {
+                ErrorHandling.ErrorHandler(memberModel, ae);
+                return View("_ErrorPage", memberModel);
+            }
+            try
+            {
                 var member = _searchMemberQuary.Execute(memberModel);
-                
                 return View(member);
             }
             catch (Exception ex)
@@ -58,8 +65,15 @@ namespace Presentation.Controllers
             {
                 booksModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
                 booksModel.hasSession = true;
+            }
+            catch (ArgumentNullException ae)
+            {
+                ErrorHandling.ErrorHandler(booksModel, ae);
+                return View("_ErrorPage", booksModel);
+            }
+            try
+            {
                 _booksRegistCommand.Execute(booksModel);
-                
                 return View(booksModel);
             }
             catch (Exception ex)
@@ -77,10 +91,18 @@ namespace Presentation.Controllers
             {
                 booksModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
                 booksModel.hasSession = true;
+            }
+            catch (ArgumentNullException ae)
+            {
+                ErrorHandling.ErrorHandler(booksModel, ae);
+                return View("_ErrorPage", booksModel);
+            }
+            try
+            {
                 booksModel.booksList = _searchBooksQuery.Execute(booksModel);
 
-                var member = _searchMemberQuary.Execute(new MemberModel { m_no = booksModel.m_no});
-                
+                var member = _searchMemberQuary.Execute(new MemberModel { m_no = booksModel.m_no });
+
                 booksModel.currencyTypeAmountLimit = CurrencyType.CastIntegerToCurrencyType(member.amountLimit);
                 return View(booksModel);
             }

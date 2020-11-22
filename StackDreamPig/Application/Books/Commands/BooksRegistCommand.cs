@@ -7,6 +7,7 @@ using System.Text;
 using Valueobject.Books;
 using System.Linq;
 using Common.Books;
+using Npgsql;
 
 namespace Application.Books.Commands
 {
@@ -22,30 +23,37 @@ namespace Application.Books.Commands
         {
             var DataTimeChangeToDataBaseFormat = booksModel.registDate;
 
-            var alredyRegistedBooks = _dataBaseService.Books
-            .Where(p => p.m_no == booksModel.m_no && p.registDate._registDate == DataTimeChangeToDataBaseFormat);
-
-            if(alredyRegistedBooks.Count() == (int)EnumBooks.NON_BOOKS)
+            try
             {
-                var booksEntity = new BooksEntity()
+                var alredyRegistedBooks = _dataBaseService.Books
+                .Where(p => p.m_no == booksModel.m_no && p.registDate._registDate == DataTimeChangeToDataBaseFormat);
+                //既に登録されている日は更新する。未登録の日は新規登録する。
+                if (alredyRegistedBooks.Any())
                 {
-                    m_no = booksModel.m_no,
-                    amountUsed = booksModel.amountUsed,
-                    intime = DateTime.Now,
-                    registDate = new RegistDateValueObject(booksModel.registDate)
-                };
-                _dataBaseService.Books.Add(booksEntity);
+                    var books = alredyRegistedBooks.First();
+
+                    books.amountUsed = booksModel.amountUsed;
+                    books.registDate = new RegistDateValueObject(booksModel.registDate);
+                    books.utime = DateTime.Now;
+                }
+                else
+                {
+                    var booksEntity = new BooksEntity()
+                    {
+                        m_no = booksModel.m_no,
+                        amountUsed = booksModel.amountUsed,
+                        intime = DateTime.Now,
+                        registDate = new RegistDateValueObject(booksModel.registDate)
+                    };
+                    _dataBaseService.Books.Add(booksEntity);
+                }
+
+                _dataBaseService.Save();
             }
-            else
+            catch (NpgsqlException)
             {
-                var books = alredyRegistedBooks.First();
-
-                books.amountUsed = booksModel.amountUsed;
-                books.registDate = new RegistDateValueObject(booksModel.registDate);
-                books.utime = DateTime.Now;
+                throw new Exception("データベース接続に失敗しました。");
             }
-
-            _dataBaseService.Save();
         }
     }
 }
