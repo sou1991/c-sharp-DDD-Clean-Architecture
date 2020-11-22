@@ -25,7 +25,16 @@ namespace Application.Books.Commands
             var alredyRegistedBooks = _dataBaseService.Books
             .Where(p => p.m_no == booksModel.m_no && p.registDate._registDate == DataTimeChangeToDataBaseFormat);
 
-            if(alredyRegistedBooks.Count() == (int)EnumBooks.NON_BOOKS)
+            //既に登録されている日は更新する。未登録の日は新規登録する。
+            if(alredyRegistedBooks.Any())
+            {
+                var books = alredyRegistedBooks.First();
+
+                books.amountUsed = booksModel.amountUsed;
+                books.registDate = new RegistDateValueObject(booksModel.registDate);
+                books.utime = DateTime.Now;
+            }
+            else
             {
                 var booksEntity = new BooksEntity()
                 {
@@ -35,14 +44,6 @@ namespace Application.Books.Commands
                     registDate = new RegistDateValueObject(booksModel.registDate)
                 };
                 _dataBaseService.Books.Add(booksEntity);
-            }
-            else
-            {
-                var books = alredyRegistedBooks.First();
-
-                books.amountUsed = booksModel.amountUsed;
-                books.registDate = new RegistDateValueObject(booksModel.registDate);
-                books.utime = DateTime.Now;
             }
 
             _dataBaseService.Save();

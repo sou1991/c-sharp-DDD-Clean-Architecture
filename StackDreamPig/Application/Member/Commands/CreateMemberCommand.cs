@@ -51,14 +51,7 @@ namespace Application.Member.Commands
             var member = _dataBaseService.Member
             .Where(p => p.userName == memberModel.userName);
 
-            if (member.Any())
-            {
-                return true;   
-            }
-            else
-            {
-                return false;
-            }
+            return member.Any() ? true : false;
         }
     }
 }
