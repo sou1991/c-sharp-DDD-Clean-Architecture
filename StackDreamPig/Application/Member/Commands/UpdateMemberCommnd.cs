@@ -2,6 +2,7 @@
 using Common.Member;
 using Entities;
 using Infrastructure;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,17 +22,24 @@ namespace Application.Member.Commands
 
         public void Execute(MemberModel memberModel)
         {
-            if (CanUpdateMember(memberModel))
+            try
             {
-                UpdateMember(memberModel);
+                if (CanUpdateMember(memberModel))
+                {
+                    UpdateMember(memberModel);
 
-                _dataBaseService.Save();
+                    _dataBaseService.Save();
+                }
+                else
+                {
+                    memberModel.isError = true;
+                    memberModel.errorMessege = "既に登録されたユーザーです。";
+
+                }
             }
-            else
+            catch (NpgsqlException)
             {
-                memberModel.isError = true;
-                memberModel.errorMessege = "既に登録されたユーザーです。";
-
+                throw new Exception("データベース接続に失敗しました。");
             }
         }
 

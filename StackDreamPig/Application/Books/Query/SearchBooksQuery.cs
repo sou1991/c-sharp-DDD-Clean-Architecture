@@ -2,6 +2,7 @@
 using Common.Books;
 using Entities;
 using Infrastructure;
+using Npgsql;
 using stackDreamPig.Models.Book;
 using stackDreamPig.Models.Book.Query;
 using System;
@@ -23,22 +24,28 @@ namespace Application.Books.Query
 
         public IEnumerable<BooksModel> Execute(BooksModel booksModel)
         {
-            var resultBooks = _dataBaseService.Books
-                .OrderBy(p => p.registDate._registDate)
+            try
+            {
+                var resultBooks = _dataBaseService.Books
+                .OrderByDescending(p => p.registDate._registDate)
                 .Where(p => p.m_no == booksModel.m_no
                 && p.registDate._registDate.Year == booksModel.registrationDateSearch.Year
                 && p.registDate._registDate.Month == booksModel.registrationDateSearch.Month);
 
-            booksModel.monthlyTotalAmountUsed = CurrencyType.CastIntegerToCurrencyType(resultBooks.Sum(p => p.amountUsed));
+                booksModel.monthlyTotalAmountUsed = CurrencyType.CastIntegerToCurrencyType(resultBooks.Sum(p => p.amountUsed));
 
-            var books = resultBooks
-                .Select(p => new BooksModel()
-                {
-                    currencyTypeAmountUsed = CurrencyType.CastIntegerToCurrencyType(p.amountUsed),
-                    DispRegistDate = p.registDate._registDate
-                });
-
-            return books;
+                var books = resultBooks
+                    .Select(p => new BooksModel()
+                    {
+                        currencyTypeAmountUsed = CurrencyType.CastIntegerToCurrencyType(p.amountUsed),
+                        DispRegistDate = p.registDate._registDate
+                    });
+                return books;
+            }
+            catch (NpgsqlException)
+            {
+                throw new Exception("データベース接続に失敗しました。");
+            }
         }
     }
 }

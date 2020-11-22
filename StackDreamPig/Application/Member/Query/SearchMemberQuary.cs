@@ -8,6 +8,7 @@ using stackDreamPig.Models.Book.Query;
 using Common.Member;
 using System.Text.Json;
 using Common;
+using Npgsql;
 
 namespace Application.Member.Query
 {
@@ -22,16 +23,22 @@ namespace Application.Member.Query
 
         public MemberModel Execute(MemberModel memberModel)
         {
-            
-            if (memberModel.m_no == (int)EnumMember.NON_MEMBER)
+            try
             {
-                return AbleToLogin(memberModel);
+                if (memberModel.m_no == (int)EnumMember.NON_MEMBER)
+                {
+                    return AbleToLogin(memberModel);
+                }
+                else
+                {
+                    return GetOneMember(memberModel);
+                }
             }
-            else
+            catch (NpgsqlException)
             {
-                return GetOneMember(memberModel);
+                throw new Exception("データベース接続に失敗しました。");
             }
-            
+
         }
         public MemberModel AbleToLogin(MemberModel memberModel)
         {
