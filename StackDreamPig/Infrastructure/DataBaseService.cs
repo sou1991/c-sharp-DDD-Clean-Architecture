@@ -11,9 +11,9 @@ namespace Infrastructure
         {
         }
 
-        public virtual DbSet<MemberEntity> Member { get; set; }
+        public DbSet<MemberEntity> Member { get; set; }
 
-        public virtual DbSet<BooksEntity> Books { get; set; }
+        public DbSet<BooksEntity> Books { get; set; }
 
         public void Save()
         {
