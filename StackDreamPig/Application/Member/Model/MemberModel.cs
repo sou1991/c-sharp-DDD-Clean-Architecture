@@ -10,7 +10,7 @@ namespace Application.Member.Model
         public int m_no { get; set; }
         [MaxLength(100, ErrorMessage = "名前は100文字以内でお願いします")]
         public string userName { get; set; }
-        [MaxLength(100, ErrorMessage = "パスワードは100文字以内でお願いします")]
+        [MaxLength(100, ErrorMessage = "パスワードは100文字以内で入力してください")]
         public string password { get; set; }
 
         [MaxLength(9, ErrorMessage = "月収は扱えない桁数です")]
