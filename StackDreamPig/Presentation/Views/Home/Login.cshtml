@@ -16,14 +16,21 @@
      }
 
      function Validation(bookst_list, err_cnt) {
-            bookst_list.forEach(function (elem) {
-               if (elem.val() == "") {
-                 alert(elem.attr('id') + "は必須項目です。");
-                 err_cnt++;
-               }
-            });
+        bookst_list.forEach(function (elem) {
+            if (elem.val() == "") {
+                alert(elem.attr('id') + "は必須項目です。");
+                err_cnt++;
+            }
+        });
 
-            return err_cnt;
+        return err_cnt;
+     }
+
+        function Dummy_entry() {
+            $('input[name="userName"]').val('stgDummyUser');
+            $('input[name="password"]').val('stgDummyUser');
+
+            document.login_form.submit();
     }
 
     </script>
@@ -45,12 +52,17 @@
             <div class="form-group">
                 <label for="Password" class="col-sm-2 control-label">パスワード</label>
                 <div class="col-sm-3">
-                    <input type="password" class="form-control" id ="パスワード" name="password" placeholder="Password">
+                    <input type="password" class="form-control" id="パスワード" name="password" placeholder="Password">
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-4 col-sm-10">
                     <button type="button" class="btn btn-success" onclick="ExecuteValidatetionAfterSubmit();">Login</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-10">
+                    <button type="button" class="btn btn-success" onclick="Dummy_entry();">テストログイン</button>
                 </div>
             </div>
         </form>
