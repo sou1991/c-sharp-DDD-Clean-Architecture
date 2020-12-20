@@ -16,14 +16,14 @@
 
         });
 
-        function ExecuteValidatetionAfterSubmit() {
+        const ExecuteValidatetionAfterSubmit = () => {
 
-            var bookst_list = [
+            const bookst_list = [
               $('input[name="year"]'),
               $('input[name="month"]'),
             ]
 
-            var err_cnt = Validation(bookst_list, 0);
+            const err_cnt = Validation(bookst_list, 0);
 
 
             if (err_cnt <= 0) {
@@ -31,7 +31,7 @@
             }
         }
 
-        function Validation(bookst_list, err_cnt) {
+        const Validation = (bookst_list, err_cnt) => {
             bookst_list.forEach(function (elem) {
             if (elem.val() == "") {
                alert(elem.attr('id') + "は必須項目です。");
