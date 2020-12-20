@@ -3,7 +3,7 @@
 }
 <script>
 
-      function ExecuteValidatetionAfterSubmit() {
+      const ExecuteValidatetionAfterSubmit = () => {
          const bookst_list = [
               $('input[name="userName"]'),
               $('input[name="password"]'),
@@ -17,14 +17,13 @@
           if (!isError) {
               document.entry_form.submit();
           }
-     } 
+      } 
 
-     function Validation(bookst_list, isError) {
+     const Validation = (bookst_list, isError) => {
         bookst_list.some(function (elem) {
             if (elem.val() == "") {
                 alert(elem.attr('id') + "は必須項目です。");
                 isError = true;
-                //break
                 return true;
             }
         });

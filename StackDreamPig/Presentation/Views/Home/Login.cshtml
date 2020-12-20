@@ -1,21 +1,20 @@
 ﻿
     <script>
 
-     function ExecuteValidatetionAfterSubmit() {
+     const ExecuteValidatetionAfterSubmit = () => {
+        var bookst_list = [
+            $('input[name="userName"]'),
+            $('input[name="password"]')
+        ]
 
-            var bookst_list = [
-              $('input[name="userName"]'),
-              $('input[name="password"]')
-            ]
+        var err_cnt = Validation(bookst_list, 0);
 
-            var err_cnt = Validation(bookst_list, 0);
-
-            if (err_cnt <= 0) {
-                document.login_form.submit();
-            }
+        if (err_cnt <= 0) {
+            document.login_form.submit();
+        }
      }
 
-     function Validation(bookst_list, err_cnt) {
+     const Validation = (bookst_list, err_cnt) => {
         bookst_list.forEach(function (elem) {
             if (elem.val() == "") {
                 alert(elem.attr('id') + "は必須項目です。");
@@ -26,11 +25,11 @@
         return err_cnt;
      }
 
-        function Dummy_entry() {
-            $('input[name="userName"]').val('stgDummyUser');
-            $('input[name="password"]').val('stgDummyUser');
+    const Dummy_entry = () => {
+        $('input[name="userName"]').val('stgDummyUser');
+        $('input[name="password"]').val('stgDummyUser');
 
-            document.login_form.submit();
+        document.login_form.submit();
     }
 
     </script>
