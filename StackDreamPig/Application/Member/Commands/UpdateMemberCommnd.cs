@@ -14,6 +14,7 @@ namespace Application.Member.Commands
     public class UpdateMemberCommnd : SecureService, IUpdateMemberCommnd
     {
         private IDataBaseService _dataBaseService;
+        private readonly int DUMMY_USER = 1;
 
         public UpdateMemberCommnd(IDataBaseService dataBaseService)
         {
@@ -22,24 +23,32 @@ namespace Application.Member.Commands
 
         public void Execute(MemberModel memberModel)
         {
-            try
+            if(memberModel.m_no == DUMMY_USER)
             {
-                if (CanUpdateMember(memberModel))
-                {
-                    UpdateMember(memberModel);
-
-                    _dataBaseService.Save();
-                }
-                else
-                {
-                    memberModel.isError = true;
-                    memberModel.errorMessege = "既に登録されたユーザーです。";
-
-                }
+                memberModel.isError = true;
+                memberModel.errorMessege = "テストユーザーの為、変更できません。";
             }
-            catch (NpgsqlException)
+            else
             {
-                throw new Exception("データベース接続に失敗しました。");
+                try
+                {
+                    if (CanUpdateMember(memberModel))
+                    {
+                        UpdateMember(memberModel);
+
+                        _dataBaseService.Save();
+                    }
+                    else
+                    {
+                        memberModel.isError = true;
+                        memberModel.errorMessege = "既に登録されたユーザーです。";
+
+                    }
+                }
+                catch (NpgsqlException)
+                {
+                    throw new Exception("データベース接続に失敗しました。");
+                }
             }
         }
 
