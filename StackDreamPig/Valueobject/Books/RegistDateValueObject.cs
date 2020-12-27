@@ -6,7 +6,7 @@ namespace Valueobject.Books
 {
     public class RegistDateValueObject : ValueObject <RegistDateValueObject>
     {
-        //DIの関係でフィールドをpublicにし、プロパティをprivateにする
+        //DIの関係でフィールドをpublicにし、setter側でprivateにする
         public DateTime _registDate { get; private set; }
 
         public RegistDateValueObject(DateTime registDate)
