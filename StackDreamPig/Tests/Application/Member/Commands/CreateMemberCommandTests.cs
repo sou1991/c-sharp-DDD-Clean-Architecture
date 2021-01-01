@@ -25,30 +25,29 @@ namespace Tests.Application.Member
         private IQueryable<MemberEntity> _memberEntity;
         private Mock<DbSet<MemberEntity>> _mockMyEntity;
 
-        private readonly int m_no = 1;
-        private readonly string userName = "testuser";
-        private readonly string password = "test";
-        private readonly string monthlyIncome = "300000";
-        private readonly string savings = "100000";
-        private readonly string fixedCost = "50000";
-        private readonly int amontLimit = 150000;
+        private readonly int _m_no = 1;
+        private readonly string _userName = "stgDummyUser";
+        private readonly string _monthlyIncome = "300000";
+        private readonly string _savings = "100000";
+        private readonly string _fixedCost = "50000";
+        private readonly int _amountLimit = 150000;
 
         [SetUp]
         public void SetUp()
         {
+            var memberValueObject = new MemberValueObject(_userName, null, null);
+            var amountValueObject = new AmountValueObject(_monthlyIncome, _savings, _fixedCost);
+            var amountLimitValueObject = new AmountLimitValueObject(_amountLimit);
+
+            var memberEntity = new List<MemberEntity>
+            {
+                new MemberEntity(_m_no, memberValueObject, amountValueObject, amountLimitValueObject, DateTime.Now)
+
+            }.AsQueryable();
 
             _memberEntity = new List<MemberEntity>
             {
-                new MemberEntity
-                {
-                    m_no = this.m_no,
-                    userName = userName,
-                    password = this.password,
-                    monthlyIncome = this.monthlyIncome,
-                    savings = this.savings,
-                    fixedCost = this.fixedCost,
-                    amountLimit = new AmountLimitValueObject(amontLimit)
-                }
+               new MemberEntity(memberValueObject, amountValueObject, amountLimitValueObject, DateTime.Now)
 
             }.AsQueryable();
 
@@ -62,12 +61,12 @@ namespace Tests.Application.Member
 
             _memberModel = new MemberModel
             {
-                m_no = this.m_no,
-                userName = "太郎",
-                password = "山田",
-                monthlyIncome = this.monthlyIncome,
-                savings = this.savings,
-                fixedCost = this.fixedCost
+                m_no = this._m_no,
+                userName = "DummyUser",
+                password = "DummyUser",
+                monthlyIncome = this._monthlyIncome,
+                savings = this._savings,
+                fixedCost = this._fixedCost
             };
 
             var mockContext = new Mock<IDataBaseService>();

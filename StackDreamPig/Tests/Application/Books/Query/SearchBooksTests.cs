@@ -1,6 +1,7 @@
 ﻿using Application.Books.Query;
 using Application.Member.Model;
 using Application.Member.Query;
+using Common;
 using Entities;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -31,16 +32,12 @@ namespace Tests.Application.Books
         [SetUp]
         public void SetUp()
         {
-            var registdate = _year + "-" + _month;
+            var registDate = _year + "-" + _month;
 
             var booksEntity = new List<BooksEntity>()
             {
-                 new BooksEntity()
-                {
-                    m_no = _m_no,
-                    amountUsed = _amountUsed,
-                    registDate = new RegistDateValueObject(DateTime.Parse(registdate))
-                }
+                new BooksEntity(_m_no, _amountUsed, DateTime.Now, new RegistDateValueObject(DateTime.Parse(registDate)))
+
             }.AsQueryable();
 
             _booksModel = new BooksModel()
@@ -72,7 +69,7 @@ namespace Tests.Application.Books
             var result = results.First();
             var registedDate = DateTime.Parse(_year + "/" + _month);
 
-            Assert.That(result.amountUsed, Is.EqualTo(_amountUsed));
+            Assert.That(result.currencyTypeAmountUsed, Is.EqualTo(CurrencyType.CastIntegerToCurrencyType(_amountUsed)));
             Assert.That(result.DispRegistDate, Is.EqualTo(registedDate.Date));
         }
     }

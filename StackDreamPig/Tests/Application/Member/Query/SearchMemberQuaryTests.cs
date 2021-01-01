@@ -21,8 +21,9 @@ namespace Tests.Application.Member.Query
         private SearchMemberQuary _searchMemberQuary;
 
         private readonly int _m_no = 1;
-        private readonly string _userName = "testuser";
-        private readonly string _password = "test";
+        private readonly string _userName = "stgDummyUser";
+        private readonly string _password = "BGAy4ewuMhZ8vjJz5OtxfYPLiumP/kbGRkudsuTObaE=";
+        private readonly string _salt = "\"HStsgbnfIH5TmnK0Awr/lQ==\"";
         private readonly string _monthlyIncome = "300000"; 
         private readonly string _savings = "50000";
         private readonly string _fixedCost = "100000";
@@ -34,19 +35,14 @@ namespace Tests.Application.Member.Query
         [SetUp]
         public void SetUp()
         {
+            var memberValueObject = new MemberValueObject(_userName, _password, _salt);
+            var amountValueObject = new AmountValueObject(_monthlyIncome, _savings, _fixedCost);
+            var amountLimitValueObject = new AmountLimitValueObject(_amountLimit);
+
             var memberEntity = new List<MemberEntity>
             {
-                new MemberEntity
-                {
-                    m_no = _m_no,
-                    userName = _userName,
-                    password = _password,
-                    monthlyIncome = _monthlyIncome,
-                    savings = _savings,
-                    fixedCost = _fixedCost,
-                    amountLimit = new AmountLimitValueObject(_amountLimit)
+                new MemberEntity(_m_no, memberValueObject, amountValueObject, amountLimitValueObject, DateTime.Now)
 
-                }
             }.AsQueryable();
 
             var mockMyEntity = new Mock<DbSet<MemberEntity>>();
@@ -60,7 +56,7 @@ namespace Tests.Application.Member.Query
             {
                 m_no = _m_no,
                 userName = _userName,
-                password = _password,
+                password = "stgDummyUser",
 
             };
 
@@ -83,23 +79,24 @@ namespace Tests.Application.Member.Query
            var result = _searchMemberQuary.Execute(_memberModel);
            Assert.AreNotEqual(result.m_no, 2);
        }
-        [Test]
-        public void CheckLoginTests()
-        {
-            var result = _searchMemberQuary.AbleToLogin(_memberModel);
-            Assert.That(result.m_no, Is.EqualTo(_m_no));
-        }
+        //To Do
+       [Test]
+       public void CheckLoginTests()
+       {
+           var result = _searchMemberQuary.AbleToLogin(_memberModel);
+           Assert.That(result.m_no, Is.EqualTo(_m_no));
+       }
 
-        [Test]
-        public void GetOneMemberTests()
-        {
-            var result = _searchMemberQuary.GetOneMember(_memberModel);
-            Assert.That(result.m_no, Is.EqualTo(_m_no));
-            Assert.That(result.userName, Is.EqualTo(_userName));
-            Assert.That(result.monthlyIncome, Is.EqualTo(_monthlyIncome));
-            Assert.That(result.savings, Is.EqualTo(_savings));
-            Assert.That(result.fixedCost, Is.EqualTo(_fixedCost));
-            Assert.That(result.amountLimit, Is.EqualTo(_amountLimit));
+       [Test]
+       public void GetOneMemberTests()
+       {
+           var result = _searchMemberQuary.GetOneMember(_memberModel);
+           Assert.That(result.m_no, Is.EqualTo(_m_no));
+           Assert.That(result.userName, Is.EqualTo(_userName));
+           Assert.That(result.monthlyIncome, Is.EqualTo(_monthlyIncome));
+           Assert.That(result.savings, Is.EqualTo(_savings));
+           Assert.That(result.fixedCost, Is.EqualTo(_fixedCost));
+           Assert.That(result.amountLimit, Is.EqualTo(_amountLimit));
         }
     }
 }

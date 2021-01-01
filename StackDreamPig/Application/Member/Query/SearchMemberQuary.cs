@@ -9,6 +9,7 @@ using Common.Member;
 using System.Text.Json;
 using Common;
 using Npgsql;
+using Valueobject.Member;
 
 namespace Application.Member.Query
 {
@@ -43,21 +44,22 @@ namespace Application.Member.Query
         public MemberModel AbleToLogin(MemberModel memberModel)
         {
             var securePassword = _dataBaseService.Member
-                               .Where(p => p.userName == memberModel.userName)
+                               .Where(p => p.memberValueObject.userName == memberModel.userName)
                                .SingleOrDefault();
 
             if (securePassword == null) return null;
 
             //To Do 呼び出し元のコメント参照
-            var salt =  JsonSerializer.Deserialize<byte[]>(securePassword.saltPassword);
+            var salt =  JsonSerializer.Deserialize<byte[]>(securePassword.memberValueObject.saltPassword);
 
-            if (VerifyPassword(securePassword.password,memberModel.password, salt))
+            if (VerifyPassword(securePassword.memberValueObject.password, memberModel.password, salt))
             {
-                var results = _dataBaseService.Member.Where(p => p.password == securePassword.password && p.userName == memberModel.userName)
-                .Select(p => new MemberModel
-                {
-                    m_no = p.m_no
-                });
+                var results = _dataBaseService.Member
+                    .Where(p => p.memberValueObject.password == securePassword.memberValueObject.password && p.memberValueObject.userName == memberModel.userName)
+                    .Select(p => new MemberModel
+                    {
+                        m_no = p.m_no
+                    });
 
                 var result = results.SingleOrDefault();
                 return result;
@@ -66,19 +68,18 @@ namespace Application.Member.Query
             return null;
 
         }
-
+       
         public MemberModel GetOneMember(MemberModel memberModel)
         {
             var results = _dataBaseService.Member.Where(p => p.m_no == memberModel.m_no)
             .Select(p => new MemberModel
             {
                 m_no = p.m_no,
-                password = p.password,
-                userName = p.userName,
-                monthlyIncome = p.monthlyIncome,
-                savings = p.savings,
-                fixedCost = p.fixedCost,
-                currencyTypeAmountLimit = CurrencyType.CastIntegerToCurrencyType(p.amountLimit._amountLimit)
+                userName = p.memberValueObject.userName,
+                monthlyIncome = p.amountValueObject.monthlyIncome,
+                savings = p.amountValueObject.savings,
+                fixedCost = p.amountValueObject.fixedCost,
+                currencyTypeAmountLimit = CurrencyType.CastIntegerToCurrencyType(p.amountLimitValueObject._amountLimit)
             });
 
             var result = results.SingleOrDefault();
