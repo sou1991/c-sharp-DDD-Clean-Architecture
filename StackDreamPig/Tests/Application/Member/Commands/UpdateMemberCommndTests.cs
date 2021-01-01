@@ -22,29 +22,33 @@ namespace Tests.Application.Member.Commands
         private Mock<DbSet<MemberEntity>> _mockMyEntity;
         private Mock<IDataBaseService> _mockContext;
 
-        private readonly int m_no = 1;
-        private readonly string userName = "testuser";
-        private readonly string password = "test";
-        private readonly string monthlyIncome = "300000";
-        private readonly string savings = "100000";
-        private readonly string fixedCost = "50000";
-        private readonly int amontLimit = 150000;
+        private readonly int _m_no = 1;
+        private readonly string _userName = "testuser";
+        private readonly string _password = "test";
+        private readonly string _monthlyIncome = "300000";
+        private readonly string _savings = "100000";
+        private readonly string _fixedCost = "50000";
+        private readonly int _amontLimit = 150000;
 
         [SetUp]
         public void SetUp()
         {
+            var memberValueObject = new MemberValueObject(_userName, null, null);
+            var amountValueObject = new AmountValueObject(_monthlyIncome, _savings, _fixedCost);
+            var amountLimitValueObject = new AmountLimitValueObject(_amontLimit);
+
             _memberEntity = new List<MemberEntity>
             {
-                new MemberEntity
-                {
-                    m_no = this.m_no,
-                    userName = userName,
-                    password = this.password,
-                    monthlyIncome = this.monthlyIncome,
-                    savings = this.savings,
-                    fixedCost = this.fixedCost,
-                    amountLimit = new AmountLimitValueObject(amontLimit)
-                }
+                //new MemberEntity
+                //{
+                //    m_no = this.m_no,
+                //    userName = userName,
+                //    password = this.password,
+                //    monthlyIncome = this.monthlyIncome,
+                //    savings = this.savings,
+                //    fixedCost = this.fixedCost,
+                //    amountLimit = new AmountLimitValueObject(amontLimit)
+                //}
 
             }.AsQueryable();
 
@@ -66,11 +70,11 @@ namespace Tests.Application.Member.Commands
         {
             _memberModel = new MemberModel
             {
-                m_no = this.m_no,
+                m_no = this._m_no,
                 userName = "太郎",
-                monthlyIncome = this.monthlyIncome,
-                savings = this.savings,
-                fixedCost = this.fixedCost
+                monthlyIncome = this._monthlyIncome,
+                savings = this._savings,
+                fixedCost = this._fixedCost
             };
 
             _command.Execute(_memberModel);
@@ -85,10 +89,10 @@ namespace Tests.Application.Member.Commands
             _memberModel = new MemberModel
             {
                 m_no = 2,
-                userName = userName,
-                monthlyIncome = this.monthlyIncome,
-                savings = this.savings,
-                fixedCost = this.fixedCost
+                userName = _userName,
+                monthlyIncome = this._monthlyIncome,
+                savings = this._savings,
+                fixedCost = this._fixedCost
             };
 
             _command.Execute(_memberModel);

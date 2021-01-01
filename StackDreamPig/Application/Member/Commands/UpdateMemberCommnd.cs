@@ -57,19 +57,17 @@ namespace Application.Member.Commands
             var member = _dataBaseService.Member
             .Where(p => p.m_no == memberModel.m_no).First();
 
-            member.userName = memberModel.userName;
-            member.monthlyIncome = memberModel.monthlyIncome;
-            member.savings = memberModel.savings;
-            member.fixedCost = memberModel.fixedCost;
-            member.amountLimit = new AmountLimitValueObject(memberModel.amountLimit);
+            //To Do 不変性にしたいが更新処理O/Rマッパーがsetterを強要する。
+            member.memberValueObject = new MemberValueObject(memberModel.userName, member.memberValueObject.password, member.memberValueObject.saltPassword);
+            member.amountValueObject = new AmountValueObject(memberModel.monthlyIncome, memberModel.savings, memberModel.fixedCost);
+            member.amountLimitValueObject = new AmountLimitValueObject(memberModel.amountLimit);
             member.utime = DateTime.Now;
-
         }
 
         public bool CanUpdateMember(MemberModel memberModel)
         {
             var member = _dataBaseService.Member
-            .Where(p => p.userName == memberModel.userName);
+            .Where(p => p.memberValueObject.userName == memberModel.userName);
 
             if (member.Any())
             {

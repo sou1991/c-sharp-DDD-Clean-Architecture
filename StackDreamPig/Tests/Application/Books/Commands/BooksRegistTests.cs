@@ -30,18 +30,12 @@ namespace Tests.Application.Books.Commands
         [SetUp]
         public void SetUp()
         {
-            var registdate = _year + "/" + _month + "/" + _day;
+            var registDate = _year + "/" + _month + "/" + _day;
 
             var booksEntity = new List<BooksEntity>
             {
-                new BooksEntity
-                {
-                  m_no = _m_no,
-                  amountUsed = _amountUsed,
-                  registDate = new RegistDateValueObject(DateTime.Parse(registdate)),
-                  intime = DateTime.Now,
-                  utime = DateTime.Now
-                }
+                new BooksEntity(_m_no, _amountUsed, DateTime.Now, new RegistDateValueObject(DateTime.Parse(registDate)))
+
             }.AsQueryable();
 
             _booksModel = new BooksModel()

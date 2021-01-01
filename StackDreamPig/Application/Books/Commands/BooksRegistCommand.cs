@@ -38,13 +38,7 @@ namespace Application.Books.Commands
                 }
                 else
                 {
-                    var booksEntity = new BooksEntity()
-                    {
-                        m_no = booksModel.m_no,
-                        amountUsed = booksModel.amountUsed,
-                        intime = DateTime.Now,
-                        registDate = new RegistDateValueObject(booksModel.registDate)
-                    };
+                    var booksEntity = new BooksEntity(booksModel.m_no, booksModel.amountUsed, DateTime.Now, new RegistDateValueObject(booksModel.registDate));
                     _dataBaseService.Books.Add(booksEntity);
                 }
 

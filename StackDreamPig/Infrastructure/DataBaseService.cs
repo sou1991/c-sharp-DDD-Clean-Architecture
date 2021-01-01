@@ -31,24 +31,21 @@ namespace Infrastructure
                 entity.Property(e => e.m_no)
                 .HasColumnName("m_no");
 
-                entity.Property(e => e.password)
-                .HasColumnName("password");
-        
-                entity.Property(e => e.monthlyIncome)
-                .HasColumnName("monthlyIncome");
+                entity.OwnsOne(e => e.memberValueObject, a => a.WithOwner());
 
-                entity.Property(e => e.fixedCost)
-                .HasColumnName("fixedCost");
+                entity.OwnsOne(e => e.amountValueObject, a => a.WithOwner());
 
-                entity.OwnsOne(e => e.amountLimit, a => a.WithOwner());
-
-                entity.Property(e => e.saltPassword)
-                .HasColumnName("saltPassword");
+                entity.OwnsOne(e => e.amountLimitValueObject, a => a.WithOwner());
 
             });
             modelBuilder.Entity<BooksEntity>(entity =>
             {
                 entity.ToTable("books");
+
+                entity.HasKey(e => e.id);
+
+                entity.Property(e => e.m_no)
+                .HasColumnName("id");
 
                 entity.Property(e => e.m_no)
                 .HasColumnName("m_no");

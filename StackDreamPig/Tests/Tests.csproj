@@ -33,4 +33,8 @@
     <ProjectReference Include="..\Valueobject\Valueobject.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ValueObject\Member\" />
+  </ItemGroup>
+
 </Project>

@@ -19,21 +19,17 @@ namespace Application.Member.Commands
 
         public void Execute(MemberModel memberModel)
         {
+            
             var (securePassword, passwordSalt) = HashToValue(memberModel.password);
             var serializePasswordSalt = ToSerialize(passwordSalt);
 
-            var _memberEntity = new MemberEntity {
-                userName = memberModel.userName,
-                password = securePassword,
-                monthlyIncome = memberModel.monthlyIncome,
-                savings = memberModel.savings,
-                fixedCost = memberModel.fixedCost,
-                amountLimit = new AmountLimitValueObject(memberModel.amountLimit),
-                saltPassword = serializePasswordSalt,
-                intime = DateTime.Now
-            };
+            //To Do　値オブジェクトを不変化にしたい。O/Rマッパーにsetterを強要される
+            var memberValueObject = new MemberValueObject(memberModel.userName, securePassword, serializePasswordSalt);
+            var amountValueObject = new AmountValueObject(memberModel.monthlyIncome, memberModel.savings, memberModel.fixedCost);
+            var amountLimitValueObject = new AmountLimitValueObject(memberModel.amountLimit);
 
-            
+            var _memberEntity = new MemberEntity(memberValueObject, amountValueObject, amountLimitValueObject, DateTime.Now);
+
             if (HasRegistMember(memberModel))
             {
                 memberModel.isError = true;
@@ -49,7 +45,7 @@ namespace Application.Member.Commands
         public bool HasRegistMember(MemberModel memberModel)
         {
             var member = _dataBaseService.Member
-            .Where(p => p.userName == memberModel.userName);
+            .Where(p => p.memberValueObject.userName == memberModel.userName);
 
             return member.Any() ? true : false;
         }
