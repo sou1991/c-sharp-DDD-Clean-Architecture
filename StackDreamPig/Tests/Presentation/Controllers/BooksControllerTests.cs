@@ -19,7 +19,7 @@ namespace Tests.Presentation.Controllers
         private AutoMoqer _mocker;
         private BooksModel _booksModel;
         private MemberModel _memberModel;
-        private int _m_no = 1;
+        private string _m_no = "1";
 
         [SetUp]
         public void SetUp()

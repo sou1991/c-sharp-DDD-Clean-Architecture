@@ -22,6 +22,8 @@ namespace Application.Books.Commands
         }
         public void Execute(BooksModel booksModel)
         {
+            if (string.IsNullOrEmpty(booksModel.m_no)) throw new ArgumentNullException(null, "セッションが切れました。再度ログインしてください。");
+
             var DataTimeChangeToDataBaseFormat = booksModel.registDate;
 
             try

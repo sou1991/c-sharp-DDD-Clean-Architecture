@@ -6,6 +6,6 @@ namespace Entities
 {
     interface IEntity
     {
-        int m_no { get; }
+        string m_no { get; }
     }
 }

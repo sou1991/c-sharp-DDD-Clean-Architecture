@@ -9,7 +9,7 @@ namespace stackDreamPig.Models.Book.Query
 {
     public class BooksModel : ModelBase
     {
-        public int m_no { get; set; }
+        public string m_no { get; set; }
 
         public int amountUsed { get; set; }
 

@@ -21,7 +21,7 @@ namespace Tests.Application.Member.Query
 
         private SearchMemberQuary _searchMemberQuary;
 
-        private readonly int _m_no = 1;
+        private readonly string _m_no = "1";
         private readonly string _userName = "stgDummyUser";
         private readonly string _password = "BGAy4ewuMhZ8vjJz5OtxfYPLiumP/kbGRkudsuTObaE=";
         private readonly string _salt = "\"HStsgbnfIH5TmnK0Awr/lQ==\"";

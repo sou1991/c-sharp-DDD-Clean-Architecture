@@ -7,7 +7,7 @@ namespace Application.Member.Model
 {
     public class MemberModel : ModelBase, IValidatableObject
     {
-        public int m_no { get; set; }
+        public string m_no { get; set; }
         [MaxLength(100, ErrorMessage = "名前は100文字以内でお願いします")]
         public string userName { get; set; }
         [MaxLength(100, ErrorMessage = "パスワードは100文字以内で入力してください")]

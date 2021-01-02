@@ -16,7 +16,7 @@ namespace Tests.Presentation.Controllers
         private HomeController _homeController;
         private AutoMoqer _mocker;
         private MemberModel _memberModel;
-        private int _m_no = 1;
+        private string _m_no = "1";
 
         [SetUp]
         public void SetUp()

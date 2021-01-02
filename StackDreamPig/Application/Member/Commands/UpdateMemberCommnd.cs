@@ -15,7 +15,7 @@ namespace Application.Member.Commands
     public class UpdateMemberCommnd : SecureService, IUpdateMemberCommnd
     {
         private IDataBaseService _dataBaseService;
-        private readonly int DUMMY_USER = 1;
+        private readonly string DUMMY_USER = "1";
 
         public UpdateMemberCommnd(IDataBaseService dataBaseService)
         {
