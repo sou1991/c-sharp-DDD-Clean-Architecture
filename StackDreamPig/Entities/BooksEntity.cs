@@ -20,8 +20,12 @@ namespace Entities
         /// <param name="amountUsed"></param>
         /// <param name="intime"></param>
         /// <param name="registDate"></param>
-        public BooksEntity(int m_no, int amountUsed, DateTime intime, RegistDateValueObject registDate)
+        public BooksEntity(string m_no, int amountUsed, DateTime intime, RegistDateValueObject registDate)
         {
+            if (string.IsNullOrEmpty(m_no)) throw new ArgumentNullException(null,"セッションが切れました。再度ログインしてください。");
+            if (intime == default(DateTime)) throw new ArgumentNullException(null, "登録日が不正です。入力しなおしてください。");
+            if (registDate == null) throw new ArgumentNullException(null, "システムエラー。再度入力しなおしてください。");
+
             this.m_no = m_no;
             this.amountUsed = amountUsed;
             this.intime = intime;
@@ -30,7 +34,7 @@ namespace Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; }
     
-        public int m_no { get; }
+        public string m_no { get; }
 
         public RegistDateValueObject registDate { get; set; }
 

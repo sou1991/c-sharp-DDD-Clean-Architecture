@@ -11,6 +11,7 @@ namespace Valueobject.Books
 
         public RegistDateValueObject(DateTime registDate)
         {
+            if (registDate == default(DateTime)) throw new ArgumentNullException(null, "帳簿登録日が不正です。");
             _registDate = registDate;
         }
 

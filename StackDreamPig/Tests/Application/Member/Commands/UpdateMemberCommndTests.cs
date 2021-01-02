@@ -23,7 +23,7 @@ namespace Tests.Application.Member.Commands
         private Mock<DbSet<MemberEntity>> _mockMyEntity;
         private Mock<IDataBaseService> _mockContext;
 
-        private readonly int _m_no = 1;
+        private readonly string _m_no = "1";
         private readonly string _userName = "testuser";
         private readonly string _password = "test";
         private readonly string _monthlyIncome = "300000";
@@ -80,7 +80,7 @@ namespace Tests.Application.Member.Commands
         {
             _memberModel = new MemberModel
             {
-                m_no = 2,
+                m_no = "2",
                 userName = _userName,
                 monthlyIncome = this._monthlyIncome,
                 savings = this._savings,

@@ -13,10 +13,7 @@ namespace Presentation.Controllers
         [HttpPost]
         public static void ErrorHandler(ModelBase model,Exception ex)
         {
-            model.errorMessege = !model.hasSession 
-                                 ? "セッション情報が切れました。再度ログインしてください。"
-                                 : model.errorMessege = ex.Message;
-            
+            model.errorMessege = ex.Message;
             model.isError = true;
         }
 

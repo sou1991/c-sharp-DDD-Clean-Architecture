@@ -11,6 +11,7 @@ namespace Valueobject.Member
 
         public AmountLimitValueObject(int amountLimit)
         {
+            if(amountLimit == 0) throw new ArgumentNullException(null, "使用限度額の値が不正です。収入・支出の入力しなおしてください。");
             _amountLimit = amountLimit;
         }
         public  override bool ClientConditionEquals(AmountLimitValueObject that)

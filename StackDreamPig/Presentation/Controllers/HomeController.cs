@@ -31,7 +31,7 @@ namespace Presentation.Controllers
             {
                 var member = _searchMemberQuary.Execute(memberModel);
 
-                if (member != null && member.m_no != (int)EnumMember.NON_MEMBER)
+                if (member != null)
                 {
                     //会員Noをセッション情報にセット
                     HttpContext.Session.SetString("m_no", member.m_no.ToString());
@@ -62,49 +62,32 @@ namespace Presentation.Controllers
         public IActionResult IndexOrLogin()
         {
             var model = new ModelBase();
-            try
+
+            var session_M_no = HttpContext.Session.GetString("m_no");
+
+            if(session_M_no == null)
             {
-                var session_M_no = HttpContext.Session.GetString("m_no");
-
-                if(session_M_no == null)
-                {
-                    model.isError = true;
-                    model.errorMessege = "セッションが切れました。再度ログインして下さい。";
-                    return View("Login", model);
-                }
-                else
-                {
-                    model.hasSession = true;
-                    return View("Index", model);
-                }
-
+                model.isError = true;
+                model.errorMessege = "セッションが切れました。再度ログインして下さい。";
+                return View("Login", model);
             }
-            catch (Exception ex)
+            else
             {
-                ErrorHandling.ErrorHandler(model, ex);
-
-                return View("_ErrorPage", model);
+                model.hasSession = true;
+                return View("Index", model);
             }
+
         }
 
         public IActionResult Logout()
         {
             var model = new ModelBase();
-            try
-            {
-                HttpContext.Session.Remove("m_no");
 
-                model.hasSession = false;
+            HttpContext.Session.Remove("m_no");
 
-                return View("Login", model);
+            model.hasSession = false;
 
-            }
-            catch (Exception ex)
-            {
-                ErrorHandling.ErrorHandler(model, ex);
-
-                return View("_ErrorPage", model);
-            }
+            return View("Login", model);
 
         }
     }

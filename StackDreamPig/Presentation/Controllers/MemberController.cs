@@ -81,16 +81,8 @@ namespace Presentation.Controllers
                 return memberUpdate(memberModel);
             }
 
-            try
-            {
-                memberModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
-                memberModel.hasSession = true;
-            }
-            catch (ArgumentNullException ae)
-            {
-                ErrorHandling.ErrorHandler(memberModel, ae);
-                return View("_ErrorPage", memberModel);
-            }
+            memberModel.m_no = HttpContext.Session.GetString("m_no");
+
             try
             {
                 var member = _searchMemberQuary.Execute(memberModel);
@@ -119,16 +111,9 @@ namespace Presentation.Controllers
             {
                 return Entry(memberModel);
             }
-            try
-            {
-                memberModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
-                memberModel.hasSession = true;
-            }
-            catch (ArgumentNullException ae)
-            {
-                ErrorHandling.ErrorHandler(memberModel, ae);
-                return View("_ErrorPage", memberModel);
-            }
+
+            memberModel.m_no = HttpContext.Session.GetString("m_no");
+            
             try
             {
                 _updateMemberCommnd.Execute(memberModel);

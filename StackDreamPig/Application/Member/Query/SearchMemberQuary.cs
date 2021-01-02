@@ -26,7 +26,7 @@ namespace Application.Member.Query
         {
             try
             {
-                if (memberModel.m_no == (int)EnumMember.NON_MEMBER)
+                if (string.IsNullOrEmpty(memberModel.m_no))
                 {
                     return AbleToLogin(memberModel);
                 }
@@ -71,6 +71,8 @@ namespace Application.Member.Query
        
         public MemberModel GetOneMember(MemberModel memberModel)
         {
+            if (string.IsNullOrEmpty(memberModel.m_no)) throw new ArgumentNullException(null,"セッションが切れました。再度ログインしてください。");
+
             var results = _dataBaseService.Member.Where(p => p.m_no == memberModel.m_no)
             .Select(p => new MemberModel
             {

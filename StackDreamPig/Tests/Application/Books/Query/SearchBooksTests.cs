@@ -24,7 +24,7 @@ namespace Tests.Application.Books
     {
         private ISearchBooksQuery _searchBooksQuery;
         private BooksModel _booksModel;
-        private readonly int _m_no = 1;
+        private readonly string _m_no = "1";
         private readonly int _amountUsed = 10000;
         private readonly string _year = "2020";
         private readonly string _month = "7";

@@ -26,7 +26,7 @@ namespace Tests.Application.Member
         private IQueryable<MemberEntity> _memberEntity;
         private Mock<DbSet<MemberEntity>> _mockMyEntity;
 
-        private readonly int _m_no = 1;
+        private readonly string _m_no = "1";
         private readonly string _userName = "stgDummyUser";
         private readonly string _monthlyIncome = "300000";
         private readonly string _savings = "100000";

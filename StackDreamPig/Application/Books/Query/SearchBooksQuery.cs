@@ -24,6 +24,8 @@ namespace Application.Books.Query
 
         public IEnumerable<BooksModel> Execute(BooksModel booksModel)
         {
+            if (string.IsNullOrEmpty(booksModel.m_no)) throw new ArgumentNullException(null, "セッションが切れました。再度ログインしてください。");
+
             try
             {
                 var resultBooks = _dataBaseService.Books

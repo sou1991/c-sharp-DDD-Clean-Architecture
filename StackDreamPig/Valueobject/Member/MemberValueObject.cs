@@ -13,6 +13,10 @@ namespace Valueobject.Member
 
         public MemberValueObject(string userName, string password, string saltPassword)
         {
+            if (string.IsNullOrEmpty(userName)) throw new ArgumentNullException(null, "ユーザーの名前が不正です。入力しなおしてください。");
+            if (string.IsNullOrEmpty(password)) throw new ArgumentNullException(null, "パスワード値が不正です。入力しなおしてください。");
+            if (string.IsNullOrEmpty(saltPassword)) throw new ArgumentNullException(null, "パスワード値が不正です。入力しなおしてください。");
+
             this.userName = userName;
             this.password = password;
             this.saltPassword = saltPassword;

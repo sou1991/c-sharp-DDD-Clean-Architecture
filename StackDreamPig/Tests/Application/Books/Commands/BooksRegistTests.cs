@@ -23,7 +23,7 @@ namespace Tests.Application.Books.Commands
         private Mock<DbSet<BooksEntity>> _mockMyEntity;
         private Mock<IDataBaseService> _mockContext;
 
-        private readonly int _m_no = 1;
+        private readonly string _m_no = "1";
         private readonly int _amountUsed = 10000;
         private readonly string _year = "2020";
         private readonly string _month = "7";
@@ -64,7 +64,7 @@ namespace Tests.Application.Books.Commands
         [Test]
         public void TestShouldAddToBooksTheDatabase()
         {
-            _booksModel.m_no = 1000;
+            _booksModel.m_no = "1000";
             _booksRegistCommand.Execute(_booksModel);
 
             _mockMyEntity

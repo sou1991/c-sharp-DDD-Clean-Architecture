@@ -19,7 +19,7 @@ namespace Factory
         /// <param name="utime"></param>
         /// <returns></returns>
         public MemberEntity CreateMemberEntity(
-            int m_no,
+            string m_no,
             MemberValueObject memberValueObject,
             AmountValueObject amountValueObject,
             AmountLimitValueObject amountLimitValueObject,
@@ -43,7 +43,7 @@ namespace Factory
         )
         => new MemberEntity(memberValueObject, amountValueObject, amountLimitValueObject, intime);
 
-        public BooksEntity CreateBooksEntity(int m_no, int amountUsed, DateTime intime, RegistDateValueObject registDate)
+        public BooksEntity CreateBooksEntity(string m_no, int amountUsed, DateTime intime, RegistDateValueObject registDate)
             => new BooksEntity(m_no, amountUsed, intime, registDate);
     }
 }

@@ -30,16 +30,8 @@ namespace Presentation.Controllers
         [HttpPost]
         public IActionResult Books(MemberModel memberModel)
         {
-            try
-            {
-                memberModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
-                memberModel.hasSession = true;
-            }
-            catch (ArgumentNullException ae)
-            {
-                ErrorHandling.ErrorHandler(memberModel, ae);
-                return View("_ErrorPage", memberModel);
-            }
+            memberModel.m_no = HttpContext.Session.GetString("m_no");
+            
             try
             {
                 var member = _searchMemberQuary.Execute(memberModel);
@@ -61,16 +53,8 @@ namespace Presentation.Controllers
                 return View("Books", booksModel);
             }
 
-            try
-            {
-                booksModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
-                booksModel.hasSession = true;
-            }
-            catch (ArgumentNullException ae)
-            {
-                ErrorHandling.ErrorHandler(booksModel, ae);
-                return View("_ErrorPage", booksModel);
-            }
+            booksModel.m_no = HttpContext.Session.GetString("m_no");
+            
             try
             {
                 _booksRegistCommand.Execute(booksModel);
@@ -87,16 +71,8 @@ namespace Presentation.Controllers
         [HttpPost]
         public IActionResult BooksList(BooksModel booksModel)
         {
-            try
-            {
-                booksModel.m_no = int.Parse(HttpContext.Session.GetString("m_no"));
-                booksModel.hasSession = true;
-            }
-            catch (ArgumentNullException ae)
-            {
-                ErrorHandling.ErrorHandler(booksModel, ae);
-                return View("_ErrorPage", booksModel);
-            }
+            booksModel.m_no = HttpContext.Session.GetString("m_no");
+
             try
             {
                 booksModel.booksList = _searchBooksQuery.Execute(booksModel);

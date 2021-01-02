@@ -15,6 +15,10 @@ namespace Valueobject.Member
 
         public AmountValueObject(string monthlyIncome, string savings, string fixedCost)
         {
+            if (string.IsNullOrEmpty(monthlyIncome)) throw new ArgumentNullException(null, "月収の値が不正です。入力しなおしてください。");
+            if (string.IsNullOrEmpty(savings)) throw new ArgumentNullException(null, "目標貯金額の値が不正です。入力しなおしてください。");
+            if (string.IsNullOrEmpty(fixedCost)) throw new ArgumentNullException(null, "固定費の値が不正です。入力しなおしてください。");
+
             this.monthlyIncome = monthlyIncome;
             this.savings = savings;
             this.fixedCost = fixedCost;
