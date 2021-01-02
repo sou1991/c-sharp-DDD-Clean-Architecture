@@ -1,6 +1,7 @@
 ﻿using Application.Books.Commands;
 using Common.Books;
 using Entities;
+using Factory;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -34,7 +35,7 @@ namespace Tests.Application.Books.Commands
 
             var booksEntity = new List<BooksEntity>
             {
-                new BooksEntity(_m_no, _amountUsed, DateTime.Now, new RegistDateValueObject(DateTime.Parse(registDate)))
+                SdpFactory.EntityFactory().CreateBooksEntity(_m_no, _amountUsed, DateTime.Now, new RegistDateValueObject(DateTime.Parse(registDate)))
 
             }.AsQueryable();
 

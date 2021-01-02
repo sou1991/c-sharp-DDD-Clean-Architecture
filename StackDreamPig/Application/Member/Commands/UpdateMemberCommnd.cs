@@ -1,6 +1,7 @@
 ﻿using Application.Member.Model;
 using Common.Member;
 using Entities;
+using Factory;
 using Infrastructure;
 using Npgsql;
 using System;
@@ -58,9 +59,9 @@ namespace Application.Member.Commands
             .Where(p => p.m_no == memberModel.m_no).First();
 
             //To Do 不変性にしたいが更新処理O/Rマッパーがsetterを強要する。
-            member.memberValueObject = new MemberValueObject(memberModel.userName, member.memberValueObject.password, member.memberValueObject.saltPassword);
-            member.amountValueObject = new AmountValueObject(memberModel.monthlyIncome, memberModel.savings, memberModel.fixedCost);
-            member.amountLimitValueObject = new AmountLimitValueObject(memberModel.amountLimit);
+            member.memberValueObject = SdpFactory.ValueObjectFactory().CreateMemberValueObject(memberModel.userName, member.memberValueObject.password, member.memberValueObject.saltPassword);
+            member.amountValueObject = SdpFactory.ValueObjectFactory().CreateAmountValueObject(memberModel.monthlyIncome, memberModel.savings, memberModel.fixedCost);
+            member.amountLimitValueObject = SdpFactory.ValueObjectFactory().CreateAmountLimitValueObject(memberModel.amountLimit);
             member.utime = DateTime.Now;
         }
 

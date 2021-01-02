@@ -8,6 +8,7 @@ using Valueobject.Books;
 using System.Linq;
 using Common.Books;
 using Npgsql;
+using Factory;
 
 namespace Application.Books.Commands
 {
@@ -33,12 +34,12 @@ namespace Application.Books.Commands
                     var books = alredyRegistedBooks.First();
 
                     books.amountUsed = booksModel.amountUsed;
-                    books.registDate = new RegistDateValueObject(booksModel.registDate);
+                    books.registDate = SdpFactory.ValueObjectFactory().CreateRegistDateValueObject(booksModel.registDate);
                     books.utime = DateTime.Now;
                 }
                 else
                 {
-                    var booksEntity = new BooksEntity(booksModel.m_no, booksModel.amountUsed, DateTime.Now, new RegistDateValueObject(booksModel.registDate));
+                    var booksEntity = SdpFactory.EntityFactory().CreateBooksEntity(booksModel.m_no, booksModel.amountUsed, DateTime.Now, new RegistDateValueObject(booksModel.registDate));
                     _dataBaseService.Books.Add(booksEntity);
                 }
 

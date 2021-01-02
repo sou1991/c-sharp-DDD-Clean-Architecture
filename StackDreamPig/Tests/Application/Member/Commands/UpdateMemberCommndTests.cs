@@ -1,6 +1,7 @@
 ﻿using Application.Member.Commands;
 using Application.Member.Model;
 using Entities;
+using Factory;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -33,22 +34,13 @@ namespace Tests.Application.Member.Commands
         [SetUp]
         public void SetUp()
         {
-            var memberValueObject = new MemberValueObject(_userName, null, null);
-            var amountValueObject = new AmountValueObject(_monthlyIncome, _savings, _fixedCost);
-            var amountLimitValueObject = new AmountLimitValueObject(_amontLimit);
+            var memberValueObject = SdpFactory.ValueObjectFactory().CreateMemberValueObject(_userName, null, null);
+            var amountValueObject = SdpFactory.ValueObjectFactory().CreateAmountValueObject(_monthlyIncome, _savings, _fixedCost);
+            var amountLimitValueObject = SdpFactory.ValueObjectFactory().CreateAmountLimitValueObject(_amontLimit);
 
             _memberEntity = new List<MemberEntity>
             {
-                //new MemberEntity
-                //{
-                //    m_no = this.m_no,
-                //    userName = userName,
-                //    password = this.password,
-                //    monthlyIncome = this.monthlyIncome,
-                //    savings = this.savings,
-                //    fixedCost = this.fixedCost,
-                //    amountLimit = new AmountLimitValueObject(amontLimit)
-                //}
+                SdpFactory.EntityFactory().CreateMemberEntity(_m_no, memberValueObject, amountValueObject, amountLimitValueObject, DateTime.Now)
 
             }.AsQueryable();
 
