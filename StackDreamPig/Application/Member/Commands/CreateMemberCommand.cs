@@ -5,6 +5,7 @@ using Entities;
 using Valueobject.Member;
 using System;
 using Common.Member;
+using Factory;
 
 namespace Application.Member.Commands
 {
@@ -24,11 +25,12 @@ namespace Application.Member.Commands
             var serializePasswordSalt = ToSerialize(passwordSalt);
 
             //To Do　値オブジェクトを不変化にしたい。O/Rマッパーにsetterを強要される
-            var memberValueObject = new MemberValueObject(memberModel.userName, securePassword, serializePasswordSalt);
-            var amountValueObject = new AmountValueObject(memberModel.monthlyIncome, memberModel.savings, memberModel.fixedCost);
-            var amountLimitValueObject = new AmountLimitValueObject(memberModel.amountLimit);
+            var memberValueObject = SdpFactory.ValueObjectFactory().CreateMemberValueObject(memberModel.password, securePassword, serializePasswordSalt);
 
-            var _memberEntity = new MemberEntity(memberValueObject, amountValueObject, amountLimitValueObject, DateTime.Now);
+            var amountValueObject = SdpFactory.ValueObjectFactory().CreateAmountValueObject(memberModel.monthlyIncome, memberModel.savings, memberModel.fixedCost);
+            var amountLimitValueObject = SdpFactory.ValueObjectFactory().CreateAmountLimitValueObject(memberModel.amountLimit);
+
+            var _memberEntity = SdpFactory.EntityFactory().CreateMemberEntity(memberValueObject, amountValueObject, amountLimitValueObject, DateTime.Now);
 
             if (HasRegistMember(memberModel))
             {

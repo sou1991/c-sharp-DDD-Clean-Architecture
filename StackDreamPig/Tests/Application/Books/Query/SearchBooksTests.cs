@@ -3,6 +3,7 @@ using Application.Member.Model;
 using Application.Member.Query;
 using Common;
 using Entities;
+using Factory;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -36,7 +37,7 @@ namespace Tests.Application.Books
 
             var booksEntity = new List<BooksEntity>()
             {
-                new BooksEntity(_m_no, _amountUsed, DateTime.Now, new RegistDateValueObject(DateTime.Parse(registDate)))
+                SdpFactory.EntityFactory().CreateBooksEntity(_m_no, _amountUsed, DateTime.Now, new RegistDateValueObject(DateTime.Parse(registDate)))
 
             }.AsQueryable();
 

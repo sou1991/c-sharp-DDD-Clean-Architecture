@@ -14,6 +14,7 @@ using Infrastructure;
 using System.Security.Permissions;
 using AutoMoq;
 using Valueobject.Member;
+using Factory;
 
 namespace Tests.Application.Member
 {
@@ -35,15 +36,9 @@ namespace Tests.Application.Member
         [SetUp]
         public void SetUp()
         {
-            var memberValueObject = new MemberValueObject(_userName, null, null);
-            var amountValueObject = new AmountValueObject(_monthlyIncome, _savings, _fixedCost);
-            var amountLimitValueObject = new AmountLimitValueObject(_amountLimit);
-
-            var memberEntity = new List<MemberEntity>
-            {
-                new MemberEntity(_m_no, memberValueObject, amountValueObject, amountLimitValueObject, DateTime.Now)
-
-            }.AsQueryable();
+            var memberValueObject = SdpFactory.ValueObjectFactory().CreateMemberValueObject(_userName, null, null);
+            var amountValueObject = SdpFactory.ValueObjectFactory().CreateAmountValueObject(_monthlyIncome, _savings, _fixedCost);
+            var amountLimitValueObject = SdpFactory.ValueObjectFactory().CreateAmountLimitValueObject(_amountLimit);
 
             _memberEntity = new List<MemberEntity>
             {
