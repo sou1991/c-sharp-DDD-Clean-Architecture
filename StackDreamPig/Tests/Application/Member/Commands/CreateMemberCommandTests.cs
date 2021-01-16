@@ -1,19 +1,13 @@
 ﻿using Application.Member.Commands;
-
 using Entities;
-
 using NUnit.Framework;
 using Application.Member.Model;
-
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using System.Collections.Generic;
 using System.Linq;
 using System;
 using Infrastructure;
-using System.Security.Permissions;
-using AutoMoq;
-using Valueobject.Member;
 using Factory;
 
 namespace Tests.Application.Member

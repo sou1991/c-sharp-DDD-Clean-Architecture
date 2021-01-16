@@ -1,15 +1,11 @@
 ﻿using Application.Member.Model;
 using Infrastructure;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using stackDreamPig.Models.Book.Query;
 using Common.Member;
 using System.Text.Json;
 using Common;
 using Npgsql;
-using Valueobject.Member;
 
 namespace Application.Member.Query
 {
