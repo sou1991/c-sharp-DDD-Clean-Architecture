@@ -1,12 +1,8 @@
-﻿using Entities;
-using Infrastructure;
+﻿using Infrastructure;
 using stackDreamPig.Models.Book.Query;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Valueobject.Books;
 using System.Linq;
-using Common.Books;
 using Npgsql;
 using Factory;
 

@@ -1,6 +1,4 @@
 ﻿using Application.Books.Query;
-using Application.Member.Model;
-using Application.Member.Query;
 using Common;
 using Entities;
 using Factory;
@@ -8,14 +6,11 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
-using stackDreamPig.Models.Book;
 using stackDreamPig.Models.Book.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Valueobject.Books;
-using Valueobject.Member;
 
 namespace Tests.Application.Books
 {

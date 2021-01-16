@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application.Books.Commands;
 using Application.Books.Query;
 using Application.Member.Model;
@@ -9,7 +6,6 @@ using Application.Member.Query;
 using Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using stackDreamPig.Models.Book;
 using stackDreamPig.Models.Book.Query;
 
 namespace Presentation.Controllers
