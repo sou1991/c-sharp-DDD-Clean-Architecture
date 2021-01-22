@@ -51,7 +51,7 @@
     <h2>帳簿一覧</h2>
     <form class="form-horizontal" name="entry_form" asp-controller="Books" asp-action ="BooksList" method="post">
         <input type="text" class="form-control" name="year" id="年" value="@Model.year" style="width:60px; display:inline">年
-        <input type="text" class="form-control" name="month" id="月" value="@Model.month" style="width:40px; display:inline">月
+        <input type="text" class="form-control" name="month" id="月" value="@Model.month" style="width:50px; display:inline">月
         <button type="button" class="btn btn-success" onclick="ExecuteValidatetionAfterSubmit();">検索</button>
         <h3 style="padding-top:20px;">今月の合計金額 @Model.monthlyTotalAmountUsed</h3>
         <table class="table table-striped">
