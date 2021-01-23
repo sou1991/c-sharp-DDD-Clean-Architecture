@@ -30,7 +30,7 @@ namespace Application.Member.Commands
             var amountValueObject = SdpFactory.ValueObjectFactory().CreateAmountValueObject(memberModel.monthlyIncome, memberModel.savings, memberModel.fixedCost);
             var amountLimitValueObject = SdpFactory.ValueObjectFactory().CreateAmountLimitValueObject(memberModel.amountLimit);
 
-            var _memberEntity = SdpFactory.EntityFactory().CreateMemberEntity(memberValueObject, amountValueObject, amountLimitValueObject, DateTime.Now);
+            var memberEntity = SdpFactory.EntityFactory().CreateMemberEntity(memberValueObject, amountValueObject, amountLimitValueObject, DateTime.Now);
 
             if (HasRegistMember(memberModel))
             {
@@ -39,7 +39,7 @@ namespace Application.Member.Commands
             }
             else 
             {
-               _dataBaseService.Member.Add(_memberEntity);
+               _dataBaseService.Member.Add(memberEntity);
                _dataBaseService.Save();
             }
         }
