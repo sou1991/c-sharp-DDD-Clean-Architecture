@@ -25,10 +25,10 @@ namespace Factory
             AmountLimitValueObject amountLimitValueObject,
             DateTime utime
         )
-        => new MemberEntity(m_no, memberValueObject, amountValueObject, amountLimitValueObject, utime);
+            => new MemberEntity(m_no, memberValueObject, amountValueObject, amountLimitValueObject, utime);
 
         /// <summary>
-        /// 会員情報登録
+        /// 会員情報登録オブジェクト
         /// </summary>
         /// <param name="memberValueObject"></param>
         /// <param name="amountValueObject"></param>
@@ -41,8 +41,16 @@ namespace Factory
             AmountLimitValueObject amountLimitValueObject,
             DateTime intime
         )
-        => new MemberEntity(memberValueObject, amountValueObject, amountLimitValueObject, intime);
+            => new MemberEntity(memberValueObject, amountValueObject, amountLimitValueObject, intime);
 
+        /// <summary>
+        /// 帳簿登録オブジェクト
+        /// </summary>
+        /// <param name="m_no"></param>
+        /// <param name="amountUsed"></param>
+        /// <param name="intime"></param>
+        /// <param name="registDate"></param>
+        /// <returns></returns>
         public BooksEntity CreateBooksEntity(string m_no, int amountUsed, DateTime intime, RegistDateValueObject registDate)
             => new BooksEntity(m_no, amountUsed, intime, registDate);
     }
