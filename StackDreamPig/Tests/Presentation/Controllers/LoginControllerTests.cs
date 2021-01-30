@@ -1,11 +1,7 @@
 ﻿using AutoMoq;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
 using NUnit.Framework;
 using Presentation.Controllers;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Tests.Presentation.Controllers
 {

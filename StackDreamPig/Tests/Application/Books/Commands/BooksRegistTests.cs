@@ -1,5 +1,4 @@
 ﻿using Application.Books.Commands;
-using Common.Books;
 using Entities;
 using Factory;
 using Infrastructure;
@@ -10,7 +9,6 @@ using stackDreamPig.Models.Book.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Valueobject.Books;
 
 namespace Tests.Application.Books.Commands

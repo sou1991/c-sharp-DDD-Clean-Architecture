@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using Presentation.Controllers;
 using Application.Member.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Tests.Presentation.Controllers
 {
