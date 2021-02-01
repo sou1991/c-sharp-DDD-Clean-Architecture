@@ -5,7 +5,7 @@ http://stackdreampig.net
 AWSやDockerを学ぶためのアプリケーションなので、セキュリティが万全ではない可能性があります。
 
 ### Infrastructure configuration diagram  
-![Infrastructure](https://user-images.githubusercontent.com/55009005/100750773-da8e6280-3429-11eb-9f2d-885afc5ed466.png)
+![inf (1)](https://user-images.githubusercontent.com/55009005/106466187-5cf4da80-64de-11eb-85a7-e3d5ddb6ba25.png)
 
 ### 開発
 ・.NET Core 3.0  
