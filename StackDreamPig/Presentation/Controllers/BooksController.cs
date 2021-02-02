@@ -1,5 +1,6 @@
 ﻿using System;
 using Application.Books.Commands;
+using Application.Books.Model;
 using Application.Books.Query;
 using Application.Member.Model;
 using Application.Member.Query;
@@ -67,19 +68,25 @@ namespace Presentation.Controllers
         [HttpPost]
         public IActionResult BooksList(BooksModel booksModel)
         {
-            booksModel.m_no = HttpContext.Session.GetString("m_no");
-
             try
             {
-                booksModel.booksList = _searchBooksQuery.Execute(booksModel);
+                var booksList = _searchBooksQuery.Execute(new BooksModel { m_no = HttpContext.Session.GetString("m_no") });
 
-                var member = _searchMemberQuary.Execute(new MemberModel { m_no = booksModel.m_no });
+                var member = _searchMemberQuary.Execute(new MemberModel { m_no = HttpContext.Session.GetString("m_no") });
 
-                booksModel.currencyTypeAmountLimit = CurrencyType.CastIntegerToCurrencyType(member.amountLimit);
-                return View(booksModel);
+                var currencyTypeAmountLimit = CurrencyType.CastIntegerToCurrencyType(member.amountLimit);
+
+
+                IBooksDTO books = new BooksModel()
+                    {
+                         booksList = booksList,
+                         currencyTypeAmountLimit = currencyTypeAmountLimit
+                    };
+
+                return View(books);
             }
             catch (Exception ex)
-            {
+            {   
                 ErrorHandling.ErrorHandler(booksModel, ex);
 
                 return View("_ErrorPage", booksModel);
