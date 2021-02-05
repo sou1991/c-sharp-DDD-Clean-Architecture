@@ -25,7 +25,7 @@ namespace Application.Member.Commands
             var serializePasswordSalt = ToSerialize(passwordSalt);
 
             //To Do　値オブジェクトを不変化にしたい。O/Rマッパーにsetterを強要される
-            var memberValueObject = SdpFactory.ValueObjectFactory().CreateMemberValueObject(memberModel.password, securePassword, serializePasswordSalt);
+            var memberValueObject = SdpFactory.ValueObjectFactory().CreateMemberValueObject(memberModel.userName, securePassword, serializePasswordSalt);
 
             var amountValueObject = SdpFactory.ValueObjectFactory().CreateAmountValueObject(memberModel.monthlyIncome, memberModel.savings, memberModel.fixedCost);
             var amountLimitValueObject = SdpFactory.ValueObjectFactory().CreateAmountLimitValueObject(memberModel.amountLimit);
