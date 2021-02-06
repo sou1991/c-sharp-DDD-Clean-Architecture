@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Application.Member.Model
 {
-    public class MemberModel : ModelBase, IValidatableObject
+    public class MemberModel : ModelBase, IValidatableObject, IMemberDTO
     {
         public string m_no { get; set; }
         [MaxLength(100, ErrorMessage = "名前は100文字以内でお願いします")]

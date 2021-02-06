@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Application.Member.Commands;
 using Application.Member.Query;
 using Common.Member;
+using Application.Member.DomainService;
 
 namespace Presentation.Controllers
 {
@@ -16,18 +17,21 @@ namespace Presentation.Controllers
 
         private ICreateMemberCommand _createMemberCommand;
         private ISearchMemberQuary _searchMemberQuary;
-        IUpdateMemberCommnd _updateMemberCommnd;
+        private IUpdateMemberCommnd _updateMemberCommnd;
+        private MemberDomainService _memberDomainService;
 
         public MemberController
         (
             ICreateMemberCommand createMemberCommand, 
             ISearchMemberQuary searchMemberQuary,
-            IUpdateMemberCommnd updateMemberCommnd
+            IUpdateMemberCommnd updateMemberCommnd, 
+            MemberDomainService memberDomainService
         )
         {
             _createMemberCommand = createMemberCommand;
             _searchMemberQuary = searchMemberQuary;
             _updateMemberCommnd = updateMemberCommnd;
+            _memberDomainService = memberDomainService;
         }
 
         public IActionResult Entry(MemberModel memberModel)
@@ -51,14 +55,23 @@ namespace Presentation.Controllers
             {
                 return Entry(memberModel);
             }
-            MemberModel member;
+            IMemberDTO member;
             try
             {
+                var isExists = _memberDomainService.HasRegistMember(memberModel);
+
+                if (isExists) 
+                {
+                    memberModel.isError = true;
+                    memberModel.errorMessege = "既に登録されたユーザーです。";
+
+                    return View("Entry", memberModel);
+                }
                 _createMemberCommand.Execute(memberModel);
 
                 if(memberModel.isError) 
                 {
-                    return View("Entry", memberModel);
+                    
                 } 
 
                 member = _searchMemberQuary.Execute(memberModel);
