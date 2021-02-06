@@ -1,11 +1,12 @@
-﻿using stackDreamPig.SeedWork;
+﻿using Application.Books.Model;
+using stackDreamPig.SeedWork;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace stackDreamPig.Models.Book.Query
 {
-    public class BooksModel : ModelBase
+    public class BooksModel : ModelBase, IBooksDTO
     {
         public string m_no { get; set; }
 
@@ -23,7 +24,7 @@ namespace stackDreamPig.Models.Book.Query
         [Range(1, 31, ErrorMessage = "日付は1～31日の幅でお願いします")]
         [RegularExpression(@"[0-9]+", ErrorMessage = "日付は数字のみ入力できます")]
         public string day { get; set; }
-        public IEnumerable<BooksModel> booksList { get; set; }
+        public IEnumerable<IBooksDTO> booksList { get; set; }
 
 
         public DateTime registDate

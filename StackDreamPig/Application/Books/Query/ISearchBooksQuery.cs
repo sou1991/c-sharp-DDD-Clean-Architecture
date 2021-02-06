@@ -1,4 +1,5 @@
-﻿using stackDreamPig.Models.Book;
+﻿using Application.Books.Model;
+using stackDreamPig.Models.Book;
 using stackDreamPig.Models.Book.Query;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,6 @@ namespace Application.Books.Query
 {
     public interface ISearchBooksQuery
     {
-        IEnumerable<BooksModel> Execute(BooksModel booksModel);
+        IEnumerable<IBooksDTO> Execute(IBooksDTO booksModel);
     }
 }

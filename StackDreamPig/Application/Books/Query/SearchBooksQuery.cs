@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using Application.Books.Model;
+using Common;
 using Common.Books;
 using Entities;
 using Infrastructure;
@@ -22,7 +23,7 @@ namespace Application.Books.Query
             _dataBaseService = dataBaseService;
         }
 
-        public IEnumerable<BooksModel> Execute(BooksModel booksModel)
+        public IEnumerable<IBooksDTO> Execute(IBooksDTO booksModel)
         {
             if (string.IsNullOrEmpty(booksModel.m_no)) throw new ArgumentNullException(null, "セッションが切れました。再度ログインしてください。");
 
@@ -34,13 +35,12 @@ namespace Application.Books.Query
                 && p.registDate._registDate.Year == booksModel.registrationDateSearch.Year
                 && p.registDate._registDate.Month == booksModel.registrationDateSearch.Month);
 
-                booksModel.monthlyTotalAmountUsed = CurrencyType.CastIntegerToCurrencyType(resultBooks.Sum(p => p.amountUsed));
-
                 var books = resultBooks
                     .Select(p => new BooksModel()
                     {
                         currencyTypeAmountUsed = CurrencyType.CastIntegerToCurrencyType(p.amountUsed),
-                        DispRegistDate = p.registDate._registDate
+                        DispRegistDate = p.registDate._registDate,
+                        monthlyTotalAmountUsed = CurrencyType.CastIntegerToCurrencyType(resultBooks.Sum(p => p.amountUsed))
                     });
                 return books;
             }
