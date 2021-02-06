@@ -74,12 +74,6 @@ namespace Tests.Application.Member
             //.Verify(m => m.Add(It.Is<MemberEntity>(t => t.userName.Equals("testuser"))))
 
         }
-        [Test]
-        public void TestMemberRegisted()
-        {
-            var result = _command.HasRegistMember(_memberModel);
-            Assert.That(result, Is.TypeOf<bool>()); ;
-        }
     }
 
 }
