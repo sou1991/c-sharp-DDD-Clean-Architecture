@@ -18,7 +18,7 @@ namespace Application.Member.Commands
             _dataBaseService = dataBaseService;
         }
 
-        public void Execute(MemberModel memberModel)
+        public void Execute(IMemberDTO memberModel)
         {
             
             var (securePassword, passwordSalt) = HashToValue(memberModel.password);
@@ -32,24 +32,10 @@ namespace Application.Member.Commands
 
             var memberEntity = SdpFactory.EntityFactory().CreateMemberEntity(memberValueObject, amountValueObject, amountLimitValueObject, DateTime.Now);
 
-            if (HasRegistMember(memberModel))
-            {
-                memberModel.isError = true;
-                memberModel.errorMessege = "既に登録されたユーザーです。";
-            }
-            else 
-            {
-               _dataBaseService.Member.Add(memberEntity);
-               _dataBaseService.Save();
-            }
-        }
+            _dataBaseService.Member.Add(memberEntity);
 
-        public bool HasRegistMember(MemberModel memberModel)
-        {
-            var member = _dataBaseService.Member
-            .Where(p => p.memberValueObject.userName == memberModel.userName);
-
-            return member.Any() ? true : false;
+            _dataBaseService.Save();
+            
         }
     }
 }

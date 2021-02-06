@@ -7,6 +7,6 @@ namespace Application.Member.Commands
 {
     public interface ICreateMemberCommand
     {
-        void Execute(MemberModel memberModel);
+        void Execute(IMemberDTO memberModel);
     }
 }

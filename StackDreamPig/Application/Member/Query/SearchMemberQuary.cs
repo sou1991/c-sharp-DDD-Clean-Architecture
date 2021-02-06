@@ -6,6 +6,7 @@ using Common.Member;
 using System.Text.Json;
 using Common;
 using Npgsql;
+using Application.Member.DomainService;
 
 namespace Application.Member.Query
 {
@@ -18,7 +19,7 @@ namespace Application.Member.Query
             _dataBaseService = dataBaseService;
         }
 
-        public MemberModel Execute(MemberModel memberModel)
+        public IMemberDTO Execute(IMemberDTO memberModel)
         {
             try
             {
@@ -37,7 +38,7 @@ namespace Application.Member.Query
             }
 
         }
-        public MemberModel AbleToLogin(MemberModel memberModel)
+        public IMemberDTO AbleToLogin(IMemberDTO memberModel)
         {
             var securePassword = _dataBaseService.Member
                                .Where(p => p.memberValueObject.userName == memberModel.userName)
@@ -65,7 +66,7 @@ namespace Application.Member.Query
 
         }
        
-        public MemberModel GetOneMember(MemberModel memberModel)
+        public IMemberDTO GetOneMember(IMemberDTO memberModel)
         {
             if (string.IsNullOrEmpty(memberModel.m_no)) throw new ArgumentNullException(null,"セッションが切れました。再度ログインしてください。");
 

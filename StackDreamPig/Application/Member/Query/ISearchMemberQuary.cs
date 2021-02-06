@@ -7,6 +7,6 @@ namespace Application.Member.Query
 {
     public interface ISearchMemberQuary
     {
-        MemberModel Execute(MemberModel memberModel);
+        IMemberDTO Execute(IMemberDTO memberModel);
     }
 }
