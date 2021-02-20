@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Application.Member.Query;
 using Application.Books.Commands;
 using Application.Books.Query;
+using Application.Member.DomainService;
 
 namespace Presentation
 {
@@ -37,6 +38,7 @@ namespace Presentation
             services.AddTransient<IBooksRegistCommand, BooksRegistCommand>();
             services.AddTransient<ISearchBooksQuery, SearchBooksQuery>();
             services.AddTransient<IUpdateMemberCommnd, UpdateMemberCommnd>();
+            services.AddTransient<MemberDomainService, MemberDomainService>();
 
             services.AddControllersWithViews();
 
