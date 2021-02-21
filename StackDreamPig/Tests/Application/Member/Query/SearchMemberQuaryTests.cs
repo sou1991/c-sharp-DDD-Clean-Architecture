@@ -3,6 +3,7 @@ using Application.Member.Query;
 using Entities;
 using Factory;
 using Infrastructure;
+using Infrastructure.Member;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
@@ -26,7 +27,7 @@ namespace Tests.Application.Member.Query
         private readonly string _monthlyIncome = "300000"; 
         private readonly string _savings = "50000";
         private readonly string _fixedCost = "100000";
-        private readonly int _amountLimit = 4838;
+        private readonly int _amountLimit = 5357;
 
 
         [SetUp]
@@ -54,11 +55,14 @@ namespace Tests.Application.Member.Query
                 m_no = _m_no,
                 userName = _userName,
                 password = "stgDummyUser",
-
+                monthlyIncome = _monthlyIncome,
+                savings = _savings,
+                fixedCost = _fixedCost
             };
 
-            var mockContext = new Mock<IDataBaseService>();
-            mockContext.Setup(m => m.Member).Returns(mockMyEntity.Object);
+            var mockContext = new Mock<IMemberRepository>();
+            mockContext.Setup(m => m.FindSingle(_m_no)).Returns(mockMyEntity.Object);
+            mockContext.Setup(m => m.GetSecurePassword(_userName)).Returns(mockMyEntity.Object);
 
             _searchMemberQuary = new SearchMemberQuary(mockContext.Object);
         }

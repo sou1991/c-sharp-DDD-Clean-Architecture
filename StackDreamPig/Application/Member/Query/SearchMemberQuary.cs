@@ -7,16 +7,17 @@ using System.Text.Json;
 using Common;
 using Npgsql;
 using Application.Member.DomainService;
+using Infrastructure.Member;
 
 namespace Application.Member.Query
 {
     public class SearchMemberQuary : SecureService, ISearchMemberQuary
     {
-        private IDataBaseService _dataBaseService;
+        private IMemberRepository _memberRepository;
 
-        public SearchMemberQuary(IDataBaseService dataBaseService)
+        public SearchMemberQuary(IMemberRepository memberRepository)
         {
-            _dataBaseService = dataBaseService;
+            _memberRepository = memberRepository;
         }
 
         public IMemberDTO Execute(IMemberDTO memberModel)
@@ -40,9 +41,7 @@ namespace Application.Member.Query
         }
         public IMemberDTO AbleToLogin(IMemberDTO memberModel)
         {
-            var securePassword = _dataBaseService.Member
-                               .Where(p => p.memberValueObject.userName == memberModel.userName)
-                               .SingleOrDefault();
+            var securePassword = _memberRepository.GetSecurePassword(memberModel.userName).FirstOrDefault(); ;
 
             if (securePassword == null) return null;
 
@@ -51,12 +50,11 @@ namespace Application.Member.Query
 
             if (VerifyPassword(securePassword.memberValueObject.password, memberModel.password, salt))
             {
-                var results = _dataBaseService.Member
-                    .Where(p => p.memberValueObject.password == securePassword.memberValueObject.password && p.memberValueObject.userName == memberModel.userName)
-                    .Select(p => new MemberModel
-                    {
-                        m_no = p.m_no
-                    });
+                var results = _memberRepository.Find(memberModel.userName, securePassword.memberValueObject.password)
+                              .Select(p => new MemberModel
+                              {
+                                m_no = p.m_no
+                              });
 
                 var result = results.SingleOrDefault();
                 return result;
@@ -70,7 +68,7 @@ namespace Application.Member.Query
         {
             if (string.IsNullOrEmpty(memberModel.m_no)) throw new ArgumentNullException(null,"セッションが切れました。再度ログインしてください。");
 
-            var results = _dataBaseService.Member.Where(p => p.m_no == memberModel.m_no)
+            var results = _memberRepository.FindSingle(memberModel.m_no)
             .Select(p => new MemberModel
             {
                 m_no = p.m_no,
