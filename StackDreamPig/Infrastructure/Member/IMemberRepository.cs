@@ -13,5 +13,9 @@ namespace Infrastructure.Member
         IQueryable<MemberEntity> Find(string targetName, string targetPass);
 
         IQueryable<MemberEntity> GetSecurePassword(string target);
+
+        void Create(MemberEntity memberEntity);
+
+        void Save();
     }
 }

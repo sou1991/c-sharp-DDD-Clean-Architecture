@@ -40,5 +40,9 @@ namespace Infrastructure.Member
 
             return securePassword;
         }
+
+        public void Create(MemberEntity memberEntity) { }
+
+        public void Save() { }
     }
 }
