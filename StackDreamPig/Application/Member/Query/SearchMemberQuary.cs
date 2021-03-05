@@ -41,7 +41,7 @@ namespace Application.Member.Query
         }
         public IMemberDTO AbleToLogin(IMemberDTO memberModel)
         {
-            var securePassword = _memberRepository.GetSecurePassword(memberModel.userName).FirstOrDefault(); ;
+            var securePassword = _memberRepository.GetSecurePassword(memberModel.userName);
 
             if (securePassword == null) return null;
 
@@ -50,14 +50,11 @@ namespace Application.Member.Query
 
             if (VerifyPassword(securePassword.memberValueObject.password, memberModel.password, salt))
             {
-                var results = _memberRepository.Find(memberModel.userName, securePassword.memberValueObject.password)
-                              .Select(p => new MemberModel
-                              {
-                                m_no = p.m_no
-                              });
+                var memberEntity = _memberRepository.Find(memberModel.userName, securePassword.memberValueObject.password);
 
-                var result = results.SingleOrDefault();
-                return result;
+                var domainModel = new MemberModel(){m_no = memberEntity.m_no};
+
+                return domainModel;
             }
 
             return null;
@@ -68,19 +65,19 @@ namespace Application.Member.Query
         {
             if (string.IsNullOrEmpty(memberModel.m_no)) throw new ArgumentNullException(null,"セッションが切れました。再度ログインしてください。");
 
-            var results = _memberRepository.FindSingle(memberModel.m_no)
-            .Select(p => new MemberModel
-            {
-                m_no = p.m_no,
-                userName = p.memberValueObject.userName,
-                monthlyIncome = p.amountValueObject.monthlyIncome,
-                savings = p.amountValueObject.savings,
-                fixedCost = p.amountValueObject.fixedCost,
-                currencyTypeAmountLimit = CurrencyType.CastIntegerToCurrencyType(p.amountLimitValueObject._amountLimit)
-            });
+            var memberEntity = _memberRepository.FindSingle(memberModel.m_no);
 
-            var result = results.SingleOrDefault();
-            return result;
+            var domainModel = new MemberModel
+            {
+                m_no = memberEntity.m_no,
+                userName = memberEntity.memberValueObject.userName,
+                monthlyIncome = memberEntity.amountValueObject.monthlyIncome,
+                savings = memberEntity.amountValueObject.savings,
+                fixedCost = memberEntity.amountValueObject.fixedCost,
+                currencyTypeAmountLimit = CurrencyType.CastIntegerToCurrencyType(memberEntity.amountLimitValueObject._amountLimit)
+            };
+
+            return domainModel;
         }
     }
 }

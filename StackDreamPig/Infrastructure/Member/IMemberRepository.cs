@@ -8,11 +8,11 @@ namespace Infrastructure.Member
 {
     public interface IMemberRepository
     {
-        IQueryable<MemberEntity> FindSingle(string target);
+        MemberEntity FindSingle(string target);
 
-        IQueryable<MemberEntity> Find(string targetName, string targetPass);
+        MemberEntity Find(string targetName, string targetPass);
 
-        IQueryable<MemberEntity> GetSecurePassword(string target);
+        MemberEntity GetSecurePassword(string target);
 
         void Create(MemberEntity memberEntity);
 

@@ -37,19 +37,9 @@ namespace Tests.Application.Member.Query
             var amountValueObject = SdpFactory.ValueObjectFactory().CreateAmountValueObject(_monthlyIncome, _savings, _fixedCost);
             var amountLimitValueObject = SdpFactory.ValueObjectFactory().CreateAmountLimitValueObject(_amountLimit);
 
-            var memberEntity = new List<MemberEntity>
-            {
-                SdpFactory.EntityFactory().CreateMemberEntity(_m_no, memberValueObject, amountValueObject, amountLimitValueObject, DateTime.Now)
+            var memberEntity = SdpFactory.EntityFactory().CreateMemberEntity(_m_no, memberValueObject, amountValueObject, amountLimitValueObject, DateTime.Now);
 
-            }.AsQueryable();
-
-            var mockMyEntity = new Mock<DbSet<MemberEntity>>();
-            // DbSetとテスト用データを紐付け
-            mockMyEntity.As<IQueryable<Type>>().Setup(m => m.Provider).Returns(memberEntity.Provider);
-            mockMyEntity.As<IQueryable<Type>>().Setup(m => m.Expression).Returns(memberEntity.Expression);
-            mockMyEntity.As<IQueryable<Type>>().Setup(m => m.ElementType).Returns(memberEntity.ElementType);
-            mockMyEntity.As<IQueryable<MemberEntity>>().Setup(m => m.GetEnumerator()).Returns(memberEntity.GetEnumerator());
-
+            
             _memberModel = new MemberModel
             {
                 m_no = _m_no,
@@ -61,8 +51,9 @@ namespace Tests.Application.Member.Query
             };
 
             var mockContext = new Mock<IMemberRepository>();
-            mockContext.Setup(m => m.FindSingle(_m_no)).Returns(mockMyEntity.Object);
-            mockContext.Setup(m => m.GetSecurePassword(_userName)).Returns(mockMyEntity.Object);
+            mockContext.Setup(m => m.FindSingle(_m_no)).Returns(memberEntity);
+            mockContext.Setup(m => m.GetSecurePassword(_userName)).Returns(memberEntity);
+            mockContext.Setup(m => m.Find(_userName,_password)).Returns(memberEntity);
 
             _searchMemberQuary = new SearchMemberQuary(mockContext.Object);
         }
@@ -80,7 +71,7 @@ namespace Tests.Application.Member.Query
            var result = _searchMemberQuary.Execute(_memberModel);
            Assert.AreNotEqual(result.m_no, 2);
        }
-        //To Do
+ 
        [Test]
        public void CheckLoginTests()
        {
