@@ -7,16 +7,17 @@ using System.Text.Json;
 using Common;
 using Npgsql;
 using Application.Member.DomainService;
+using Infrastructure.Member;
 
 namespace Application.Member.Query
 {
     public class SearchMemberQuary : SecureService, ISearchMemberQuary
     {
-        private IDataBaseService _dataBaseService;
+        private IMemberRepository _memberRepository;
 
-        public SearchMemberQuary(IDataBaseService dataBaseService)
+        public SearchMemberQuary(IMemberRepository memberRepository)
         {
-            _dataBaseService = dataBaseService;
+            _memberRepository = memberRepository;
         }
 
         public IMemberDTO Execute(IMemberDTO memberModel)
@@ -40,9 +41,7 @@ namespace Application.Member.Query
         }
         public IMemberDTO AbleToLogin(IMemberDTO memberModel)
         {
-            var securePassword = _dataBaseService.Member
-                               .Where(p => p.memberValueObject.userName == memberModel.userName)
-                               .SingleOrDefault();
+            var securePassword = _memberRepository.GetUserWithUserName(memberModel.userName);
 
             if (securePassword == null) return null;
 
@@ -51,15 +50,11 @@ namespace Application.Member.Query
 
             if (VerifyPassword(securePassword.memberValueObject.password, memberModel.password, salt))
             {
-                var results = _dataBaseService.Member
-                    .Where(p => p.memberValueObject.password == securePassword.memberValueObject.password && p.memberValueObject.userName == memberModel.userName)
-                    .Select(p => new MemberModel
-                    {
-                        m_no = p.m_no
-                    });
+                var memberEntity = _memberRepository.GetUser(memberModel.userName, securePassword.memberValueObject.password);
 
-                var result = results.SingleOrDefault();
-                return result;
+                var domainModel = new MemberModel(){m_no = memberEntity.m_no};
+
+                return domainModel;
             }
 
             return null;
@@ -70,19 +65,19 @@ namespace Application.Member.Query
         {
             if (string.IsNullOrEmpty(memberModel.m_no)) throw new ArgumentNullException(null,"セッションが切れました。再度ログインしてください。");
 
-            var results = _dataBaseService.Member.Where(p => p.m_no == memberModel.m_no)
-            .Select(p => new MemberModel
-            {
-                m_no = p.m_no,
-                userName = p.memberValueObject.userName,
-                monthlyIncome = p.amountValueObject.monthlyIncome,
-                savings = p.amountValueObject.savings,
-                fixedCost = p.amountValueObject.fixedCost,
-                currencyTypeAmountLimit = CurrencyType.CastIntegerToCurrencyType(p.amountLimitValueObject._amountLimit)
-            });
+            var memberEntity = _memberRepository.GetUserWithSession(memberModel.m_no);
 
-            var result = results.SingleOrDefault();
-            return result;
+            var domainModel = new MemberModel
+            {
+                m_no = memberEntity.m_no,
+                userName = memberEntity.memberValueObject.userName,
+                monthlyIncome = memberEntity.amountValueObject.monthlyIncome,
+                savings = memberEntity.amountValueObject.savings,
+                fixedCost = memberEntity.amountValueObject.fixedCost,
+                currencyTypeAmountLimit = CurrencyType.CastIntegerToCurrencyType(memberEntity.amountLimitValueObject._amountLimit)
+            };
+
+            return domainModel;
         }
     }
 }

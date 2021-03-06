@@ -16,6 +16,7 @@ using Application.Member.Query;
 using Application.Books.Commands;
 using Application.Books.Query;
 using Application.Member.DomainService;
+using Infrastructure.Member;
 
 namespace Presentation
 {
@@ -39,6 +40,7 @@ namespace Presentation
             services.AddTransient<ISearchBooksQuery, SearchBooksQuery>();
             services.AddTransient<IUpdateMemberCommnd, UpdateMemberCommnd>();
             services.AddTransient<MemberDomainService, MemberDomainService>();
+            services.AddTransient<IMemberRepository, MemberDBServiceRepository>();
 
             services.AddControllersWithViews();
 

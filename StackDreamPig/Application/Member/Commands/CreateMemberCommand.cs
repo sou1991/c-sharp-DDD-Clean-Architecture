@@ -6,16 +6,17 @@ using Valueobject.Member;
 using System;
 using Common.Member;
 using Factory;
+using Infrastructure.Member;
 
 namespace Application.Member.Commands
 {
     public class CreateMemberCommand : SecureService, ICreateMemberCommand
     {
-        private IDataBaseService _dataBaseService;
+        private IMemberRepository _memberRepository;
 
-        public CreateMemberCommand(IDataBaseService dataBaseService)
+        public CreateMemberCommand(IMemberRepository memberRepository)
         {
-            _dataBaseService = dataBaseService;
+            _memberRepository = memberRepository;
         }
 
         public void Execute(IMemberDTO memberModel)
@@ -32,9 +33,9 @@ namespace Application.Member.Commands
 
             var memberEntity = SdpFactory.EntityFactory().CreateMemberEntity(memberValueObject, amountValueObject, amountLimitValueObject, DateTime.Now);
 
-            _dataBaseService.Member.Add(memberEntity);
+            _memberRepository.Create(memberEntity);
 
-            _dataBaseService.Save();
+            _memberRepository.Save();
             
         }
     }

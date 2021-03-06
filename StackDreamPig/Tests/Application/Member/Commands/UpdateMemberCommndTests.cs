@@ -3,6 +3,7 @@ using Application.Member.Model;
 using Entities;
 using Factory;
 using Infrastructure;
+using Infrastructure.Member;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
@@ -17,42 +18,34 @@ namespace Tests.Application.Member.Commands
     {
         private MemberModel _memberModel;
         private UpdateMemberCommnd _command;
-        private IQueryable<MemberEntity> _memberEntity;
+        private MemberEntity _memberEntity;
         private Mock<DbSet<MemberEntity>> _mockMyEntity;
-        private Mock<IDataBaseService> _mockContext;
+        private Mock<IMemberRepository> _mockDataSource;
 
-        private readonly string _m_no = "1";
-        private readonly string _userName = "testuser";
-        private readonly string _password = "test";
+        private readonly string _m_no = "2";
+        private readonly string _userName = "stgDummyUser";
+        private readonly string _password = "BGAy4ewuMhZ8vjJz5OtxfYPLiumP/kbGRkudsuTObaE=";
+        private readonly string _salt = "\"HStsgbnfIH5TmnK0Awr/lQ==\"";
         private readonly string _monthlyIncome = "300000";
         private readonly string _savings = "100000";
         private readonly string _fixedCost = "50000";
-        private readonly int _amontLimit = 150000;
+        private readonly int _amountLimit = 150000;
 
         [SetUp]
         public void SetUp()
         {
-            var memberValueObject = SdpFactory.ValueObjectFactory().CreateMemberValueObject(_userName, null, null);
+            var memberValueObject = SdpFactory.ValueObjectFactory().CreateMemberValueObject(_userName, _password, _salt);
             var amountValueObject = SdpFactory.ValueObjectFactory().CreateAmountValueObject(_monthlyIncome, _savings, _fixedCost);
-            var amountLimitValueObject = SdpFactory.ValueObjectFactory().CreateAmountLimitValueObject(_amontLimit);
+            var amountLimitValueObject = SdpFactory.ValueObjectFactory().CreateAmountLimitValueObject(_amountLimit);
 
-            _memberEntity = new List<MemberEntity>
-            {
-                SdpFactory.EntityFactory().CreateMemberEntity(_m_no, memberValueObject, amountValueObject, amountLimitValueObject, DateTime.Now)
+            _memberEntity = SdpFactory.EntityFactory().CreateMemberEntity(_m_no, memberValueObject, amountValueObject, amountLimitValueObject, DateTime.Now);
 
-            }.AsQueryable();
+            _mockDataSource = new Mock<IMemberRepository>();
 
-            _mockMyEntity = new Mock<DbSet<MemberEntity>>();
-            // DbSetとテスト用データを紐付け
-            _mockMyEntity.As<IQueryable<Type>>().Setup(m => m.Provider).Returns(_memberEntity.Provider);
-            _mockMyEntity.As<IQueryable<Type>>().Setup(m => m.Expression).Returns(_memberEntity.Expression);
-            _mockMyEntity.As<IQueryable<Type>>().Setup(m => m.ElementType).Returns(_memberEntity.ElementType);
-            _mockMyEntity.As<IQueryable<MemberEntity>>().Setup(m => m.GetEnumerator()).Returns(_memberEntity.GetEnumerator());
+            _mockDataSource.Setup(m => m.GetUserWithSession(_m_no)).Returns(_memberEntity);
+            _mockDataSource.Setup(m => m.GetUserWithUserName(_userName)).Returns(_memberEntity);
 
-            _mockContext = new Mock<IDataBaseService>();
-            _mockContext.Setup(m => m.Member).Returns(_mockMyEntity.Object);
-
-            _command = new UpdateMemberCommnd(_mockContext.Object);
+            _command = new UpdateMemberCommnd(_mockDataSource.Object);
         }
 
         [Test]
@@ -60,34 +53,17 @@ namespace Tests.Application.Member.Commands
         {
             _memberModel = new MemberModel
             {
-                m_no = this._m_no,
-                userName = "太郎",
-                monthlyIncome = this._monthlyIncome,
-                savings = this._savings,
-                fixedCost = this._fixedCost
-            };
-
-            _command.Execute(_memberModel);
-
-            _mockContext.Verify(p => p.Save(), Times.Once);
-            //.Verify(m => m.Add(It.Is<MemberEntity>(t => t.userName.Equals("testuser"))))
-        }
-
-        [Test]
-        public void TestShouldCantUpdateMemberTheDatabase()
-        {
-            _memberModel = new MemberModel
-            {
                 m_no = "2",
                 userName = _userName,
-                monthlyIncome = this._monthlyIncome,
-                savings = this._savings,
-                fixedCost = this._fixedCost
+                password = "stgDummyUser",
+                monthlyIncome = _monthlyIncome,
+                savings = _savings,
+                fixedCost = _fixedCost
             };
 
             _command.Execute(_memberModel);
 
-            _mockContext.Verify(p => p.Save(), Times.Never);
+            _mockDataSource.Verify(p => p.Save(), Times.Once);
             //.Verify(m => m.Add(It.Is<MemberEntity>(t => t.userName.Equals("testuser"))))
         }
     }

@@ -3,6 +3,7 @@ using Application.Member.Query;
 using Entities;
 using Factory;
 using Infrastructure;
+using Infrastructure.Member;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
@@ -26,7 +27,7 @@ namespace Tests.Application.Member.Query
         private readonly string _monthlyIncome = "300000"; 
         private readonly string _savings = "50000";
         private readonly string _fixedCost = "100000";
-        private readonly int _amountLimit = 4838;
+        private readonly int _amountLimit = 5357;
 
 
         [SetUp]
@@ -36,29 +37,23 @@ namespace Tests.Application.Member.Query
             var amountValueObject = SdpFactory.ValueObjectFactory().CreateAmountValueObject(_monthlyIncome, _savings, _fixedCost);
             var amountLimitValueObject = SdpFactory.ValueObjectFactory().CreateAmountLimitValueObject(_amountLimit);
 
-            var memberEntity = new List<MemberEntity>
-            {
-                SdpFactory.EntityFactory().CreateMemberEntity(_m_no, memberValueObject, amountValueObject, amountLimitValueObject, DateTime.Now)
+            var memberEntity = SdpFactory.EntityFactory().CreateMemberEntity(_m_no, memberValueObject, amountValueObject, amountLimitValueObject, DateTime.Now);
 
-            }.AsQueryable();
-
-            var mockMyEntity = new Mock<DbSet<MemberEntity>>();
-            // DbSetとテスト用データを紐付け
-            mockMyEntity.As<IQueryable<Type>>().Setup(m => m.Provider).Returns(memberEntity.Provider);
-            mockMyEntity.As<IQueryable<Type>>().Setup(m => m.Expression).Returns(memberEntity.Expression);
-            mockMyEntity.As<IQueryable<Type>>().Setup(m => m.ElementType).Returns(memberEntity.ElementType);
-            mockMyEntity.As<IQueryable<MemberEntity>>().Setup(m => m.GetEnumerator()).Returns(memberEntity.GetEnumerator());
-
+            
             _memberModel = new MemberModel
             {
                 m_no = _m_no,
                 userName = _userName,
                 password = "stgDummyUser",
-
+                monthlyIncome = _monthlyIncome,
+                savings = _savings,
+                fixedCost = _fixedCost
             };
 
-            var mockContext = new Mock<IDataBaseService>();
-            mockContext.Setup(m => m.Member).Returns(mockMyEntity.Object);
+            var mockContext = new Mock<IMemberRepository>();
+            mockContext.Setup(m => m.GetUserWithSession(_m_no)).Returns(memberEntity);
+            mockContext.Setup(m => m.GetUserWithUserName(_userName)).Returns(memberEntity);
+            mockContext.Setup(m => m.GetUser(_userName,_password)).Returns(memberEntity);
 
             _searchMemberQuary = new SearchMemberQuary(mockContext.Object);
         }
@@ -76,7 +71,7 @@ namespace Tests.Application.Member.Query
            var result = _searchMemberQuary.Execute(_memberModel);
            Assert.AreNotEqual(result.m_no, 2);
        }
-        //To Do
+ 
        [Test]
        public void CheckLoginTests()
        {

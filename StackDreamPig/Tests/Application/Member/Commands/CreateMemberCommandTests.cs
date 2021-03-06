@@ -9,6 +9,7 @@ using System.Linq;
 using System;
 using Infrastructure;
 using Factory;
+using Infrastructure.Member;
 
 namespace Tests.Application.Member
 {
@@ -17,11 +18,12 @@ namespace Tests.Application.Member
     {
         private MemberModel _memberModel;
         private CreateMemberCommand _command;
-        private IQueryable<MemberEntity> _memberEntity;
-        private Mock<DbSet<MemberEntity>> _mockMyEntity;
+        private Mock<IMemberRepository> _mockDataSource;
 
         private readonly string _m_no = "1";
         private readonly string _userName = "stgDummyUser";
+        private readonly string _password = "BGAy4ewuMhZ8vjJz5OtxfYPLiumP/kbGRkudsuTObaE=";
+        private readonly string _salt = "\"HStsgbnfIH5TmnK0Awr/lQ==\"";
         private readonly string _monthlyIncome = "300000";
         private readonly string _savings = "100000";
         private readonly string _fixedCost = "50000";
@@ -30,23 +32,11 @@ namespace Tests.Application.Member
         [SetUp]
         public void SetUp()
         {
-            var memberValueObject = SdpFactory.ValueObjectFactory().CreateMemberValueObject(_userName, null, null);
+            var memberValueObject = SdpFactory.ValueObjectFactory().CreateMemberValueObject(_userName, _password, _salt);
             var amountValueObject = SdpFactory.ValueObjectFactory().CreateAmountValueObject(_monthlyIncome, _savings, _fixedCost);
             var amountLimitValueObject = SdpFactory.ValueObjectFactory().CreateAmountLimitValueObject(_amountLimit);
 
-            _memberEntity = new List<MemberEntity>
-            {
-               new MemberEntity(memberValueObject, amountValueObject, amountLimitValueObject, DateTime.Now)
-
-            }.AsQueryable();
-
-            _mockMyEntity = new Mock<DbSet<MemberEntity>>();
-            // DbSetとテスト用データを紐付け
-            _mockMyEntity.As<IQueryable<Type>>().Setup(m => m.Provider).Returns(_memberEntity.Provider);
-            _mockMyEntity.As<IQueryable<Type>>().Setup(m => m.Expression).Returns(_memberEntity.Expression);
-            _mockMyEntity.As<IQueryable<Type>>().Setup(m => m.ElementType).Returns(_memberEntity.ElementType);
-            _mockMyEntity.As<IQueryable<MemberEntity>>().Setup(m => m.GetEnumerator()).Returns(_memberEntity.GetEnumerator());
-
+            var memberEntity = new MemberEntity(memberValueObject, amountValueObject, amountLimitValueObject, DateTime.Now);
 
             _memberModel = new MemberModel
             {
@@ -58,10 +48,9 @@ namespace Tests.Application.Member
                 fixedCost = this._fixedCost
             };
 
-            var mockContext = new Mock<IDataBaseService>();
-            mockContext.Setup(m => m.Member).Returns(_mockMyEntity.Object);
+            _mockDataSource = new Mock<IMemberRepository>();
 
-            _command = new CreateMemberCommand(mockContext.Object);
+            _command = new CreateMemberCommand(_mockDataSource.Object);
         }
 
         [Test]
@@ -69,10 +58,9 @@ namespace Tests.Application.Member
         {
             _command.Execute(_memberModel);
 
-            _mockMyEntity
-            .Verify(p => p.Add(It.IsAny<MemberEntity>()), Times.Once);
+            _mockDataSource
+            .Verify(p => p.Create(It.IsAny<MemberEntity>()), Times.Once);
             //.Verify(m => m.Add(It.Is<MemberEntity>(t => t.userName.Equals("testuser"))))
-
         }
     }
 

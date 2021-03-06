@@ -3,6 +3,7 @@ using Common.Member;
 using Entities;
 using Factory;
 using Infrastructure;
+using Infrastructure.Member;
 using Npgsql;
 using System;
 using System.Collections.Generic;
@@ -14,12 +15,12 @@ namespace Application.Member.Commands
 {
     public class UpdateMemberCommnd : SecureService, IUpdateMemberCommnd
     {
-        private IDataBaseService _dataBaseService;
+        private IMemberRepository _memberRepository;
         private readonly string DUMMY_USER = "1";
 
-        public UpdateMemberCommnd(IDataBaseService dataBaseService)
+        public UpdateMemberCommnd(IMemberRepository memberRepository)
         {
-            _dataBaseService = dataBaseService;
+            _memberRepository = memberRepository;
         }
 
         public void Execute(MemberModel memberModel)
@@ -37,7 +38,7 @@ namespace Application.Member.Commands
                     {
                         UpdateMember(memberModel);
 
-                        _dataBaseService.Save();
+                        _memberRepository.Save();
                     }
                     else
                     {
@@ -55,24 +56,22 @@ namespace Application.Member.Commands
 
         public void UpdateMember(MemberModel memberModel)
         {
-            var member = _dataBaseService.Member
-            .Where(p => p.m_no == memberModel.m_no).First();
+            var memberEntity = _memberRepository.GetUserWithSession(memberModel.m_no);
 
             //To Do 不変性にしたいが更新処理O/Rマッパーがsetterを強要する。
-            member.memberValueObject = SdpFactory.ValueObjectFactory().CreateMemberValueObject(memberModel.userName, member.memberValueObject.password, member.memberValueObject.saltPassword);
-            member.amountValueObject = SdpFactory.ValueObjectFactory().CreateAmountValueObject(memberModel.monthlyIncome, memberModel.savings, memberModel.fixedCost);
-            member.amountLimitValueObject = SdpFactory.ValueObjectFactory().CreateAmountLimitValueObject(memberModel.amountLimit);
-            member.utime = DateTime.Now;
+            memberEntity.memberValueObject = SdpFactory.ValueObjectFactory().CreateMemberValueObject(memberModel.userName, memberEntity.memberValueObject.password, memberEntity.memberValueObject.saltPassword);
+            memberEntity.amountValueObject = SdpFactory.ValueObjectFactory().CreateAmountValueObject(memberModel.monthlyIncome, memberModel.savings, memberModel.fixedCost);
+            memberEntity.amountLimitValueObject = SdpFactory.ValueObjectFactory().CreateAmountLimitValueObject(memberModel.amountLimit);
+            memberEntity.utime = DateTime.Now;
         }
 
         public bool CanUpdateMember(MemberModel memberModel)
         {
-            var member = _dataBaseService.Member
-            .Where(p => p.memberValueObject.userName == memberModel.userName);
+            var memberEntity = _memberRepository.GetUserWithUserName(memberModel.userName);
 
-            if (member.Any())
+            if (memberEntity != null)
             {
-                if (member.First().m_no == memberModel.m_no)
+                if (memberEntity.m_no == memberModel.m_no)
                 {
                     return true;
                 }
