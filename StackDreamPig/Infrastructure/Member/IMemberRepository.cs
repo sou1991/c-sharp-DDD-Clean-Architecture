@@ -8,11 +8,11 @@ namespace Infrastructure.Member
 {
     public interface IMemberRepository
     {
-        MemberEntity FindSingle(string target);
+        MemberEntity GetUser(string targetName, string targetPath);
 
-        MemberEntity Find(string targetName, string targetPass);
+        MemberEntity GetUserWithSession(string target);
 
-        MemberEntity GetSecurePassword(string target);
+        MemberEntity GetUserWithUserName(string target);
 
         void Create(MemberEntity memberEntity);
 

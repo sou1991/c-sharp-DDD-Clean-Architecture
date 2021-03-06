@@ -41,7 +41,7 @@ namespace Application.Member.Query
         }
         public IMemberDTO AbleToLogin(IMemberDTO memberModel)
         {
-            var securePassword = _memberRepository.GetSecurePassword(memberModel.userName);
+            var securePassword = _memberRepository.GetUserWithUserName(memberModel.userName);
 
             if (securePassword == null) return null;
 
@@ -50,7 +50,7 @@ namespace Application.Member.Query
 
             if (VerifyPassword(securePassword.memberValueObject.password, memberModel.password, salt))
             {
-                var memberEntity = _memberRepository.Find(memberModel.userName, securePassword.memberValueObject.password);
+                var memberEntity = _memberRepository.GetUser(memberModel.userName, securePassword.memberValueObject.password);
 
                 var domainModel = new MemberModel(){m_no = memberEntity.m_no};
 
@@ -65,7 +65,7 @@ namespace Application.Member.Query
         {
             if (string.IsNullOrEmpty(memberModel.m_no)) throw new ArgumentNullException(null,"セッションが切れました。再度ログインしてください。");
 
-            var memberEntity = _memberRepository.FindSingle(memberModel.m_no);
+            var memberEntity = _memberRepository.GetUserWithSession(memberModel.m_no);
 
             var domainModel = new MemberModel
             {

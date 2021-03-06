@@ -51,9 +51,9 @@ namespace Tests.Application.Member.Query
             };
 
             var mockContext = new Mock<IMemberRepository>();
-            mockContext.Setup(m => m.FindSingle(_m_no)).Returns(memberEntity);
-            mockContext.Setup(m => m.GetSecurePassword(_userName)).Returns(memberEntity);
-            mockContext.Setup(m => m.Find(_userName,_password)).Returns(memberEntity);
+            mockContext.Setup(m => m.GetUserWithSession(_m_no)).Returns(memberEntity);
+            mockContext.Setup(m => m.GetUserWithUserName(_userName)).Returns(memberEntity);
+            mockContext.Setup(m => m.GetUser(_userName,_password)).Returns(memberEntity);
 
             _searchMemberQuary = new SearchMemberQuary(mockContext.Object);
         }

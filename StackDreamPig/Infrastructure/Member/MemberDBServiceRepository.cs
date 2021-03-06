@@ -17,7 +17,7 @@ namespace Infrastructure.Member
         /****************************
         * TO DO : 検索条件をポリモーフィズム的に解決したい
         *****************************/
-        public MemberEntity FindSingle(string target)
+        public MemberEntity GetUserWithSession(string target)
         {
             var user = _dataBaseService.Member
                       .Where(p => p.m_no == target);
@@ -25,7 +25,7 @@ namespace Infrastructure.Member
             return user.First();
         }
 
-        public MemberEntity Find(string targetName, string targetPass)
+        public MemberEntity GetUser(string targetName, string targetPass)
         {
             var results = _dataBaseService.Member
                           .Where(p => p.memberValueObject.password == targetPass && p.memberValueObject.userName == targetName)
@@ -34,7 +34,7 @@ namespace Infrastructure.Member
             return results;
         }
 
-        public MemberEntity GetSecurePassword(string target)
+        public MemberEntity GetUserWithUserName(string target)
         {
             var securePassword = _dataBaseService.Member
                                  .Where(p => p.memberValueObject.userName == target);
