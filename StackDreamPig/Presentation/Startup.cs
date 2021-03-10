@@ -17,6 +17,7 @@ using Application.Books.Commands;
 using Application.Books.Query;
 using Application.Member.DomainService;
 using Infrastructure.Member;
+using Infrastructure.Books;
 
 namespace Presentation
 {
@@ -41,6 +42,7 @@ namespace Presentation
             services.AddTransient<IUpdateMemberCommnd, UpdateMemberCommnd>();
             services.AddTransient<MemberDomainService, MemberDomainService>();
             services.AddTransient<IMemberRepository, MemberDBServiceRepository>();
+            services.AddTransient<IBooksRepository, BooksDBServiceRepository>();
 
             services.AddControllersWithViews();
 

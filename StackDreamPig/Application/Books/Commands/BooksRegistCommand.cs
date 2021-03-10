@@ -5,16 +5,17 @@ using Valueobject.Books;
 using System.Linq;
 using Npgsql;
 using Factory;
+using Infrastructure.Books;
 
 namespace Application.Books.Commands
 {
     public class BooksRegistCommand : IBooksRegistCommand
     {
-        private IDataBaseService _dataBaseService;
+        private IBooksRepository _booksRepository;
 
-        public BooksRegistCommand(IDataBaseService dataBaseService)
+        public BooksRegistCommand(IBooksRepository booksRepository)
         {
-            _dataBaseService = dataBaseService;
+            _booksRepository = booksRepository;
         }
         public void Execute(BooksModel booksModel)
         {
@@ -24,24 +25,21 @@ namespace Application.Books.Commands
 
             try
             {
-                var alredyRegistedBooks = _dataBaseService.Books
-                .Where(p => p.m_no == booksModel.m_no && p.registDate._registDate == DataTimeChangeToDataBaseFormat);
+                var alredyRegistedBooks = _booksRepository.FindSingle(booksModel.m_no, DataTimeChangeToDataBaseFormat);
                 //既に登録されている日は更新する。未登録の日は新規登録する。
-                if (alredyRegistedBooks.Any())
+                if (alredyRegistedBooks != null)
                 {
-                    var books = alredyRegistedBooks.First();
-
-                    books.amountUsed = booksModel.amountUsed;
-                    books.registDate = SdpFactory.ValueObjectFactory().CreateRegistDateValueObject(booksModel.registDate);
-                    books.utime = DateTime.Now;
+                    alredyRegistedBooks.amountUsed = booksModel.amountUsed;
+                    alredyRegistedBooks.registDate = SdpFactory.ValueObjectFactory().CreateRegistDateValueObject(booksModel.registDate);
+                    alredyRegistedBooks.utime = DateTime.Now;
                 }
                 else
                 {
                     var booksEntity = SdpFactory.EntityFactory().CreateBooksEntity(booksModel.m_no, booksModel.amountUsed, DateTime.Now, new RegistDateValueObject(booksModel.registDate));
-                    _dataBaseService.Books.Add(booksEntity);
+                    _booksRepository.Create(booksEntity);
                 }
 
-                _dataBaseService.Save();
+                _booksRepository.Save();
             }
             catch (NpgsqlException)
             {
