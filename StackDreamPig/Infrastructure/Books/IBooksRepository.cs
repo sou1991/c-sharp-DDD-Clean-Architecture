@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace Infrastructure.Books
 {
-    public interface IBooksRepositorySS
+    public interface IBooksRepository
     {
-        BooksEntity Find(string targetID, DateTime targetDate, bool isRegist = false);
+        BooksEntity FindSingle(string targetID, DateTime targetDate);
 
-        IQueryable<BooksEntity> FindSingle();
+        IQueryable<BooksEntity> Find(string targetID,int year,int month);
 
         void Create(BooksEntity memberEntity);
 

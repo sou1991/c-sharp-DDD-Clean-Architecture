@@ -3,6 +3,7 @@ using Common;
 using Common.Books;
 using Entities;
 using Infrastructure;
+using Infrastructure.Books;
 using Npgsql;
 using stackDreamPig.Models.Book;
 using stackDreamPig.Models.Book.Query;
@@ -16,11 +17,11 @@ namespace Application.Books.Query
 {
     public class SearchBooksQuery : ISearchBooksQuery
     {
-        private IDataBaseService _dataBaseService;
+        private IBooksRepository _booksRepository;
 
-        public SearchBooksQuery(IDataBaseService dataBaseService)
+        public SearchBooksQuery(IBooksRepository booksRepository)
         {
-            _dataBaseService = dataBaseService;
+            _booksRepository = booksRepository;
         }
 
         public IEnumerable<IBooksDTO> Execute(IBooksDTO booksModel)
@@ -29,20 +30,18 @@ namespace Application.Books.Query
 
             try
             {
-                var resultBooks = _dataBaseService.Books
-                .OrderByDescending(p => p.registDate._registDate)
-                .Where(p => p.m_no == booksModel.m_no
-                && p.registDate._registDate.Year == booksModel.registrationDateSearch.Year
-                && p.registDate._registDate.Month == booksModel.registrationDateSearch.Month);
+                var books = _booksRepository
+                            .Find(booksModel.m_no, booksModel.registrationDateSearch.Year, booksModel.registrationDateSearch.Month);
 
-                var books = resultBooks
+                var booksEntities = books
                     .Select(p => new BooksModel()
                     {
                         currencyTypeAmountUsed = CurrencyType.CastIntegerToCurrencyType(p.amountUsed),
                         DispRegistDate = p.registDate._registDate,
-                        monthlyTotalAmountUsed = CurrencyType.CastIntegerToCurrencyType(resultBooks.Sum(p => p.amountUsed))
+                        monthlyTotalAmountUsed = CurrencyType.CastIntegerToCurrencyType(books.Sum(p => p.amountUsed))
                     });
-                return books;
+
+                return booksEntities;
             }
             catch (NpgsqlException)
             {

@@ -2,6 +2,7 @@
 using Entities;
 using Factory;
 using Infrastructure;
+using Infrastructure.Books;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
@@ -19,7 +20,7 @@ namespace Tests.Application.Books.Commands
         private IBooksRegistCommand _booksRegistCommand;
         private BooksModel _booksModel;
         private Mock<DbSet<BooksEntity>> _mockMyEntity;
-        private Mock<IDataBaseService> _mockContext;
+        private Mock<IBooksRepository> _mockContext;
 
         private readonly string _m_no = "1";
         private readonly int _amountUsed = 10000;
@@ -31,11 +32,7 @@ namespace Tests.Application.Books.Commands
         {
             var registDate = _year + "/" + _month + "/" + _day;
 
-            var booksEntity = new List<BooksEntity>
-            {
-                SdpFactory.EntityFactory().CreateBooksEntity(_m_no, _amountUsed, DateTime.Now, new RegistDateValueObject(DateTime.Parse(registDate)))
-
-            }.AsQueryable();
+            var booksEntity = SdpFactory.EntityFactory().CreateBooksEntity(_m_no, _amountUsed, DateTime.Now, new RegistDateValueObject(DateTime.Parse(registDate)));
 
             _booksModel = new BooksModel()
             {
@@ -46,16 +43,10 @@ namespace Tests.Application.Books.Commands
                 day = _day
             };
 
-            _mockMyEntity = new Mock<DbSet<BooksEntity>>();
+            _mockContext = new Mock<IBooksRepository>();
 
-            _mockMyEntity.As<IQueryable<Type>>().Setup(m => m.Provider).Returns(booksEntity.Provider);
-            _mockMyEntity.As<IQueryable<Type>>().Setup(m => m.Expression).Returns(booksEntity.Expression);
-            _mockMyEntity.As<IQueryable<Type>>().Setup(m => m.ElementType).Returns(booksEntity.ElementType);
-            _mockMyEntity.As<IQueryable<BooksEntity>>().Setup(m => m.GetEnumerator()).Returns(booksEntity.GetEnumerator());
 
-            _mockContext = new Mock<IDataBaseService>();
-            _mockContext.Setup(p => p.Books).Returns(_mockMyEntity.Object);
-
+            _mockContext.Setup(p => p.FindSingle(_m_no, _booksModel.registDate)).Returns(booksEntity);
             _booksRegistCommand = new BooksRegistCommand(_mockContext.Object);
         }
 
@@ -65,8 +56,8 @@ namespace Tests.Application.Books.Commands
             _booksModel.m_no = "1000";
             _booksRegistCommand.Execute(_booksModel);
 
-            _mockMyEntity
-            .Verify(p => p.Add(It.IsAny<BooksEntity>()), Times.Once);
+            _mockContext
+            .Verify(p => p.Create(It.IsAny<BooksEntity>()), Times.Once);
         }
 
         [Test]

@@ -3,6 +3,7 @@ using Common;
 using Entities;
 using Factory;
 using Infrastructure;
+using Infrastructure.Books;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
@@ -51,8 +52,8 @@ namespace Tests.Application.Books
             mockMyEntity.As<IQueryable<Type>>().Setup(m => m.ElementType).Returns(booksEntity.ElementType);
             mockMyEntity.As<IQueryable<BooksEntity>>().Setup(m => m.GetEnumerator()).Returns(booksEntity.GetEnumerator());
 
-            var mockContext = new Mock<IDataBaseService>();
-            mockContext.Setup(m => m.Books).Returns(mockMyEntity.Object);
+            var mockContext = new Mock<IBooksRepository>();
+            mockContext.Setup(m => m.Find(_m_no, int.Parse(_year), int.Parse(_month))).Returns(mockMyEntity.Object);
 
             _searchBooksQuery = new SearchBooksQuery(mockContext.Object);
         }
