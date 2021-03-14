@@ -1,8 +1,4 @@
-﻿using Infrastructure;
-using Application.Member.Model;
-using System.Linq;
-using Entities;
-using Valueobject.Member;
+﻿using Application.Member.Model;
 using System;
 using Common.Member;
 using Factory;

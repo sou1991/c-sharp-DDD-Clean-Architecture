@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Application.Member.Model;
 using Microsoft.AspNetCore.Http;
 using Application.Member.Commands;
 using Application.Member.Query;
-using Common.Member;
 using Application.Member.DomainService;
 
 namespace Presentation.Controllers

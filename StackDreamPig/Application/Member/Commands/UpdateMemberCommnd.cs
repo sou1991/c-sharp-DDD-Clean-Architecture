@@ -1,15 +1,9 @@
 ﻿using Application.Member.Model;
 using Common.Member;
-using Entities;
 using Factory;
-using Infrastructure;
 using Infrastructure.Member;
 using Npgsql;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Valueobject.Member;
 
 namespace Application.Member.Commands
 {
