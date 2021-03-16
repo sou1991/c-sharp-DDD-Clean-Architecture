@@ -22,6 +22,8 @@ namespace Application.Books.Model
 
         public DateTime DispRegistDate { get;  }
 
+        public DateTime registDate { get; }
+
         public DateTime registrationDateSearch { get;  }
 
         public string monthlyTotalAmountUsed { get; }

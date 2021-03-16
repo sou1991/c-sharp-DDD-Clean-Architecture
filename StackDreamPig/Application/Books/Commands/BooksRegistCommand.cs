@@ -6,6 +6,7 @@ using System.Linq;
 using Npgsql;
 using Factory;
 using Infrastructure.Books;
+using Application.Books.Model;
 
 namespace Application.Books.Commands
 {
@@ -17,7 +18,7 @@ namespace Application.Books.Commands
         {
             _booksRepository = booksRepository;
         }
-        public void Execute(BooksModel booksModel)
+        public void Execute(IBooksDTO booksModel)
         {
             if (string.IsNullOrEmpty(booksModel.m_no)) throw new ArgumentNullException(null, "セッションが切れました。再度ログインしてください。");
 
