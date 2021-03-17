@@ -20,6 +20,8 @@ namespace Tests.Presentation.Controllers
             _memberController = _mocker.Create<MemberController>();
             _meberModel = new MemberModel();
         }
+
+        //To do：テストライブラリからセッションをセット出来ない。
         [Test]
         public void TestGetViewTypeEntry()
         {
@@ -27,6 +29,7 @@ namespace Tests.Presentation.Controllers
             Assert.That(result, Is.TypeOf<ViewResult>());
         }
 
+        //To do：テストライブラリからセッションをセット出来ない。
         [Test]
         public void TestGetViewTypeEntryConfirm()
         {
@@ -34,6 +37,7 @@ namespace Tests.Presentation.Controllers
             Assert.That(result, Is.TypeOf<ViewResult>());
         }
 
+        //To do：テストライブラリからセッションをセット出来ない。
         [Test]
         public void TestGetViewTypeEntryComplete()
         {
