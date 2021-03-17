@@ -3,11 +3,7 @@ using AutoMoq;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using Presentation.Controllers;
-using stackDreamPig.Models.Book;
 using stackDreamPig.Models.Book.Query;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Tests.Presentation.Controllers
 {
@@ -36,12 +32,15 @@ namespace Tests.Presentation.Controllers
                 m_no = _m_no
             };
         }
+        //To do：テストライブラリからセッションをセット出来ない。
         [Test]
         public void TestGetViewTypeBooks()
         {
             var result = _booksController.Books(_memberModel);
             Assert.That(result, Is.TypeOf<ViewResult>());
         }
+
+        //To do：テストライブラリからセッションをセット出来ない。
         [Test]
         public void TestGetViewTypeBooksRegisted()
         {
@@ -49,6 +48,7 @@ namespace Tests.Presentation.Controllers
             Assert.That(result, Is.TypeOf<ViewResult>());
         }
 
+        //To do：テストライブラリからセッションをセット出来ない。
         [Test]
         public void TestGetViewTypeBooksList()
         {

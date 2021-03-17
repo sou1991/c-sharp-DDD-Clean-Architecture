@@ -1,12 +1,9 @@
 ﻿using Application.Member.Model;
-using Infrastructure;
 using System;
-using System.Linq;
 using Common.Member;
 using System.Text.Json;
 using Common;
 using Npgsql;
-using Application.Member.DomainService;
 using Infrastructure.Member;
 
 namespace Application.Member.Query

@@ -19,7 +19,6 @@ namespace Tests.Application.Books.Commands
     {
         private IBooksRegistCommand _booksRegistCommand;
         private BooksModel _booksModel;
-        private Mock<DbSet<BooksEntity>> _mockMyEntity;
         private Mock<IBooksRepository> _mockContext;
 
         private readonly string _m_no = "1";
@@ -27,6 +26,7 @@ namespace Tests.Application.Books.Commands
         private readonly string _year = "2020";
         private readonly string _month = "7";
         private readonly string _day = "1";
+
         [SetUp]
         public void SetUp()
         {
