@@ -1,6 +1,10 @@
 ﻿using Entities;
+using Entities.Books;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using Valueobject.Books;
 
 namespace Infrastructure.Books
 {
@@ -15,10 +19,13 @@ namespace Infrastructure.Books
 
         public void Create(BooksEntity memberEntity)
         {
-            _dataBaseService.Books.Add(memberEntity);
+            _dataBaseService.Books.Add(ToModel(memberEntity));
         }
 
-
+        public void Update(BooksEntity memberEntity, BooksDataModelBuilder dataModel)
+        {
+            _dataBaseService.Books.Update(dataModel.Build()).State = EntityState.Modified;
+        }
 
         public void Save()
         {
@@ -27,22 +34,55 @@ namespace Infrastructure.Books
 
         public BooksEntity FindSingle(string targetID, DateTime targetDate)
         {
-            var booksEntity = _dataBaseService.Books
-                              .Where(p => p.m_no == targetID && p.registDate._registDate == targetDate)
+            var dtoModel = _dataBaseService.Books
+                              .Where(p => p.m_no == targetID && p.registDate == targetDate)
+                              .AsNoTracking()
                               .FirstOrDefault();
 
-            return booksEntity;
+            return Transfer(dtoModel);
         }
 
         public IQueryable<BooksEntity> Find(string targetID, int year, int month)
         {
-            var booksEntities = _dataBaseService.Books
-                .OrderByDescending(p => p.registDate._registDate)
+            var dtoModel = _dataBaseService.Books
+                .OrderByDescending(p => p.registDate)
                 .Where(p => p.m_no == targetID
-                && p.registDate._registDate.Year == year
-                && p.registDate._registDate.Month == month);
+                && p.registDate.Year == year
+                && p.registDate.Month == month);
 
-            return booksEntities;
+            return Transfer(dtoModel, new List<BooksEntity>());
+
+        }
+
+        private BooksEntity Transfer(BooksData model)
+        {
+            if (model == null) return null;
+
+            var registDate = new RegistDateValueObject(model.registDate);
+            var entity = new BooksEntity(model.id, model.m_no, model.amountUsed, model.intime, registDate);
+
+            return entity;
+        }
+
+        private IQueryable<BooksEntity> Transfer(IQueryable<BooksData> models, List<BooksEntity> entitis)
+        {
+            foreach (var model in models)
+            {
+                var registDate = new RegistDateValueObject(model.registDate);
+                entitis.Add(new BooksEntity(model.id, model.m_no, model.amountUsed, model.intime, registDate));
+            }
+
+            return entitis.AsQueryable();
+        }
+
+        private BooksData ToModel(BooksEntity entity)
+        {
+            var dataModel = new BooksDataModelBuilder();
+
+            entity.Notice(dataModel);
+
+            return dataModel.Build();
+
         }
     }
 }

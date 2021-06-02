@@ -21,6 +21,7 @@ namespace Tests.Application.Books.Commands
         private BooksModel _booksModel;
         private Mock<IBooksRepository> _mockContext;
 
+        private readonly int _id = 1;
         private readonly string _m_no = "1";
         private readonly int _amountUsed = 10000;
         private readonly string _year = "2020";
@@ -32,7 +33,7 @@ namespace Tests.Application.Books.Commands
         {
             var registDate = _year + "/" + _month + "/" + _day;
 
-            var booksEntity = SdpFactory.EntityFactory().CreateBooksEntity(_m_no, _amountUsed, DateTime.Now, new RegistDateValueObject(DateTime.Parse(registDate)));
+            var booksEntity = SdpFactory.EntityFactory().CreateBooksEntity(_id, _m_no, _amountUsed, DateTime.Now, new RegistDateValueObject(DateTime.Parse(registDate)));
 
             _booksModel = new BooksModel()
             {
@@ -44,7 +45,6 @@ namespace Tests.Application.Books.Commands
             };
 
             _mockContext = new Mock<IBooksRepository>();
-
 
             _mockContext.Setup(p => p.FindSingle(_m_no, _booksModel.registDate)).Returns(booksEntity);
             _booksRegistCommand = new BooksRegistCommand(_mockContext.Object);

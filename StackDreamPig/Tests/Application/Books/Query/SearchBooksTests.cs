@@ -20,6 +20,7 @@ namespace Tests.Application.Books
     {
         private ISearchBooksQuery _searchBooksQuery;
         private BooksModel _booksModel;
+        private readonly int _id = 1;
         private readonly string _m_no = "1";
         private readonly int _amountUsed = 10000;
         private readonly string _year = "2020";
@@ -33,7 +34,7 @@ namespace Tests.Application.Books
 
             var booksEntity = new List<BooksEntity>()
             {
-                SdpFactory.EntityFactory().CreateBooksEntity(_m_no, _amountUsed, DateTime.Now, new RegistDateValueObject(DateTime.Parse(registDate)))
+                SdpFactory.EntityFactory().CreateBooksEntity(_id, _m_no, _amountUsed, DateTime.Now, new RegistDateValueObject(DateTime.Parse(registDate)))
 
             }.AsQueryable();
 

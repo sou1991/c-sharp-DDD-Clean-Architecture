@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Entities.Books;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -13,7 +14,7 @@ namespace Infrastructure
 
         public DbSet<MemberEntity> Member { get; set; }
 
-        public DbSet<BooksEntity> Books { get; set; }
+        public DbSet<BooksData> Books { get; set; }
 
         public void Save()
         {
@@ -38,7 +39,7 @@ namespace Infrastructure
                 entity.OwnsOne(e => e.amountLimitValueObject, a => a.WithOwner());
 
             });
-            modelBuilder.Entity<BooksEntity>(entity =>
+            modelBuilder.Entity<BooksData>(entity =>
             {
                 entity.ToTable("books");
 
@@ -51,7 +52,7 @@ namespace Infrastructure
                 .HasColumnName("m_no");
 
                 entity.Property(e => e.amountUsed)
-                .HasColumnName("amountUsed");
+                .HasColumnName("amount_used");
 
                 entity.Property(e => e.intime)
                 .HasColumnName("intime");
@@ -59,7 +60,8 @@ namespace Infrastructure
                 entity.Property(e => e.utime)
                 .HasColumnName("utime");
 
-                entity.OwnsOne(e => e.registDate, a => a.WithOwner());
+                entity.Property(e => e.registDate)
+                .HasColumnName("regist_date");
 
             });
             base.OnModelCreating(modelBuilder);
