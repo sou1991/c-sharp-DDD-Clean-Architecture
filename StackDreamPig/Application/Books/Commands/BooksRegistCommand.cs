@@ -1,12 +1,11 @@
-﻿using Infrastructure;
-using stackDreamPig.Models.Book.Query;
+﻿
 using System;
 using Valueobject.Books;
-using System.Linq;
 using Npgsql;
 using Factory;
 using Infrastructure.Books;
 using Application.Books.Model;
+using Entities.Books;
 
 namespace Application.Books.Commands
 {
@@ -27,12 +26,15 @@ namespace Application.Books.Commands
             try
             {
                 var alredyRegistedBooks = _booksRepository.FindSingle(booksModel.m_no, DataTimeChangeToDataBaseFormat);
+
                 //既に登録されている日は更新する。未登録の日は新規登録する。
                 if (alredyRegistedBooks != null)
                 {
-                    alredyRegistedBooks.amountUsed = booksModel.amountUsed;
-                    alredyRegistedBooks.registDate = SdpFactory.ValueObjectFactory().CreateRegistDateValueObject(booksModel.registDate);
-                    alredyRegistedBooks.utime = DateTime.Now;
+                    var booksEntity = SdpFactory.EntityFactory().CreateBooksEntity(alredyRegistedBooks.id, booksModel.m_no, booksModel.amountUsed, DateTime.Now, new RegistDateValueObject(booksModel.registDate));
+
+                    var dataModel = new BooksDataModelBuilder();
+                    booksEntity.Notice(dataModel);
+                    _booksRepository.Update(dataModel);
                 }
                 else
                 {

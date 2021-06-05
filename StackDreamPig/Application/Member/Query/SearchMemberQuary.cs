@@ -5,6 +5,7 @@ using System.Text.Json;
 using Common;
 using Npgsql;
 using Infrastructure.Member;
+using Entities.Member;
 
 namespace Application.Member.Query
 {
@@ -38,20 +39,26 @@ namespace Application.Member.Query
         }
         public IMemberDTO AbleToLogin(IMemberDTO memberModel)
         {
-            var securePassword = _memberRepository.GetUserWithUserName(memberModel.userName);
+            var member = _memberRepository.GetUserWithUserName(memberModel.userName);
 
-            if (securePassword == null) return null;
+            if (member == null) return null;
+
+            var dataModel = new MemberDataModelBuilder();
+
+            member.Notice(dataModel);
+
+            var dtoModel = dataModel.Build();
 
             //To Do 呼び出し元のコメント参照
-            var salt =  JsonSerializer.Deserialize<byte[]>(securePassword.memberValueObject.saltPassword);
+            var salt =  JsonSerializer.Deserialize<byte[]>(dtoModel.saltPassword);
 
-            if (VerifyPassword(securePassword.memberValueObject.password, memberModel.password, salt))
+            if (VerifyPassword(dtoModel.password, memberModel.password, salt))
             {
-                var memberEntity = _memberRepository.GetUser(memberModel.userName, securePassword.memberValueObject.password);
+                var memberEntity = _memberRepository.GetUser(memberModel.userName, dtoModel.password);
 
-                var domainModel = new MemberModel(){m_no = memberEntity.m_no};
+                var model = new MemberModel(){m_no = memberEntity.m_no};
 
-                return domainModel;
+                return model;
             }
 
             return null;
@@ -64,17 +71,23 @@ namespace Application.Member.Query
 
             var memberEntity = _memberRepository.GetUserWithSession(memberModel.m_no);
 
-            var domainModel = new MemberModel
+            var dataModel = new MemberDataModelBuilder();
+
+            memberEntity.Notice(dataModel);
+
+            var dtoModel = dataModel.Build();
+
+            var viewModel = new MemberModel
             {
-                m_no = memberEntity.m_no,
-                userName = memberEntity.memberValueObject.userName,
-                monthlyIncome = memberEntity.amountValueObject.monthlyIncome,
-                savings = memberEntity.amountValueObject.savings,
-                fixedCost = memberEntity.amountValueObject.fixedCost,
-                currencyTypeAmountLimit = CurrencyType.CastIntegerToCurrencyType(memberEntity.amountLimitValueObject._amountLimit)
+                m_no = dtoModel.m_no,
+                userName = dtoModel.userName,
+                monthlyIncome = dtoModel.monthlyIncome,
+                savings = dtoModel.savings,
+                fixedCost = dtoModel.fixedCost,
+                currencyTypeAmountLimit = CurrencyType.CastIntegerToCurrencyType(dtoModel.amountLimit)
             };
 
-            return domainModel;
+            return viewModel;
         }
     }
 }

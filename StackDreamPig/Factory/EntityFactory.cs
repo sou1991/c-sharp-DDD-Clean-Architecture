@@ -49,6 +49,9 @@ namespace Factory
         /// <param name="intime"></param>
         /// <param name="registDate"></param>
         /// <returns></returns>
+        public BooksEntity CreateBooksEntity(int id, string m_no, int amountUsed, DateTime intime, RegistDateValueObject registDate)
+            => new BooksEntity(id, m_no, amountUsed, intime, registDate);
+
         public BooksEntity CreateBooksEntity(string m_no, int amountUsed, DateTime intime, RegistDateValueObject registDate)
             => new BooksEntity(m_no, amountUsed, intime, registDate);
     }

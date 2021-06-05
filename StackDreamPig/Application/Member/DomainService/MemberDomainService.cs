@@ -15,7 +15,7 @@ namespace Application.Member.DomainService
         public bool HasRegistMember(IMemberDTO memberModel)
         {
             var member = _dataBaseService.Member
-            .Where(p => p.memberValueObject.userName == memberModel.userName);
+            .Where(p => p.userName == memberModel.userName);
 
             return member.Any() ? true : false;
         }

@@ -1,26 +1,26 @@
-﻿using Entities.Member;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 using Valueobject.Member;
 
-
-namespace Entities
+namespace Entities.Member
 {
-    public class MemberEntity : IEntity
+    public class MemberData
     {
-        public MemberEntity()
+        public MemberData()
         {
 
         }
         /// <summary>
-        /// 会員情報更新オブジェクト
+        /// 会員情報更新Efオブジェクト
         /// </summary>
         /// <param name="m_no"></param>
         /// <param name="memberValueObject"></param>
         /// <param name="amountValueObject"></param>
         /// <param name="amountLimitValueObject"></param>
         /// <param name="utime"></param>
-        public MemberEntity(
+        public MemberData(
             string m_no,
             MemberValueObject memberValueObject,
             AmountValueObject amountValueObject,
@@ -35,9 +35,14 @@ namespace Entities
             if (utime == default(DateTime)) throw new ArgumentNullException(null, "更新日が不正です。入力しなおしてください。");
 
             this.m_no = m_no;
-            this.memberValueObject = memberValueObject;
-            this.amountValueObject = amountValueObject;
-            this.amountLimitValueObject = amountLimitValueObject;
+            this.userName = memberValueObject.userName;
+            this.password = memberValueObject.password;
+            this.saltPassword = memberValueObject.saltPassword;
+
+            this.monthlyIncome = amountValueObject.monthlyIncome;
+            this.savings = amountValueObject.savings;
+            this.fixedCost = amountValueObject.fixedCost;
+            this.amountLimit = amountLimitValueObject._amountLimit;
             this.utime = utime;
         }
 
@@ -48,8 +53,8 @@ namespace Entities
         /// <param name="amountValueObject"></param>
         /// <param name="amountLimitValueObject"></param>
         /// <param name="intime"></param>
-        public MemberEntity(
-            MemberValueObject memberValueObject, 
+        public MemberData(
+            MemberValueObject memberValueObject,
             AmountValueObject amountValueObject,
             AmountLimitValueObject amountLimitValueObject,
             DateTime intime
@@ -60,33 +65,35 @@ namespace Entities
             if (amountLimitValueObject == null) throw new ArgumentNullException(null, "システムエラー。再度入力しなおしてください。");
             if (intime == default(DateTime)) throw new ArgumentNullException(null, "登録日が不正です。入力しなおしてください。");
 
-            this.memberValueObject = memberValueObject;
-            this.amountValueObject = amountValueObject;
-            this.amountLimitValueObject = amountLimitValueObject;
+            this.userName = memberValueObject.userName;
+            this.password = memberValueObject.password;
+            this.saltPassword = memberValueObject.saltPassword;
+            this.monthlyIncome = amountValueObject.monthlyIncome;
+            this.savings = amountValueObject.savings;
+            this.fixedCost = amountValueObject.fixedCost;
+            this.amountLimit = amountLimitValueObject._amountLimit;
             this.intime = intime;
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string m_no { get; }
 
-        private MemberValueObject memberValueObject;
+        public string userName { get; }
 
-        private AmountValueObject amountValueObject;
+        public string password { get; }
 
-        private AmountLimitValueObject amountLimitValueObject;
+        public string saltPassword { get; }
+
+        public string monthlyIncome { get; }
+
+        public string savings { get; }
+
+        public string fixedCost { get; }
+
+        public int amountLimit { get; }
 
         public DateTime intime { get; }
 
-        public DateTime utime { get;}
-
-        public void Notice(MemberDataModelBuilder model)
-        {
-            model.SetMemberNo(m_no);
-            model.SetAmountValueObject(amountValueObject);
-            model.SetAmountLimitValueObject(amountLimitValueObject);
-            model.SetMemberValueObject(memberValueObject);
-            model.SetIntime(intime);
-            model.SetUtime(utime);
-        }
+        public DateTime utime { get; set; }
     }
 }

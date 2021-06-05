@@ -1,4 +1,6 @@
 ﻿using Entities;
+using Entities.Books;
+using Entities.Member;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -11,9 +13,9 @@ namespace Infrastructure
         {
         }
 
-        public DbSet<MemberEntity> Member { get; set; }
+        public DbSet<MemberData> Member { get; set; }
 
-        public DbSet<BooksEntity> Books { get; set; }
+        public DbSet<BooksData> Books { get; set; }
 
         public void Save()
         {
@@ -22,23 +24,41 @@ namespace Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<MemberEntity>(entity =>
+            modelBuilder.Entity<MemberData>(entity =>
             {
                 entity.ToTable("member");
 
                 entity.HasKey(e => e.m_no);
 
-                entity.Property(e => e.m_no)
-                .HasColumnName("m_no");
+                entity.Property(e => e.userName)
+                .HasColumnName("user_name");
 
-                entity.OwnsOne(e => e.memberValueObject, a => a.WithOwner());
+                entity.Property(e => e.password)
+                .HasColumnName("password");
 
-                entity.OwnsOne(e => e.amountValueObject, a => a.WithOwner());
+                entity.Property(e => e.saltPassword)
+                .HasColumnName("salt_password");
 
-                entity.OwnsOne(e => e.amountLimitValueObject, a => a.WithOwner());
+                entity.Property(e => e.monthlyIncome)
+                .HasColumnName("monthly_income");
+
+                entity.Property(e => e.savings)
+                .HasColumnName("savings");
+
+                entity.Property(e => e.fixedCost)
+                .HasColumnName("fixed_cost");
+
+                entity.Property(e => e.amountLimit)
+                .HasColumnName("amount_limit");
+
+                entity.Property(e => e.intime)
+                .HasColumnName("intime");
+
+                entity.Property(e => e.utime)
+                .HasColumnName("utime");
 
             });
-            modelBuilder.Entity<BooksEntity>(entity =>
+            modelBuilder.Entity<BooksData>(entity =>
             {
                 entity.ToTable("books");
 
@@ -51,7 +71,7 @@ namespace Infrastructure
                 .HasColumnName("m_no");
 
                 entity.Property(e => e.amountUsed)
-                .HasColumnName("amountUsed");
+                .HasColumnName("amount_used");
 
                 entity.Property(e => e.intime)
                 .HasColumnName("intime");
@@ -59,7 +79,8 @@ namespace Infrastructure
                 entity.Property(e => e.utime)
                 .HasColumnName("utime");
 
-                entity.OwnsOne(e => e.registDate, a => a.WithOwner());
+                entity.Property(e => e.registDate)
+                .HasColumnName("regist_date");
 
             });
             base.OnModelCreating(modelBuilder);

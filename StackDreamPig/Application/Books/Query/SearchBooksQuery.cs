@@ -2,6 +2,7 @@
 using Common;
 using Common.Books;
 using Entities;
+using Entities.Books;
 using Infrastructure;
 using Infrastructure.Books;
 using Npgsql;
@@ -33,19 +34,35 @@ namespace Application.Books.Query
                 var books = _booksRepository
                             .Find(booksModel.m_no, booksModel.registrationDateSearch.Year, booksModel.registrationDateSearch.Month);
 
-                var booksEntities = books
-                    .Select(p => new BooksModel()
-                    {
-                        currencyTypeAmountUsed = CurrencyType.CastIntegerToCurrencyType(p.amountUsed),
-                        DispRegistDate = p.registDate._registDate,
-                        monthlyTotalAmountUsed = CurrencyType.CastIntegerToCurrencyType(books.Sum(p => p.amountUsed))
-                    });
+                var dataModel = new BooksDataModelBuilder();
 
-                return booksEntities;
+                var viewModels = CreateViewModelList(books);
+
+                return viewModels;
             }
             catch (NpgsqlException)
             {
                 throw new Exception("データベース接続に失敗しました。");
+            }
+        }
+
+        private IEnumerable<IBooksDTO> CreateViewModelList(IQueryable<BooksEntity> books)
+        {
+            foreach(var book in books)
+            {
+                var dataModel = new BooksDataModelBuilder();
+                var viewModel = new BooksModel();
+
+                book.Notice(dataModel);
+                var dtoModel = dataModel.Build();
+
+                viewModel.currencyTypeAmountUsed = dtoModel.amountUsed.ToString();
+                viewModel.DispRegistDate = dtoModel.registDate;
+
+                //To do リファクタリング同じ計算
+                viewModel.monthlyTotalAmountUsed = books.Sum(p => p.amountUsed).ToString();
+
+                yield return viewModel;
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Entities.Books;
 using System;
 using System.Linq;
 
@@ -11,6 +12,8 @@ namespace Infrastructure.Books
         IQueryable<BooksEntity> Find(string targetID,int year,int month);
 
         void Create(BooksEntity memberEntity);
+
+        void Update(BooksDataModelBuilder DataModel);
 
         void Save();
     }
