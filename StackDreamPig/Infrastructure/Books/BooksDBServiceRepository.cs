@@ -22,7 +22,7 @@ namespace Infrastructure.Books
             _dataBaseService.Books.Add(ToModel(memberEntity));
         }
 
-        public void Update(BooksEntity memberEntity, BooksDataModelBuilder dataModel)
+        public void Update(BooksDataModelBuilder dataModel)
         {
             _dataBaseService.Books.Update(dataModel.Build()).State = EntityState.Modified;
         }

@@ -34,7 +34,7 @@ namespace Application.Books.Commands
 
                     var dataModel = new BooksDataModelBuilder();
                     booksEntity.Notice(dataModel);
-                    _booksRepository.Update(alredyRegistedBooks, dataModel);
+                    _booksRepository.Update(dataModel);
                 }
                 else
                 {

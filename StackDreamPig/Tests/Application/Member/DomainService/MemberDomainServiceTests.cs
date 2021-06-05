@@ -2,6 +2,7 @@
 using Application.Member.Model;
 using Application.Member.Query;
 using Entities;
+using Entities.Member;
 using Factory;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -38,18 +39,18 @@ namespace Tests.Application.Member.DomainService
             var amountValueObject = SdpFactory.ValueObjectFactory().CreateAmountValueObject(_monthlyIncome, _savings, _fixedCost);
             var amountLimitValueObject = SdpFactory.ValueObjectFactory().CreateAmountLimitValueObject(_amountLimit);
 
-            var memberEntity = new List<MemberEntity>
+            var memberEntity = new List<MemberData>
             {
-               new MemberEntity(memberValueObject, amountValueObject, amountLimitValueObject, DateTime.Now)
+               new MemberData(memberValueObject, amountValueObject, amountLimitValueObject, DateTime.Now)
 
             }.AsQueryable();
 
-            var mockMemberEntity = new Mock<DbSet<MemberEntity>>();
+            var mockMemberEntity = new Mock<DbSet<MemberData>>();
             // DbSetとテスト用データを紐付け
             mockMemberEntity.As<IQueryable<Type>>().Setup(m => m.Provider).Returns(memberEntity.Provider);
             mockMemberEntity.As<IQueryable<Type>>().Setup(m => m.Expression).Returns(memberEntity.Expression);
             mockMemberEntity.As<IQueryable<Type>>().Setup(m => m.ElementType).Returns(memberEntity.ElementType);
-            mockMemberEntity.As<IQueryable<MemberEntity>>().Setup(m => m.GetEnumerator()).Returns(memberEntity.GetEnumerator());
+            mockMemberEntity.As<IQueryable<MemberData>>().Setup(m => m.GetEnumerator()).Returns(memberEntity.GetEnumerator());
 
 
             _memberModel = new MemberModel

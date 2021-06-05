@@ -13,7 +13,7 @@ namespace Infrastructure.Books
 
         void Create(BooksEntity memberEntity);
 
-        void Update(BooksEntity memberEntity, BooksDataModelBuilder DataModel);
+        void Update(BooksDataModelBuilder DataModel);
 
         void Save();
     }

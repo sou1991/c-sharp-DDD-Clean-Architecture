@@ -1,5 +1,6 @@
 ﻿using Application.Member.Model;
 using Common.Member;
+using Entities.Member;
 using Factory;
 using Infrastructure.Member;
 using Npgsql;
@@ -52,11 +53,19 @@ namespace Application.Member.Commands
         {
             var memberEntity = _memberRepository.GetUserWithSession(memberModel.m_no);
 
-            //To Do 不変性にしたいが更新処理O/Rマッパーがsetterを強要する。
-            memberEntity.memberValueObject = SdpFactory.ValueObjectFactory().CreateMemberValueObject(memberModel.userName, memberEntity.memberValueObject.password, memberEntity.memberValueObject.saltPassword);
-            memberEntity.amountValueObject = SdpFactory.ValueObjectFactory().CreateAmountValueObject(memberModel.monthlyIncome, memberModel.savings, memberModel.fixedCost);
-            memberEntity.amountLimitValueObject = SdpFactory.ValueObjectFactory().CreateAmountLimitValueObject(memberModel.amountLimit);
-            memberEntity.utime = DateTime.Now;
+            var dataModel = new MemberDataModelBuilder();
+
+            memberEntity.Notice(dataModel);
+
+            var dtoModel = dataModel.Build();
+
+            var memberValueObject = SdpFactory.ValueObjectFactory().CreateMemberValueObject(memberModel.userName, dtoModel.password, dtoModel.saltPassword);
+            var amount = SdpFactory.ValueObjectFactory().CreateAmountValueObject(memberModel.monthlyIncome, memberModel.savings, memberModel.fixedCost);
+            var amountLimit = SdpFactory.ValueObjectFactory().CreateAmountLimitValueObject(memberModel.amountLimit);
+
+            var member = SdpFactory.EntityFactory().CreateMemberEntity(memberModel.m_no, memberValueObject, amount, amountLimit, DateTime.Now);
+
+            _memberRepository.Update(member, memberModel.m_no);
         }
 
         public bool CanUpdateMember(MemberModel memberModel)
